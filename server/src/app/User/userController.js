@@ -7,14 +7,6 @@ const {response, errResponse} = require("../../../config/response");
 const regexEmail = require("regex-email");
 const {emit} = require("nodemon");
 
-/**
- * API No. 0
- * API Name : 테스트 API
- * [GET] /app/test
- */
-// exports.getTest = async function (req, res) {
-//     return res.send(response(baseResponse.SUCCESS))
-// }
 
 /**
  * API No. 1
@@ -24,17 +16,30 @@ const {emit} = require("nodemon");
 exports.postUsers = async function (req, res) {
 
     /**
-     * Body: email, password, nickname
+     * Body:name,phone, email, password
      */
-    const {email, password, nickname} = req.body;
+    const {name,email, phone,password} = req.body;
 
     // 빈 값 체크
     if (!email)
         return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+         // 빈 값 체크
+    if (!name)
+    return res.send(response(baseResponse.SIGNUP_NAME_EMPTY));
+     // 빈 값 체크
+     if (!password)
+     return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));
+      // 빈 값 체크
+    if (!phone)
+    return res.send(response(baseResponse.SIGNUP_PHONE_EMPTY));
 
     // 길이 체크
     if (email.length > 30)
         return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+    // 길이 체크
+    if (password.length > 15 || password.length < 7)
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH));
+    
 
     // 형식 체크 (by 정규표현식)
     if (!regexEmail.test(email))
@@ -46,7 +51,8 @@ exports.postUsers = async function (req, res) {
     const signUpResponse = await userService.createUser(
         email,
         password,
-        nickname
+        name,
+        phone
     );
 
     return res.send(signUpResponse);
@@ -106,6 +112,21 @@ exports.login = async function (req, res) {
     const {email, password} = req.body;
 
     // TODO: email, password 형식적 Validation
+    // 빈 값 체크
+    if (!email)
+        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+     // 빈 값 체크
+     if (!password)
+         return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));
+     // 길이 체크
+     if (email.length > 30)
+     return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+    // 길이 체크
+    if (password.length > 15 || password.length < 7)
+         return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH));
+     // 이메일 형식 체크 (by 정규표현식)
+    if (!regexEmail.test(email))
+         return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
 
     const signInResponse = await userService.postSignIn(email, password);
 

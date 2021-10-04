@@ -13,15 +13,17 @@ module.exports = {
     SIGNUP_EMAIL_LENGTH : { "isSuccess": false, "code": 2002, "message":"이메일은 30자리 미만으로 입력해주세요." },
     SIGNUP_EMAIL_ERROR_TYPE : { "isSuccess": false, "code": 2003, "message":"이메일을 형식을 정확하게 입력해주세요." },
     SIGNUP_PASSWORD_EMPTY : { "isSuccess": false, "code": 2004, "message": "비밀번호를 입력 해주세요." },
-    SIGNUP_PASSWORD_LENGTH : { "isSuccess": false, "code": 2005, "message":"비밀번호는 6~20자리를 입력해주세요." },
-    SIGNUP_NICKNAME_EMPTY : { "isSuccess": false, "code": 2006, "message":"닉네임을 입력 해주세요." },
-    SIGNUP_NICKNAME_LENGTH : { "isSuccess": false,"code": 2007,"message":"닉네임은 최대 20자리를 입력해주세요." },
-
-    SIGNIN_EMAIL_EMPTY : { "isSuccess": false, "code": 2008, "message":"이메일을 입력해주세요" },
-    SIGNIN_EMAIL_LENGTH : { "isSuccess": false, "code": 2009, "message":"이메일은 30자리 미만으로 입력해주세요." },
-    SIGNIN_EMAIL_ERROR_TYPE : { "isSuccess": false, "code": 2010, "message":"이메일을 형식을 정확하게 입력해주세요." },
-    SIGNIN_PASSWORD_EMPTY : { "isSuccess": false, "code": 2011, "message": "비밀번호를 입력 해주세요." },
-
+    SIGNUP_PASSWORD_LENGTH : { "isSuccess": false, "code": 2005, "message":"비밀번호는 7~15자리를 입력해주세요." },
+    SIGNUP_NAME_EMPTY : { "isSuccess": false, "code": 2006, "message":"닉네임을 입력 해주세요." },
+    SIGNUP_NAME_LENGTH : { "isSuccess": false,"code": 2007,"message":"닉네임은 최대 20자리를 입력해주세요." },
+    SIGNUP_PHONE_EMPTY : {"isSuccess": false,"code": 2008,"message":"닉네임은 최대 20자리를 입력해주세요." },
+    SIGNUP_PHONE_LENGTH : {"isSuccess": false,"code": 2009,"message":"닉네임은 최대 20자리를 입력해주세요."},
+    
+    SIGNIN_EMAIL_EMPTY : { "isSuccess": false, "code": 2010, "message":"이메일을 입력해주세요" },
+    SIGNIN_EMAIL_LENGTH : { "isSuccess": false, "code": 2011, "message":"이메일은 30자리 미만으로 입력해주세요." },
+    SIGNIN_EMAIL_ERROR_TYPE : { "isSuccess": false, "code": 2012, "message":"이메일을 형식을 정확하게 입력해주세요." },
+    SIGNIN_PASSWORD_EMPTY : { "isSuccess": false, "code": 2013, "message": "비밀번호를 입력 해주세요." },
+/// 
     USER_USERID_EMPTY : { "isSuccess": false, "code": 2012, "message": "userId를 입력해주세요." },
     USER_USERID_NOT_EXIST : { "isSuccess": false, "code": 2013, "message": "해당 회원이 존재하지 않습니다." },
 
@@ -44,6 +46,16 @@ module.exports = {
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},
+
+
+
+    BOOKCASE_NAME_EMPTY : { "isSuccess": false, "code": 5000, "message": "책장명을 입력하세요." },
+    BOOKCASE_NAME_NOT_MATCH : { "isSuccess": false, "code": 5001, "message": "책장명이 다릅니다." },
  
- 
+    ADDRESS_ID_EMPTY :  { "isSuccess": false, "code": 6000, "message": "주소 ID를 입력하세요." },
+    ADDRESS_EMPTY :  { "isSuccess": false, "code": 6001, "message": "주소를  입력하세요." },
+    ADDRESS_DETAIL_EMPTY:  { "isSuccess": false, "code": 6002, "message": "상세주소를 입력하세요." },
+    ADDRESS_LATITUDE_EMPTY :  { "isSuccess": false, "code": 6003, "message": "위도를 입력하세요." },
+    ADDRESS_LONGTITUDE_EMPTY  :  { "isSuccess": false, "code": 6004, "message": "경도를 입력하세요." },
+    ADDRESS_MAIN_EMPTY:  { "isSuccess": false, "code": 6005, "message": "메인주소 여부를 입력하세요." },
 }
