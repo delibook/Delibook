@@ -41,3 +41,25 @@ const {emit} = require("nodemon");
 
     return res.send(response(baseResponse.SUCCESS, patchAddressResult));
 };
+
+/**
+ * API No. 8
+ * API Name : 내 주소 지정 API
+ * [POST] /delibook/address
+ */
+exports.postAddress = async function (req, res) {
+
+   const userId = req.query.userId;
+   const {address, detailAddress, latitude, longitude} = req.body;
+
+   if(!address)
+      return res.send(response(baseResponse.ADDRESS_EMPTY))
+   else if(!latitude)
+      return res.send(response(baseResponse.LATITUDE_EMPTY))
+   else if(!longitude)
+      return res.send(response(baseResponse.LONGITUDE_EMPTY))
+
+   const postAddressResult = await addressService.postAddress(userId, address, detailAddress, latitude, longitude);
+
+   return res.send(postAddressResult);
+};

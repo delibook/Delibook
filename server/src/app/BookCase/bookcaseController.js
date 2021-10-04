@@ -1,6 +1,6 @@
 const jwtMiddleware = require("../../../config/jwtMiddleware");
-const bookcaseProvider = require("../../app/BookCase/bookcaseProvider");
-const bookcaseService = require("../../app/BookCase/bookcaseService");
+const bookcaseProvider = require("./bookcaseProvider");
+const bookcaseService = require("./bookcaseService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 

@@ -29,3 +29,17 @@ exports.ServicePatchAddress = async function (userId, addressId,address, detailA
         return errResponse(baseResponse.DB_ERROR);
     }
 }
+
+exports.postAddress = async function (userId, address, detailAddress, latitude, longitude) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const postAddressInfoResult = await addressDao.postAddressInfo(connection, userId, address, detailAddress, latitude, longitude)
+        connection.release();
+
+        return response(baseResponse.SUCCESS);
+
+    } catch (err) {
+        logger.error(`App - postAddress Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}

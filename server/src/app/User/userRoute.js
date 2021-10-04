@@ -8,8 +8,8 @@ module.exports = function(app){
     // 1. 유저 생성 (회원가입) API
     app.post('/delibook/users', user.postUsers);
 
-    // 2. 유저 조회 API (+ 검색)
-    app.get('/delibook/users',user.getUsers); 
+    // 2. 마이페이지(책장) 조회 API(+ 책장별 조회)
+    app.get('/delibook/user/my-page',user.getMyPage);
 
     // 3. 특정 유저 조회 API
     app.get('/app/users/:userId', user.getUserById);
@@ -19,8 +19,8 @@ module.exports = function(app){
     // 로그인 하기 API (JWT 생성)
     app.post('/delibook/login', user.login);
 
-    // 회원 정보 수정 API (JWT 검증 및 Validation - 메소드 체이닝 방식으로 jwtMiddleware 사용)
-    app.patch('/delibook/users/:userId', jwtMiddleware, user.patchUsers)
+    // 6. 이용내역 조회 API
+    app.get('/delibook/user/usage', user.getUsages);
 
 
 

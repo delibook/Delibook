@@ -4,7 +4,6 @@ module.exports = function(app){
 
     app.patch('/delibook/address/:addressId',jwtMiddleware, address.patchAddress);
 
-
-
-
+    // 10. 내 주소 지정 API
+    app.post('/delibook/address', address.postAddress);
 };

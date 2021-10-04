@@ -60,26 +60,23 @@ exports.postUsers = async function (req, res) {
 
 /**
  * API No. 2
- * API Name : 유저 조회 API (+ 이메일로 검색 조회)
- * [GET] /app/users
+ * API Name : 마이페이지 조회 API
+ * [GET] /delibook/user/my-page
  */
-exports.getUsers = async function (req, res) {
+exports.getMyPage = async function (req, res) {
 
-    /**
-     * Query String: email
-     */
-    const email = req.query.email;
+    const userId = req.query.userId;
+    const caseId = req.query.caseId;
+    let myCaseResult;
 
-    if (!email) {
-        // 유저 전체 조회
-        const userListResult = await userProvider.retrieveUserList();
-        return res.send(response(baseResponse.SUCCESS, userListResult));
-    } else {
-        // 유저 검색 조회
-        const userListByEmail = await userProvider.retrieveUserList(email);
-        return res.send(response(baseResponse.SUCCESS, userListByEmail));
-    }
+    if(caseId == null)
+        myCaseResult = await userProvider.getMyCases(userId);
+    else
+        myCaseResult = await userProvider.getMyCase(userId, caseId);
+
+    return res.send(myCaseResult);
 };
+
 
 /**
  * API No. 3
@@ -159,6 +156,22 @@ exports.patchUsers = async function (req, res) {
         return res.send(editUserInfo);
     }
 };
+
+/**
+ * API No. 6
+ * API Name : 이용내역 전체 조회 API
+ * [GET] /delibook/user/usage
+ */
+exports.getUsages = async function (req, res) {
+
+    const userId = req.query.userId;
+    const type = req.query.type         // null : 전체내역, 1 : 대출내역, 2 : 반납내역
+
+    const usagesResult = await userProvider.getUsagesResult(userId, type);
+
+    return res.send(usagesResult);
+};
+
 
 
 

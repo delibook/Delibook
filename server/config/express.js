@@ -21,6 +21,7 @@ module.exports = function () {
     require('../src/app/User/userRoute')(app);
     require('../src/app/BookCase/bookcaseRoute')(app);
     require('../src/app/Address/addressRoute')(app);
+    require('../src/app/Library/libraryRoute')(app);
 
     return app;
 };
