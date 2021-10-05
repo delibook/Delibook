@@ -5,6 +5,7 @@ const color = {
   grey_1: '#a6a6a6',
   red: '#e84118',
   blue: '#3679fe',
+  skyblue: '#C2DEEB',
 };
 
 export const theme = {
