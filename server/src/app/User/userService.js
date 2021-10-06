@@ -128,7 +128,7 @@ exports.patchPassword = async function (userId, password, modifyPassword, checkP
         return response(baseResponse.SUCCESS);
 
     } catch (err) {
-        logger.error(`App - createUser Service error\n: ${err.message}`);
+        logger.error(`App - patchPassword Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 };
