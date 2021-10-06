@@ -11,4 +11,20 @@ const color = {
 export const theme = {
   background: color.white,
   text: color.black,
+  errorText: color.red,
+
+  imageBackground: color.grey_0,
+
+  label: color.grey_1,
+  inputPlaceholder: color.grey_1,
+  inputBorder: color.grey_1,
+
+  buttonBackground: color.blue,
+  buttonTitle: color.white,
+  buttonUnfilledTitle: color.blue,
+
+  headerTintColor: color.black,
+
+  spinnerBackground: color.black,
+  spinnerIndicator: color.white,
 };
