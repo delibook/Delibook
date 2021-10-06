@@ -2,6 +2,7 @@ const jwtMiddleware = require("../../../config/jwtMiddleware");
 const userProvider = require("../../app/User/userProvider");
 const userService = require("../../app/User/userService");
 const baseResponse = require("../../../config/baseResponseStatus");
+const baseResponse_j = require("../../../config/baseResponseStatus_j");
 const {response, errResponse} = require("../../../config/response");
 
 const regexEmail = require("regex-email");
@@ -77,31 +78,10 @@ exports.getMyPage = async function (req, res) {
     return res.send(myCaseResult);
 };
 
-
 /**
  * API No. 3
- * API Name : 특정 유저 조회 API
- * [GET] /app/users/{userId}
- */
-exports.getUserById = async function (req, res) {
-
-    /**
-     * Path Variable: userId
-     */
-    const userId = req.params.userId;
-
-    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
-
-    const userByUserId = await userProvider.retrieveUser(userId);
-    return res.send(response(baseResponse.SUCCESS, userByUserId));
-};
-
-
-// TODO: After 로그인 인증 방법 (JWT)
-/**
- * API No. 4
  * API Name : 로그인 API
- * [POST] /app/login
+ * [POST] /delibook/user/login
  * body : email, passsword
  */
 exports.login = async function (req, res) {
@@ -130,31 +110,31 @@ exports.login = async function (req, res) {
     return res.send(signInResponse);
 };
 
-
 /**
- * API No. 5
- * API Name : 회원 정보 수정 API + JWT + Validation
- * [PATCH] /app/users/:userId
- * path variable : userId
- * body : nickname
+ * API No. 4
+ * API Name : 비밀번호 변경 API
+ * [POST] /delibook/user/password-modify
  */
-exports.patchUsers = async function (req, res) {
+ exports.patchPassword = async function (req, res) {
 
-    // jwt - userId, path variable :userId
+    const userId = req.query.userId;
+    const {password, modifyPassword, checkPassword} = req.body;
 
-    const userIdFromJWT = req.verifiedToken.userId
+    //빈 값 체크
+    if(!password) 
+        return res.send(response(baseResponse_j.USER_PASSWORD_EMPTY));
+    else if(!modifyPassword)
+        return res.send(response(baseResponse_j.MODIFY_PASSWORD_EMPTY));
+    else if(!checkPassword)
+        return res.send(response(baseResponse_j.CHECK_PASSWORD_EMPTY));
 
-    const userId = req.params.userId;
-    const nickname = req.body.nickname;
+    //한번 더 확인할 비밀번호가 같은지 확인
+    else if(modifyPassword != checkPassword)
+        return res.send(response(baseResponse_j.CHECK_PASSWORD_NOT_MATCH));
 
-    if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
-    } else {
-        if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
+    const patchPasswordResult= await userService.patchPassword(userId, password, modifyPassword, checkPassword);
 
-        const editUserInfo = await userService.editUser(userId, nickname)
-        return res.send(editUserInfo);
-    }
+    return res.send(patchPasswordResult);
 };
 
 /**
@@ -171,17 +151,6 @@ exports.getUsages = async function (req, res) {
 
     return res.send(usagesResult);
 };
-
-
-
-
-
-
-
-
-
-
-
 
 /** JWT 토큰 검증 API
  * [GET] /app/auto-login

@@ -4,6 +4,7 @@ const secret_config = require("../../../config/secret");
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
 const baseResponse = require("../../../config/baseResponseStatus");
+const baseResponse_j = require("../../../config/baseResponseStatus_j");
 const {response} = require("../../../config/response");
 const {errResponse} = require("../../../config/response");
 
@@ -11,7 +12,6 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const {connect} = require("http2");
 
-// Service: Create, Update, Delete 비즈니스 로직 처리
 
 exports.createUser = async function (email, password, name,phone) {
     try {
@@ -96,17 +96,39 @@ exports.postSignIn = async function (email, password) {
     }
 };
 
-exports.editUser = async function (id, nickname) {
+//비밀번호 변경
+exports.patchPassword = async function (userId, password, modifyPassword, checkPassword) {
     try {
-        console.log(id)
-        const connection = await pool.getConnection(async (conn) => conn);
-        const editUserResult = await userDao.updateUserInfo(connection, id, nickname)
-        connection.release();
+        // 비밀번호 암호화
+        const hashedPassword = await crypto
+        .createHash("sha512")
+        .update(password)
+        .digest("hex");
 
+        const connection = await pool.getConnection(async (conn) => conn);
+
+        //유저 비밀번호가 맞는지 확인
+        const checkUserPasswordResult = await userDao.checkUserPassword(connection, userId);
+        if(checkUserPasswordResult[0].password != hashedPassword) {
+            return response(baseResponse_j.PASSWORD_NOT_MATCH);
+        }
+
+        //맞을 경우 변경하려는 비밀번호가 다른지 확인
+        else if(password == modifyPassword)
+            return response(baseResponse_j.MODIFY_PASSWORD_EQUAL);
+
+        // 변경할 비밀번호 암호화
+        const hashedModifyPassword = await crypto
+        .createHash("sha512")
+        .update(modifyPassword)
+        .digest("hex");
+
+        const patchPasswordInfoResult = await userDao.patchPasswordInfo(connection, userId, hashedModifyPassword);
+        connection.release();
         return response(baseResponse.SUCCESS);
 
     } catch (err) {
-        logger.error(`App - editUser Service error\n: ${err.message}`);
+        logger.error(`App - createUser Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
-}
+};

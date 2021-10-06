@@ -47,6 +47,13 @@ module.exports = {
     USERID_CASE_NOT_MATCH : { "isSuccess": false, "code": 3007, "message": "해당 유저의 책장이 아닙니다." },
     CASE_NOT_EXIST : { "isSuccess": false, "code": 3008, "message": "해당하는 책장이 없습니다." },
 
+    USER_PASSWORD_EMPTY : { "isSuccess": false, "code": 6001, "message": "기존 비밀번호를 입력해주세요." },
+    MODIFY_PASSWORD_EMPTY : { "isSuccess": false, "code": 6002, "message": "바꿀 비밀번호를 입력해주세요." },
+    CHECK_PASSWORD_EMPTY : { "isSuccess": false, "code": 6003, "message": "바꿀 비밀번호를 한번 더 입력해주세요." },
+    CHECK_PASSWORD_NOT_MATCH : { "isSuccess": false, "code": 6004, "message": "입력한 비밀번호가 다릅니다." },
+    PASSWORD_NOT_MATCH : { "isSuccess": false, "code": 6005, "message": "기존 비밀번호가 일치하지 않습니다." },
+    MODIFY_PASSWORD_EQUAL : { "isSuccess": false, "code": 6006, "message": "기존 비밀번호와 같은 비밀번호로 변경할 수 없습니다." },
+
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},

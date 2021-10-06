@@ -59,15 +59,6 @@ async function selectUserAccount(connection, email) {
   return selectUserAccountRow[0];
 }
 
-async function updateUserInfo(connection, id, nickname) {
-  const updateUserQuery = `
-  UPDATE User
-  SET nickname = ?
-  WHERE id = ?;`;
-  const updateUserRow = await connection.query(updateUserQuery, [nickname, id]);
-  return updateUserRow[0];
-}
-
 // 유저 책장 조회
 async function getCasesList(connection, userId) {
   const getCasesListQuery = `
@@ -153,15 +144,39 @@ async function getUsagesList(connection, userId, condition) {
   return getUsagesListRow;
 }
 
+// 특정 유저 비밀번호 체크
+async function checkUserPassword(connection, userId) {
+  const checkUserPasswordQuery = `
+    select u.password
+    from User u
+    where u.id = ?
+  `
+  const [checkUserPasswordRow] = await connection.query(checkUserPasswordQuery, userId);
+  return checkUserPasswordRow;
+}
+
+// 특정 유저 비밀번호 체크
+async function patchPasswordInfo(connection, userId, hashedModifyPassword) {
+  const patchPasswordInfoQuery = `
+    update User
+    set password = ?
+    where id = ?;
+  `
+  const [patchPasswordInfoRow] = await connection.query(patchPasswordInfoQuery, [hashedModifyPassword, userId]);
+  return patchPasswordInfoRow;
+}
+
+
 module.exports = {
   selectUser,
   selectUserEmail,
   insertUserInfo,
   selectUserPassword,
   selectUserAccount,
-  updateUserInfo,
   getCasesList,
   retrieveCaseList,
   getCaseList,
-  getUsagesList
+  getUsagesList,
+  checkUserPassword,
+  patchPasswordInfo
 };
