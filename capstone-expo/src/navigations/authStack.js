@@ -21,7 +21,11 @@ const AuthStack = () => {
         component={Login}
         options={{ headerBackTitleVisible: false }}
       />
-      <Stack.Screen name="Join" component={Join} />
+      <Stack.Screen
+        name="Join"
+        component={Join}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
