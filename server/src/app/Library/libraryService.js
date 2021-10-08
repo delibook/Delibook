@@ -23,10 +23,15 @@ exports.setLikeLibrary = async function(userId, libraryId) {
         const checkLibraryResult = await libraryDao.checkLibrary(connection, libraryId)
         if(checkLibraryResult.length < 1) 
             return response(baseResponse_j.LIBRARYID_NOT_EXIST);
+
+        // 도서관 찜한 기록이 있는지 확인
+        // 없으면 insert
         const checkLikeStatusResult = await libraryDao.checkLikeStatus(connection, userId, libraryId)
         if(checkLikeStatusResult.length < 1) {
             insertLikeLibraryResult = await libraryDao.insertLikeLibrary(connection, userId, libraryId);
         }
+
+        // 있으면 status확인해서 바꿔주기
         else if(checkLikeStatusResult[0].status == 1) {
             status = 0;
             updateLikeLibraryResult = await libraryDao.updateLikeLibrary(connection, userId, libraryId, status);

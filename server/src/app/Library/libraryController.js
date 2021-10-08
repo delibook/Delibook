@@ -36,3 +36,46 @@ exports.likeLibrary = async function (req, res) {
 
     return res.send(setLikeLibraryResult);
 };
+
+/**
+ * API No. 25
+ * API Name : 도서관별 책 조회 API (+카테고리 선택)
+ * [GET] /delibook/library/:libraryId/book
+ */
+ exports.getLibraryBook = async function (req, res) {
+    const libraryId = req.params.libraryId;
+    const category = req.query.category;
+
+    const getLibraryBookResult = await libraryProvider.getLibraryBook(libraryId, category);
+
+    return res.send(getLibraryBookResult);
+};
+
+/**
+ * API No. 27
+ * API Name : 전체 도서관 조회 API + 거리별 필터
+ * [GET] /delibook/library
+ */
+ exports.getLibrary = async function (req, res) {
+   
+    const userId = req.query.userId;
+    const distance = req.query.distance     //1이면 1km 이내, 2면 2km 이내,' ...
+
+    const getLibraryResult = await libraryProvider.getLibrary(userId, distance);
+
+    return res.send(getLibraryResult);
+};
+
+/**
+ * API No. 28
+ * API Name : 특정 도서관 편의정보 조회 API
+ * [GET] /delibook/library/:libraryId
+ */
+ exports.getLibraryDetail = async function (req, res) {
+   
+    const libraryId = req.params.libraryId;
+
+    const getLibraryDetailResult = await libraryProvider.getLibraryDetail(libraryId);
+
+    return res.send(getLibraryDetailResult);
+};

@@ -88,7 +88,7 @@ exports.login = async function (req, res) {
 
     const {email, password} = req.body;
 
-    // TODO: email, password 형식적 Validation
+    //TODO: email, password 형식적 Validation
     // 빈 값 체크
     if (!email)
         return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
