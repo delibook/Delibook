@@ -26,7 +26,7 @@ Image.defaultProps = {
   rounded: false,
 };
 
-Image.propTypes = {
+Image.PropTypes = {
   uri: PropTypes.string,
   imageStyle: PropTypes.object,
   rounded: PropTypes.bool,
