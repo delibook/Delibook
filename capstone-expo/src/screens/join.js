@@ -111,7 +111,7 @@ const Join = ({ navigation }) => {
                 : require('../../assets/blank-check-box.png')
             }
           ></Image>
-          <Text style={{ paddingLeft: 5, marginTop: 2, fontSize: 20 }}>
+          <Text style={{ paddingLeft: 5, marginTop: 4, fontSize: 18 }}>
             전체동의
           </Text>
         </TouchableOpacity>
@@ -241,12 +241,13 @@ const styles = StyleSheet.create({
   input: {
     marginTop: 10,
     marginBottom: 20,
-    paddingLeft: 10,
     height: 40,
     borderWidth: 1,
-    paddingVertical: 1,
     borderColor: '#b6b6b6',
     borderRadius: 4,
+    color: '#b6b6b6',
+    padding: 16,
+    fontSize: 16,
   },
   header: {
     height: 60,
@@ -256,6 +257,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   Checkbox: {
+    marginTop: 3,
     width: 20,
     height: 20,
     zIndex: 10,
@@ -276,7 +278,7 @@ const styles = StyleSheet.create({
   checkText: {
     paddingLeft: 5,
     paddingRight: 5,
-    marginTop: 2,
+    marginTop: 1,
     fontSize: 18,
   },
   touchable: {
@@ -287,6 +289,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 6,
+    color: '#a6a6a6',
   },
 });
 
