@@ -55,14 +55,18 @@ module.exports = {
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},
 
 
-
+    BOOK_ID_EMPTY :  { "isSuccess": false, "code": 4901, "message": "책 Id 입력하세요." },
     BOOKCASE_NAME_EMPTY : { "isSuccess": false, "code": 5000, "message": "책장명을 입력하세요." },
     BOOKCASE_NAME_NOT_MATCH : { "isSuccess": false, "code": 5001, "message": "책장명이 다릅니다." },
- 
-    ADDRESS_ID_EMPTY :  { "isSuccess": false, "code": 6000, "message": "주소 ID를 입력하세요." },
-    ADDRESS_EMPTY :  { "isSuccess": false, "code": 6001, "message": "주소를  입력하세요." },
-    ADDRESS_DETAIL_EMPTY:  { "isSuccess": false, "code": 6002, "message": "상세주소를 입력하세요." },
-    ADDRESS_LATITUDE_EMPTY :  { "isSuccess": false, "code": 6003, "message": "위도를 입력하세요." },
-    ADDRESS_LONGTITUDE_EMPTY  :  { "isSuccess": false, "code": 6004, "message": "경도를 입력하세요." },
+    BOOCASE_ID_EMPTY : {"isSuccess": false, "code": 5002, "message": "책장Id를 입력하세요." },
+    BOOKCASE_ACTION_TYPE_EMPTY : {"isSuccess": false, "code": 5003, "message": "type을 입력하세요. (insert or drop)" },
+    BOOKCASE_NOT_MATCH: {"isSuccess": false, "code": 5004, "message": "해당유저의 책장이 아닙니다. 책장Id를 확인하세요" },
+    BOOKCASE_BOOK_ALREADY_EXSITS :{"isSuccess": false, "code": 5005, "message": "이미 찜해짐" },
+
+    ADDRESS_ID_EMPTY :  { "isSuccess": false, "code": 5100, "message": "주소 ID를 입력하세요." },
+    ADDRESS_EMPTY :  { "isSuccess": false, "code": 5101, "message": "주소를  입력하세요." },
+    ADDRESS_DETAIL_EMPTY:  { "isSuccess": false, "code": 5102, "message": "상세주소를 입력하세요." },
+    ADDRESS_LATITUDE_EMPTY :  { "isSuccess": false, "code": 5103, "message": "위도를 입력하세요." },
+    ADDRESS_LONGTITUDE_EMPTY  :  { "isSuccess": false, "code": 5104, "message": "경도를 입력하세요." },
     ADDRESS_MAIN_EMPTY:  { "isSuccess": false, "code": 6005, "message": "메인주소 여부를 입력하세요." },
 }
