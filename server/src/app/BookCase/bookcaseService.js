@@ -16,16 +16,18 @@ const {connect} = require("http2");
 exports.bookLike = async function (userId, bookcaseId,bookId,type) {
     try {
         
-        
+        // 책장체크
         const checkBookcase = await bookcaseProvider.checkBookcase(userId,bookcaseId);
         if (checkBookcase.length < 1) 
             return errResponse(baseResponse.BOOKCASE_NOT_MATCH); //5004 해당유저의 책장이 아닙니다. 책장Id를 확인하세요
 
         const connection = await pool.getConnection(async (conn) => conn);
+        // insert인 경우
         if (type=='insert'){
           let checkInsert = await bookcaseDao.checkInsert(connection,bookcaseId,bookId);
           connection.release(); 
-            if (checkInsert.length > 0 )  return errResponse(baseResponse.BOOKCASE_BOOK_ALREADY_EXSITS); //
+            // 책장에 책이 이미 있는지 체크 
+            if (checkInsert.length > 0 )  return errResponse(baseResponse.BOOKCASE_BOOK_ALREADY_EXISTS); //5005
 
           const insertBooktoCase = await bookcaseDao.Like(connection,bookcaseId,bookId);
           connection.release(); 
@@ -36,7 +38,14 @@ exports.bookLike = async function (userId, bookcaseId,bookId,type) {
           return response(baseResponse.SUCCESS,{'책장 ID': checkInsert[0].bookcaseId,'추가된 책': checkInsert[0].bookId});
         }
         else 
-            {const dropBooktoCase = await bookcaseDao.unLike(connection,bookcaseId,bookId);
+        // 책장에서 책 빼기 
+            {
+                let checkInsert = await bookcaseDao.checkInsert(connection,bookcaseId,bookId);
+                connection.release(); 
+            // 책장에 책이 존재하는지 체크
+            if (checkInsert.length <= 0 )  return errResponse(baseResponse.BOOKCASE_BOOK_NOT_EXISTS); //5006
+
+                const dropBooktoCase = await bookcaseDao.unLike(connection,bookcaseId,bookId);
                 connection.release(); 
 
                 let checkDrop = await bookcaseDao.checkDrop(connection,bookcaseId,bookId);
