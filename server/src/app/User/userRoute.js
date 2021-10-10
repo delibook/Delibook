@@ -16,5 +16,11 @@ module.exports = function(app){
 
     // 6. 이용내역 조회 API
     app.get('/delibook/user/usage', user.getUsages);
+
+    // 34. 휴대폰 인증 API
+    app.post('/delibook/user/phone/auth', user.verifyPhoneNumber);
+
+    // 35. 이메일 인증 API
+    app.post('/delibook/user/email/auth', user.verifyEmail)
 };
 

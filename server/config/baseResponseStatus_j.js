@@ -57,6 +57,11 @@ module.exports = {
     LIBRARYID_NOT_EXIST : { "isSuccess": false, "code": 6007, "message": "존재하지 않는 도서관입니다." },
     BOOKID_NOT_EXIST : { "isSuccess": false, "code": 6008, "message": "존재하지 않는 책입니다." },
 
+    PHONE_NUMBER_EMPTY : { "isSuccess": false, "code": 6009, "message": "핸드폰 번호를 입력해주세요." },
+    PHONE_NUMBER_ERROR_TYPE : { "isSuccess": false, "code": 6010, "message": "핸드폰 번호를 제대로 입력해주세요." },
+    SMS_SEND_ERROR : { "isSuccess": false, "code": 6011, "message": "메세지를 보내는 데 실패했습니다." },
+    EMAIL_SEND_ERROR : { "isSuccess": false, "code": 6012, "message": "이메일을 보내는 데 실패했습니다." },
+
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},
