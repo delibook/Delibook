@@ -54,7 +54,8 @@ module.exports = {
     PASSWORD_NOT_MATCH : { "isSuccess": false, "code": 6005, "message": "기존 비밀번호가 일치하지 않습니다." },
     MODIFY_PASSWORD_EQUAL : { "isSuccess": false, "code": 6006, "message": "기존 비밀번호와 같은 비밀번호로 변경할 수 없습니다." },
 
-    LIBRARYID_NOT_EXIST : { "isSuccess": false, "code": 6007, "message": "존재하지 않는 도서관 ID입니다." },
+    LIBRARYID_NOT_EXIST : { "isSuccess": false, "code": 6007, "message": "존재하지 않는 도서관입니다." },
+    BOOKID_NOT_EXIST : { "isSuccess": false, "code": 6008, "message": "존재하지 않는 책입니다." },
 
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
