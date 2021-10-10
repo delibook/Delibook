@@ -6,6 +6,7 @@ const {response, errResponse} = require("../../../config/response");
 
 const regexEmail = require("regex-email");
 const {emit} = require("nodemon");
+const { query } = require("winston");
 
 
 /**
@@ -25,4 +26,32 @@ const {emit} = require("nodemon");
 
     const booklistInbookcase = await bookcaseProvider.bookList(userId, bookcaseName);
     return res.send(response(baseResponse.SUCCESS, booklistInbookcase));
+};
+
+/**
+ * API No. 23
+ * API Name : 마이책장에 책 넣기/ 빼기  API
+ * [GET] /delibook/bookcase/:bookcaseId/:bookId/like 
+ */
+ exports.insertBook = async function (req, res) {
+
+    /**
+     * paramiter: bookcaseId, bookId, 
+     * Path variable : type (insert, drop)  
+     */
+    const bookcaseId = req.params.bookcaseId;
+    const bookId = req.params.bookId ;
+    const userId= req.verifiedToken.userId;
+    const type = req.query.type; 
+
+    if (!bookcaseId) return res.send(errResponse(baseResponse.BOOKCASE_ID_EMPTY)); //5002, 책장ID을 입력하세요.
+    if (!bookId) return res.send(errResponse(baseResponse.BOOK_ID_EMPTY));//4901 책 id 입력
+    if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ; 
+    if (!type) return res.send(errResponse(baseResponse. BOOKCASE_ACTION_TYPE_EMPTY)) ; //5003
+
+    // 해당 책장이 없을때, 해당 책이 없을때 (의미적벨리데이션..)
+    // 중복체크....ㅅㅂ
+
+    const bookToBookcase = await bookcaseService.bookLike(userId, bookcaseId,bookId,type);
+    return res.send(bookToBookcase);
 };

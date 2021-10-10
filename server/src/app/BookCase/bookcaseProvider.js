@@ -15,3 +15,14 @@ exports.bookList = async function (userId, bookcaseName) {
     return bookListResult;
   
 };
+
+exports.checkBookcase = async function (userId, bookcaseId) {
+ 
+    
+    const connection = await pool.getConnection(async (conn) => conn);
+    const bookListResult = await bookcaseDao.checkBookCase(connection, userId,bookcaseId);
+    connection.release();
+
+    return bookListResult;
+  
+};
