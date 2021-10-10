@@ -9,7 +9,7 @@ const {emit} = require("nodemon");
 
 
 /**
- * API No. 7
+ * API No. 10
  * API Name : 주소 수정 API
  * [GET] /delibook/address/:addressId
  */
@@ -26,7 +26,7 @@ const {emit} = require("nodemon");
     const {address, detailAddress, latitude, longitude, isMain} = req.body;
     
 
-    if (!addressId) return res.send(errResponse(baseResponse.ADDRESS_ID_EMPTY)); //6000, 수정할 주소의 id를 입력하세요.
+    if (!addressId) return res.send(errResponse(baseResponse.ADDRESS_ID_EMPTY)); //5100,주소 ID를 입력하세요.
     if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY));
 
     if(!address) return res.send(errResponse(baseResponse.ADDRESS_EMPTY)); //6001
@@ -43,7 +43,7 @@ const {emit} = require("nodemon");
 };
 
 /**
- * API No. 8
+ * API No. 11
  * API Name : 내 주소 지정 API
  * [POST] /delibook/address
  */
@@ -55,11 +55,79 @@ exports.postAddress = async function (req, res) {
    if(!address)
       return res.send(response(baseResponse.ADDRESS_EMPTY))
    else if(!latitude)
-      return res.send(response(baseResponse.LATITUDE_EMPTY))
+      return res.send(response(baseResponse.ADDRESS_LATITUDE_EMPTY))
    else if(!longitude)
-      return res.send(response(baseResponse.LONGITUDE_EMPTY))
+      return res.send(response(baseResponse.ADDRESS_LONGITUDE_EMPTY))
 
    const postAddressResult = await addressService.postAddress(userId, address, detailAddress, latitude, longitude);
 
    return res.send(postAddressResult);
 };
+
+/**
+ * API No. 12
+ * API Name : 내 주소 조회 API
+ * [GET] /delibook/address
+ */
+exports.getAddress = async function(req, res) 
+{
+
+    /**
+     * header : x-access-token
+     */
+
+    userId= req.verifiedToken.userId;
+    if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY));
+
+    const getAddressResult = await addressProvider.getAddress(userId) ;
+    return res.send(response(baseResponse.SUCCESS, getAddressResult));
+
+};
+
+/**
+ * API No. 13
+ * API Name : 특정 주소 삭제
+ * [PATCH] /delibook/address/delete/:addressId
+ */
+ exports.deleteAddress = async function(req, res) 
+ {
+ 
+     /**
+      * paramiter: addressId
+      * header : x-access-token
+      */
+   
+     addressId= req.params.addressId;
+     userId= req.verifiedToken.userId;
+     if (!userId) return res.send(errResponse(baseResponse.ADDRESS_ID_EMPTY)); 
+     if (!addressId) return res.send(errResponse(baseResponse.TOKEN_EMPTY));
+ 
+     const deleteAddressResult = await addressService.deleteAddress(userId,addressId) ;
+     return res.send(deleteAddressResult);
+ 
+ };
+
+/**
+ * API No. 14
+ * API Name : 대표주소 설정
+ * [PATCH] /delibook/address/main/:addressId
+ */
+ exports.setMainAddress = async function(req, res) 
+ {
+ 
+     /**
+      * paramiter: addressId
+      * header : x-access-token
+      */
+   
+     addressId= req.params.addressId;
+     userId= req.verifiedToken.userId;
+     if (!userId) return res.send(errResponse(baseResponse.ADDRESS_ID_EMPTY)); 
+     if (!addressId) return res.send(errResponse(baseResponse.TOKEN_EMPTY));
+ 
+     const setMainResult = await addressService.setMainAddress(userId,addressId) ;
+     return res.send(setMainResult);
+ 
+ };
+
+ 

@@ -72,6 +72,9 @@ module.exports = {
     ADDRESS_LATITUDE_EMPTY :  { "isSuccess": false, "code": 5103, "message": "위도를 입력하세요." },
     ADDRESS_LONGTITUDE_EMPTY  :  { "isSuccess": false, "code": 5104, "message": "경도를 입력하세요." },
     ADDRESS_MAIN_EMPTY:  { "isSuccess": false, "code": 5105, "message": "메인주소 여부를 입력하세요." },
+    ADDRESS_USER_NOT_MATCH:  { "isSuccess": false, "code": 5106, "message": "주소아이디와 유저아이디가 맞지 않습니다. 확인해주세요" },
+    ADDRESS_DELETE_SUCCESS:  { "isSuccess": false, "code": 5107, "message": "주소삭제 성공" },
+    ADDRESS_ALREADY_DELETED :  { "isSuccess": false, "code": 5108, "message": "이미삭제된 주소입니다." },
 
     CART_ID_EMPTY :  { "isSuccess": false, "code": 5200, "message": "카트아이디 입력필요." },
     CART_ACTION_TYPE_EMPTY : {"isSuccess": false, "code": 5201, "message": "type을 입력하세요. (plus or minus)" },
