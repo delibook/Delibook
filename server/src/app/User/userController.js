@@ -174,12 +174,19 @@ exports.check = async function (req, res) {
  * [POST] /delibook/user/phone/auth
  */
 exports.verifyPhoneNumber = async function (req, res) {
-    const phoneNumber = req.body.phoneNumber;
+    const {name, phoneNumber} = req.body;
 
-    if (!phoneNumber)
-        res.send(errResponse(baseResponse_j.PHONE_NUMBER_EMPTY));
-    if(phoneNumber.length != 11) {
-        res.send(errResponse(baseResponse_j.PHONE_NUMBER_ERROR_TYPE));
+    if(!name)
+        return res.send(errResponse(baseResponse_j.USER_NAME_EMPTY));
+    else if(!phoneNumber)
+        return res.send(errResponse(baseResponse_j.PHONE_NUMBER_EMPTY));
+    else if(phoneNumber.length != 11) {
+        return res.send(errResponse(baseResponse_j.PHONE_NUMBER_ERROR_TYPE));
+    }
+
+    const checkUserResult = await userProvider.checkUser(name, phoneNumber);
+    if(checkUserResult.length < 1) {
+        return res.send(response(baseResponse_j.USER_PHONE_NOT_MATCH))
     }
 
     Cache.del(phoneNumber);   //인증번호 다시 요청할 경우를 위해
@@ -267,10 +274,45 @@ exports.verifyPhoneNumber = async function (req, res) {
     });
 };
 
+<<<<<<< HEAD
 
 exports.signOutUser = async function (req,res) {
     
     const userId= req.verifiedToken.userId;
     if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
+=======
+/**
+ * API No. 37
+ * API Name : 아이디 찾기 API
+ * [GET] /delibook/user/findId-form
+ */
+ exports.findId = async function (req, res) {
+
+    const name = req.query.name;
+    const phoneNumber = req.query.phoneNumber;
+    const verifyCode = req.query.verifyCode;
+
+    let getIdResult;
+
+    if(!name)
+        return res.send(response(baseResponse_j.USER_NAME_EMPTY));
+    if(!phoneNumber)
+        return res.send(response(baseResponse_j.USER_PHONE_NUMBER_EMPTY));
+    if(!verifyCode)
+        return res.send(response(baseResponse_j.VERIFY_CODE_EMPTY));
+    
+    const CacheData = Cache.get(phoneNumber);
+
+    if (!CacheData) {
+         return res.send(errResponse(baseResponse_j.FAIL_VERIFY));
+    } else if (CacheData !== verifyCode) {
+         return res.send(errResponse(baseResponse_j.VERIFY_NUMBER_NOT_MATCH));
+    }
+    else {
+        Cache.del(phoneNumber);
+        getIdResult = await userProvider.getId(name, phoneNumber);
+        return res.send(response(baseResponse.SUCCESS, getIdResult));
+    }
+>>>>>>> a94909565cdcae78f3d51434400a1a026353e5ca
 
 };

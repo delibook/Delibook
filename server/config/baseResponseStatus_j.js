@@ -62,6 +62,13 @@ module.exports = {
     SMS_SEND_ERROR : { "isSuccess": false, "code": 6011, "message": "메세지를 보내는 데 실패했습니다." },
     EMAIL_SEND_ERROR : { "isSuccess": false, "code": 6012, "message": "이메일을 보내는 데 실패했습니다." },
 
+    USER_NAME_EMPTY : { "isSuccess": false, "code": 6013, "message": "이름을 입력해주세요." },
+    USER_PHONE_NUMBER_EMPTY : { "isSuccess": false, "code": 6014, "message": "휴대폰번호를 입력해주세요." },
+    VERIFY_CODE_EMPTY : { "isSuccess": false, "code": 6015, "message": "인증 코드를 입력해주세요." },
+    FAIL_VERIFY : { "isSuccess": false, "code": 6016, "message": "인증에 실패했습니다." },
+    VERIFY_NUMBER_NOT_MATCH : { "isSuccess": false, "code": 6017, "message": "인증코드가 다릅니다." },
+    USER_PHONE_NOT_MATCH : { "isSuccess": false, "code": 6018, "message": "정보가 일치하는 유저가 없습니다." },
+
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},
