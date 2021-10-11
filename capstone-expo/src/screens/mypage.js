@@ -42,7 +42,6 @@ const Mypage = ({ navigation }) => {
         <Text
           style={{
             fontSize: 25,
-            fontFamily: 'NanumB',
             fontWeight: '500',
           }}
         >
@@ -51,7 +50,6 @@ const Mypage = ({ navigation }) => {
         <Text
           style={{
             fontSize: 20,
-            fontFamily: 'NanumB',
             top: 3,
             fontWeight: '500',
           }}
