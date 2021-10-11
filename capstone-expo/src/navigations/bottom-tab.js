@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/home';
 import Join from '../screens/join';
-import Login from '../screens/login';
+import Mypage from '../screens/mypage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TabIcon = ({ name, size, color }) => {
@@ -37,7 +37,7 @@ const TabNavigation = () => {
       />
       <Tab.Screen
         name="마이페이지"
-        component={Login}
+        component={Mypage}
         options={{
           tabBarIcon: (props) => TabIcon({ ...props, name: 'account' }),
         }}
