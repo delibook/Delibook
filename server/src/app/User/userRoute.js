@@ -21,6 +21,9 @@ module.exports = function(app){
     app.post('/delibook/user/phone/auth', user.verifyPhoneNumber);
 
     // 35. 이메일 인증 API
-    app.post('/delibook/user/email/auth', user.verifyEmail)
+    app.post('/delibook/user/email/auth', user.verifyEmail);
+
+    // 37. 아이디 찾기 API
+    app.get('/delibook/user/findId-form', user.findId);
 };
 
