@@ -1,4 +1,4 @@
 import Login from './login';
 import Join from './join';
-
-export { Login, Join };
+import Mypage from './mypage';
+export { Login, Join, Mypage };
