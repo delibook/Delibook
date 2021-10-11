@@ -18,16 +18,16 @@ import {
   MaterialIcons,
   AntDesign,
 } from '@expo/vector-icons';
-
+/*
 const getFonts = () => {
   return Font.loadAsync({
     nanumB: require('../../assets/fonts/NanumSquareB.ttf'),
     nanumR: require('../../assets/fonts/NanumSquareR.ttf'),
   });
 };
-
+*/
 const Mypage = ({ navigation }) => {
-  getFonts();
+  //getFonts();
   const _handleLogoutButtonPress = async () => {
     try {
       spinner.start();
