@@ -266,3 +266,11 @@ exports.verifyPhoneNumber = async function (req, res) {
         smtpTransport.close();
     });
 };
+
+
+exports.signOutUser = async function (req,res) {
+    
+    const userId= req.verifiedToken.userId;
+    if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
+
+};
