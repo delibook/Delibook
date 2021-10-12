@@ -274,13 +274,6 @@ exports.verifyPhoneNumber = async function (req, res) {
     });
 };
 
-<<<<<<< HEAD
-
-exports.signOutUser = async function (req,res) {
-    
-    const userId= req.verifiedToken.userId;
-    if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
-=======
 /**
  * API No. 37
  * API Name : 아이디 찾기 API
@@ -313,6 +306,5 @@ exports.signOutUser = async function (req,res) {
         getIdResult = await userProvider.getId(name, phoneNumber);
         return res.send(response(baseResponse.SUCCESS, getIdResult));
     }
->>>>>>> a94909565cdcae78f3d51434400a1a026353e5ca
 
 };
