@@ -54,7 +54,20 @@ module.exports = {
     PASSWORD_NOT_MATCH : { "isSuccess": false, "code": 6005, "message": "기존 비밀번호가 일치하지 않습니다." },
     MODIFY_PASSWORD_EQUAL : { "isSuccess": false, "code": 6006, "message": "기존 비밀번호와 같은 비밀번호로 변경할 수 없습니다." },
 
-    LIBRARYID_NOT_EXIST : { "isSuccess": false, "code": 6007, "message": "존재하지 않는 도서관 ID입니다." },
+    LIBRARYID_NOT_EXIST : { "isSuccess": false, "code": 6007, "message": "존재하지 않는 도서관입니다." },
+    BOOKID_NOT_EXIST : { "isSuccess": false, "code": 6008, "message": "존재하지 않는 책입니다." },
+
+    PHONE_NUMBER_EMPTY : { "isSuccess": false, "code": 6009, "message": "핸드폰 번호를 입력해주세요." },
+    PHONE_NUMBER_ERROR_TYPE : { "isSuccess": false, "code": 6010, "message": "핸드폰 번호를 제대로 입력해주세요." },
+    SMS_SEND_ERROR : { "isSuccess": false, "code": 6011, "message": "메세지를 보내는 데 실패했습니다." },
+    EMAIL_SEND_ERROR : { "isSuccess": false, "code": 6012, "message": "이메일을 보내는 데 실패했습니다." },
+
+    USER_NAME_EMPTY : { "isSuccess": false, "code": 6013, "message": "이름을 입력해주세요." },
+    USER_PHONE_NUMBER_EMPTY : { "isSuccess": false, "code": 6014, "message": "휴대폰번호를 입력해주세요." },
+    VERIFY_CODE_EMPTY : { "isSuccess": false, "code": 6015, "message": "인증 코드를 입력해주세요." },
+    FAIL_VERIFY : { "isSuccess": false, "code": 6016, "message": "인증에 실패했습니다." },
+    VERIFY_NUMBER_NOT_MATCH : { "isSuccess": false, "code": 6017, "message": "인증코드가 다릅니다." },
+    USER_PHONE_NOT_MATCH : { "isSuccess": false, "code": 6018, "message": "정보가 일치하는 유저가 없습니다." },
 
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},

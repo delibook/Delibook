@@ -1,26 +1,39 @@
-
-// 내 책장의 책 목록 조회
-async function selectBookListInBookCase(connection,userId,bookcaseName)
+// 특정 책 조회
+async function getBookInfo(connection,bookId)
 {
-    const bookListQuery = `
-        select myBookList.name as BookListName,l.name as libraryName, c.name as category , book.name as bookTitle,
-        book.status as bookStatus, book.imageURL thumbnail , l.tip as loanTip
-        
-        from BookInList as bookInList join  Book  as book on bookInList.bookId = book.id
-        join MyBookList as myBookList on  myBookList.id = bookInList.listId
-        join User as user on user.id= myBookList.userId
-        join Library as l  on l.id= book.libraryId
-        join BookCategory as c on c.id=book.categoryId
-    
-        where userId= ? AND myBookList.name like ?
+    const getBookInfoQuery = `
+      select date_format(b.createdAt, '%Y-%m-%d') createdAt,
+        b.imageURL, b.name, b.author, b.publisher, l.id libraryId, l.name, bc.name category, b.quantity
+      from Book b
+      join Library l on l.id = b.libraryId
+      join BookCategory bc on bc.id = b.categoryId
+      where b.status = 0
+      and b.id = ?
 `;
-    const bookListRow = await connection.query(bookListQuery,[userId,bookcaseName]);
-    return bookListRow[0];
+    const [getBookInfoRow] = await connection.query(getBookInfoQuery, bookId);
+    return getBookInfoRow;
+}
+
+
+// 전체 책 목록 조회
+async function getBooksInfo(connection,category)
+{
+    const getBooksInfoQuery = `
+    select b.id, b.imageURL, b.name, b.author, b.publisher, l.id libraryId, l.name
+    from Book b
+    join Library l on l.id = b.libraryId
+    join BookCategory bc on bc.id = b.categoryId
+    where b.status = 0
+    `+condition+`
+`;
+    const [getBooksInfoRow] = await connection.query(getBooksInfoQuery);
+    return getBooksInfoRow;
 }
 
   
   
   module.exports = {
-    selectBookListInBookCase,
+    getBookInfo,
+    getBooksInfo
   };
   

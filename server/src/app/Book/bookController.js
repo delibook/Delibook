@@ -8,22 +8,26 @@ const {response, errResponse} = require("../../../config/response");
 const regexEmail = require("regex-email");
 const {emit} = require("nodemon");
 
+/**
+ * API No. 42
+ * API Name : 특정 책 정보  API
+ * [GET] /delibook/book/:bookId
+ */
+ exports.getBook = async function (req, res) {
+     bookId = req.params.bookId;
+
+    const bookResult = await bookProvider.getBook(bookId);
+    return res.send(bookResult);
+};
 
 /**
- * API No. 7
- * API Name : 특정 책장의 책 조회 API
- * [GET] /delibook/bookcase/books
+ * API No. 43
+ * API Name : 책목록 조회(메인에서 대여버튼 눌렀을 때) API
+ * [GET] /delibook/book
  */
- exports.getBookList = async function (req, res) {
+ exports.getBooks = async function (req, res) {
+    category = req.query.category;
 
-    /**
-     * Path Variable: bookcaseName
-     */
-    const bookcaseName = req.query.bookcaseName;
-    const userId= req.verifiedToken.userId;
-    if (!bookcaseName) return res.send(errResponse(baseResponse.BOOKCASE_NAME_EMPTY)); //5000, 책장명을 입력하세요.
-    if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
-
-    const booklistInbookcase = await bookcaseProvider.bookList(userId, bookcaseName);
-    return res.send(response(baseResponse.SUCCESS, booklistInbookcase));
+    const booksResult = await bookProvider.getBooks(category);
+    return res.send(response(baseResponse.SUCCESS, booksResult));
 };
