@@ -96,7 +96,7 @@ async function getLibraryList(connection, userId, condition) {
 // 도서관 편의정보 조회
 async function getLibraryDetailList(connection, libraryId) {
   const getLibraryDetailListQuery = `
-      select l.name, l.cityNa e, l.sigunguName, l.closeDay, l.type,
+      select l.name, l.cityName, l.sigunguName, l.closeDay, l.type,
       concat(date_format(l.weekOpen, '%H:%i'), ' ~ ', date_format(l.weekClose, '%H:%i')) weekTime,
       concat(date_format(l.satOpen, '%H:%i'), ' ~ ', date_format(l.satClose, '%H:%i')) satTime,
       concat(date_format(l.holidayOpen, '%H:%i'), ' ~ ', date_format(l.holidayClose, '%H:%i')) holidayTime,
