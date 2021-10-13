@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 const TRANSPARENT = 'transparent';
 
@@ -40,11 +40,11 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-  containerStyle: PropTypes.object,
-  title: PropTypes.string,
-  onPress: PropTypes.func.isRequired,
-  isFilled: PropTypes.bool,
-  disabled: PropTypes.bool,
+  containerStyle: propTypes.object,
+  title: propTypes.string,
+  onPress: propTypes.func.isRequired,
+  isFilled: propTypes.bool,
+  disabled: propTypes.bool,
 };
 
 export default Button;
