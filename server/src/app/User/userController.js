@@ -8,6 +8,13 @@ const {response, errResponse} = require("../../../config/response");
 const regexEmail = require("regex-email");
 const {emit} = require("nodemon");
 
+const axios = require("../../../node_modules/axios");
+const Cache = require('memory-cache');
+const CryptoJS = require('crypto-js');
+const phone = require('../../../config/phone');
+
+const crypto = require('crypto');
+const {smtpTransport} = require('../../../config/email');
 
 /**
  * API No. 1
@@ -159,4 +166,145 @@ exports.check = async function (req, res) {
     const userIdResult = req.verifiedToken.userId;
     console.log(userIdResult);
     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
+};
+
+/**
+ * API No. 34
+ * API Name : 휴대폰 인증 API
+ * [POST] /delibook/user/phone/auth
+ */
+exports.verifyPhoneNumber = async function (req, res) {
+    const {name, phoneNumber} = req.body;
+
+    if(!name)
+        return res.send(errResponse(baseResponse_j.USER_NAME_EMPTY));
+    else if(!phoneNumber)
+        return res.send(errResponse(baseResponse_j.PHONE_NUMBER_EMPTY));
+    else if(phoneNumber.length != 11) {
+        return res.send(errResponse(baseResponse_j.PHONE_NUMBER_ERROR_TYPE));
+    }
+
+    const checkUserResult = await userProvider.checkUser(name, phoneNumber);
+    if(checkUserResult.length < 1) {
+        return res.send(response(baseResponse_j.USER_PHONE_NOT_MATCH))
+    }
+
+    Cache.del(phoneNumber);   //인증번호 다시 요청할 경우를 위해
+
+    //인증번호 생성(랜덤 4자리)
+    const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+
+    Cache.put(phoneNumber, verifyCode.toString(), 180000);  //3분 제한시간
+    axios({
+        method: phone.method,
+        json: true,
+        url: phone.url,
+        headers: {
+            'Content-Type': 'application/json',
+            'x-ncp-iam-access-key': phone.accessKey,
+            'x-ncp-apigw-timestamp': phone.date,
+            'x-ncp-apigw-signature-v2': phone.signature,
+        },
+        data: {
+            type: 'SMS',
+            contentType: 'COMM',
+            countryCode: '82',
+            from: phone.number,
+            content: `[Delibook 본인 확인] 인증번호 [${verifyCode}]를 입력해 주세요.`,
+            messages: [
+                {
+                    to: `${phoneNumber}`,
+                },
+            ],
+        },
+    })
+        .then(function (res) {
+            res.send(response(baseResponse.SUCCESS));
+        })
+        .catch((err) => {
+            if (err.res == undefined) {
+                res.send(response(baseResponse.SUCCESS));
+            } else res.send(errResponse(baseResponse_j.SMS_SEND_ERROR));
+        });
+
+};
+
+
+/**
+ * API No. 35
+ * API Name : 이메일 인증 API
+ * [POST] /delibook/user/email/auth
+ */
+ exports.verifyEmail = async function (req,res) {
+    const email = req.body.email;
+
+    Cache.del(email);
+    
+    //빈값 체크
+    if(!email)
+        return res.send(errResponse(baseResponse.USER_USEREMAIL_EMPTY))
+    // 형식 체크 (by 정규표현식)
+    if (!regexEmail.test(email))
+        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
+    //길이 체크
+    if (email.length > 30)
+        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+
+    const token = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+    const data = { // 데이터 정리
+        token
+    };
+
+    Cache.put(email, token);
+
+    const mailOptions = {
+        from: "susie000301@naver.com",
+        to: `${email}`,
+        subject: "딜리북 인증메일",
+        text: `[Delibook 본인 확인] 인증번호 [${token}]를 입력해 주세요.`
+    };
+
+    await smtpTransport.sendMail(mailOptions, (error, responses) =>{
+        if(error){
+            res.send(errResponse(baseResponse_j.EMAIL_SEND_ERROR))
+        }else{
+            res.send(response(baseResponse.SUCCESS));
+        }
+        smtpTransport.close();
+    });
+};
+
+/**
+ * API No. 37
+ * API Name : 아이디 찾기 API
+ * [GET] /delibook/user/findId-form
+ */
+ exports.findId = async function (req, res) {
+
+    const name = req.query.name;
+    const phoneNumber = req.query.phoneNumber;
+    const verifyCode = req.query.verifyCode;
+
+    let getIdResult;
+
+    if(!name)
+        return res.send(response(baseResponse_j.USER_NAME_EMPTY));
+    if(!phoneNumber)
+        return res.send(response(baseResponse_j.USER_PHONE_NUMBER_EMPTY));
+    if(!verifyCode)
+        return res.send(response(baseResponse_j.VERIFY_CODE_EMPTY));
+    
+    const CacheData = Cache.get(phoneNumber);
+
+    if (!CacheData) {
+         return res.send(errResponse(baseResponse_j.FAIL_VERIFY));
+    } else if (CacheData !== verifyCode) {
+         return res.send(errResponse(baseResponse_j.VERIFY_NUMBER_NOT_MATCH));
+    }
+    else {
+        Cache.del(phoneNumber);
+        getIdResult = await userProvider.getId(name, phoneNumber);
+        return res.send(response(baseResponse.SUCCESS, getIdResult));
+    }
+
 };

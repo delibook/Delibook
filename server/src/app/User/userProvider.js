@@ -102,3 +102,23 @@ exports.getUsagesResult = async function (userId, type) {
   connection.release();
   return response(baseResponse.SUCCESS, usagesListResult);
 };
+
+// 이름, 휴대전화 조회
+exports.checkUser = async function (name, phoneNumber) {
+  
+  const connection = await pool.getConnection(async (conn) => conn);
+  const checkUserInfoResult = await userDao.checkUserInfo(connection, name, phoneNumber);
+
+  connection.release();
+  return checkUserInfoResult;
+};
+
+//아이디 찾기
+exports.getId = async function (name, phoneNumber) {
+  
+  const connection = await pool.getConnection(async (conn) => conn);
+  let getIdInfoResult = await userDao.checkUserInfo(connection, name, phoneNumber);
+
+  connection.release();
+  return getIdInfoResult;
+};

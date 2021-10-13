@@ -55,14 +55,31 @@ module.exports = {
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},
 
 
+    BOOK_ID_EMPTY :  { "isSuccess": false, "code": 4901, "message": "책 Id 입력하세요." },
+
 
     BOOKCASE_NAME_EMPTY : { "isSuccess": false, "code": 5000, "message": "책장명을 입력하세요." },
     BOOKCASE_NAME_NOT_MATCH : { "isSuccess": false, "code": 5001, "message": "책장명이 다릅니다." },
- 
-    ADDRESS_ID_EMPTY :  { "isSuccess": false, "code": 6000, "message": "주소 ID를 입력하세요." },
-    ADDRESS_EMPTY :  { "isSuccess": false, "code": 6001, "message": "주소를  입력하세요." },
-    ADDRESS_DETAIL_EMPTY:  { "isSuccess": false, "code": 6002, "message": "상세주소를 입력하세요." },
-    ADDRESS_LATITUDE_EMPTY :  { "isSuccess": false, "code": 6003, "message": "위도를 입력하세요." },
-    ADDRESS_LONGTITUDE_EMPTY  :  { "isSuccess": false, "code": 6004, "message": "경도를 입력하세요." },
-    ADDRESS_MAIN_EMPTY:  { "isSuccess": false, "code": 6005, "message": "메인주소 여부를 입력하세요." },
+    BOOCASE_ID_EMPTY : {"isSuccess": false, "code": 5002, "message": "책장Id를 입력하세요." },
+    BOOKCASE_ACTION_TYPE_EMPTY : {"isSuccess": false, "code": 5003, "message": "type을 입력하세요. (insert or drop)" },
+    BOOKCASE_NOT_MATCH: {"isSuccess": false, "code": 5004, "message": "해당유저의 책장이 아닙니다. 책장Id를 확인하세요" },
+    BOOKCASE_BOOK_ALREADY_EXISTS :{"isSuccess": false, "code": 5005, "message": "이미 찜해짐" },
+    BOOKCASE_BOOK_NOT_EXISTS:{"isSuccess": false, "code": 5006, "message": "찜취소할 책이 없음, 책 아이디 확인해" },
+
+    ADDRESS_ID_EMPTY :  { "isSuccess": false, "code": 5100, "message": "주소 ID를 입력하세요." },
+    ADDRESS_EMPTY :  { "isSuccess": false, "code": 5101, "message": "주소를  입력하세요." },
+    ADDRESS_DETAIL_EMPTY:  { "isSuccess": false, "code": 5102, "message": "상세주소를 입력하세요." },
+    ADDRESS_LATITUDE_EMPTY :  { "isSuccess": false, "code": 5103, "message": "위도를 입력하세요." },
+    ADDRESS_LONGTITUDE_EMPTY  :  { "isSuccess": false, "code": 5104, "message": "경도를 입력하세요." },
+    ADDRESS_MAIN_EMPTY:  { "isSuccess": false, "code": 5105, "message": "메인주소 여부를 입력하세요." },
+    ADDRESS_USER_NOT_MATCH:  { "isSuccess": false, "code": 5106, "message": "주소아이디와 유저아이디가 맞지 않습니다. 확인해주세요" },
+    ADDRESS_DELETE_SUCCESS:  { "isSuccess": false, "code": 5107, "message": "주소삭제 성공" },
+    ADDRESS_ALREADY_DELETED :  { "isSuccess": false, "code": 5108, "message": "이미삭제된 주소입니다." },
+
+    CART_ID_EMPTY :  { "isSuccess": false, "code": 5200, "message": "카트아이디 입력필요." },
+    CART_ACTION_TYPE_EMPTY : {"isSuccess": false, "code": 5201, "message": "type을 입력하세요. (plus or minus)" },
+    CART_NOT_MATCH : {"isSuccess": false, "code": 5202, "message": "해당유저의 카트에 들어있는 책이 아닙니다.  카트id와 책 id를 확인해주세요" },
+    CART_LIBRARY_ID_EMPTY: {"isSuccess": false, "code": 5203, "message": "카트에 들어갈 도서관 아이디를 입력하세요. " },
+    CART_BOOK_LIBRARY_NOT_EXISTS : {"isSuccess": false, "code": 5204, "message": "해당 도서관에 해당 책이 존재하지 않습니다. 도서관 아이디와 책 아이디를 확인해주세요. "},
+    CART_USER_NOT_MATCH: {"isSuccess": false, "code": 5205, "message": "해당 유저의 카트가 아닙니다. 카트아이디를 확인해주세요."},
 }

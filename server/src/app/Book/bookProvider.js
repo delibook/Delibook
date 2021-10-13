@@ -6,15 +6,33 @@ const {response, errResponse} = require("../../../config/response");
 
 const bookDao = require("./bookDao");
 
-// Provider: Read 비즈니스 로직 처리
+//특정 책 조회
+exports.getBook = async function (bookId) {
 
-exports.bookList = async function (userId, bookcaseName) {
- 
-    bookcaseTitle =  "%" + bookcaseName +  "%";
     const connection = await pool.getConnection(async (conn) => conn);
-    const bookListResult = await bookcaseDao.selectBookListInBookCase(connection, userId,bookcaseTitle);
+    const getBookInfoResult = await bookDao.getBookInfo(connection, bookId);
+
+    if(getBookInfoResult.length < 1) 
+        return response(baseResponse_j.BOOKID_NOT_EXIST);
     connection.release();
 
-    return bookListResult;
+    return response(baseResponse_j.SUCCESS, getBookInfoResult);
+  
+};
+
+//책목록 조회
+exports.getBooks = async function (category) {
+    condition = '';
+
+    //카테고리를 입력했다면 조건 넣어주기
+    if(category != null) {
+        condition += `and bc.name = '`+category+`'`;
+    }
+
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getBooksInfoResult = await bookDao.getBooksInfo(connection, condition);
+    connection.release();
+
+    return getBooksInfoResult;
   
 };

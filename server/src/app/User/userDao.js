@@ -166,6 +166,19 @@ async function patchPasswordInfo(connection, userId, hashedModifyPassword) {
   return patchPasswordInfoRow;
 }
 
+// 유저 이름, 휴대전화 체크
+async function checkUserInfo(connection, name, phoneNumber) {
+  const checkUserInfoQuery = `
+    select u.email
+    from User u
+    where u.status = 0
+    and u.name = ?
+    and u.phoneNumber = ?
+  `
+  const [checkUserInfoRow] = await connection.query(checkUserInfoQuery, [name, phoneNumber]);
+  return checkUserInfoRow;
+}
+
 
 module.exports = {
   selectUser,
@@ -178,5 +191,6 @@ module.exports = {
   getCaseList,
   getUsagesList,
   checkUserPassword,
-  patchPasswordInfo
+  patchPasswordInfo,
+  checkUserInfo
 };
