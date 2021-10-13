@@ -18,9 +18,14 @@
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.2.2",
     "@react-navigation/stack": "^6.0.9",
+<<<<<<< HEAD
+    "axios": "^0.23.0",
+    "expo": "~42.0.1",
+=======
     "@unimodules/react-native-adapter": "^6.3.9",
     "expo": "^42.0.4",
     "expo-font": "^9.2.1",
+>>>>>>> origin
     "expo-status-bar": "~1.0.4",
     "prop-types": "^15.7.2",
     "react": "16.13.1",

@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext, useCallback } from 'react';
 import styled from 'styled-components';
 import { Image, Input, Button } from '../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, removeWhitespace } from '../utils/common';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ProgressContext } from '../contexts';
+import axios from 'axios';
 
 const Container = styled.View`
   flex: 1;
@@ -49,14 +50,26 @@ const Login = ({ navigation }) => {
     setPassword(removeWhitespace(password));
   };
 
-  const _handleLoginButtonPress = async () => {
+  const _handleLoginButtonPress = useCallback(async() => {
+    let data;
     try {
       spinner.start();
+      data = await axios.post('https://dev.delibook.shop/delibook/user/login', {
+        email: `${email}`,
+        password: `${password}`
+      })
+      .then(function(response){
+        return response.data;
+      })
+      .catch(function(error){
+        alert("Error",error);
+      });
     } catch (e) {
+      alert(email);
     } finally {
       spinner.stop();
     }
-  };
+  }, [email, password]);
 
   return (
     <KeyboardAwareScrollView
