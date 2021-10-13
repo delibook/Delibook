@@ -104,7 +104,7 @@ const Login = ({ navigation }) => {
         />
         <Button
           title="회원가입"
-          onPress={() => navigation.navigate('Join')}
+          onPress={() => navigation.navigate('Mypage')}
           isFilled={false}
         />
       </Container>

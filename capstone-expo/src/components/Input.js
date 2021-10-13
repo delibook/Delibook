@@ -1,6 +1,6 @@
 import React, { useState, forwardRef } from 'react';
 import styled from 'styled-components/native';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 const Container = styled.View`
   flex-direction: column;
@@ -76,16 +76,16 @@ Input.defaultProps = {
   onBlur: () => {},
 };
 
-Input.PropTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChangeText: PropTypes.func.isRequired,
-  onSubmitEditing: PropTypes.func.isRequired,
-  onBlur: PropTypes.func,
-  placeholder: PropTypes.string,
-  isPassword: PropTypes.bool,
-  returnKeyType: PropTypes.oneOf(['done', 'next']),
-  maxLength: PropTypes.number,
+Input.propTypes = {
+  label: propTypes.string.isRequired,
+  value: propTypes.string.isRequired,
+  onChangeText: propTypes.func.isRequired,
+  onSubmitEditing: propTypes.func.isRequired,
+  onBlur: propTypes.func,
+  placeholder: propTypes.string,
+  isPassword: propTypes.bool,
+  returnKeyType: propTypes.oneOf(['done', 'next']),
+  maxLength: propTypes.number,
 };
 
 export default Input;

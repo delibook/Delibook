@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Login, Join } from '../screens';
+import { Login, Join, Mypage, Home } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -21,7 +21,16 @@ const AuthStack = () => {
         component={Login}
         options={{ headerBackTitleVisible: false }}
       />
-      <Stack.Screen name="Join" component={Join} />
+      <Stack.Screen
+        name="Join"
+        component={Join}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Mypage"
+        component={Mypage}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

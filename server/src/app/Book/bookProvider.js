@@ -1,0 +1,20 @@
+const { pool } = require("../../../config/database");
+const { logger } = require("../../../config/winston");
+
+const baseResponse_j = require("../../../config/baseResponseStatus_j");
+const {response, errResponse} = require("../../../config/response");
+
+const bookDao = require("./bookDao");
+
+// Provider: Read 비즈니스 로직 처리
+
+exports.bookList = async function (userId, bookcaseName) {
+ 
+    bookcaseTitle =  "%" + bookcaseName +  "%";
+    const connection = await pool.getConnection(async (conn) => conn);
+    const bookListResult = await bookcaseDao.selectBookListInBookCase(connection, userId,bookcaseTitle);
+    connection.release();
+
+    return bookListResult;
+  
+};

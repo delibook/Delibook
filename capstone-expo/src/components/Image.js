@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 const Container = styled.View`
   align-self: center;
@@ -27,9 +27,9 @@ Image.defaultProps = {
 };
 
 Image.propTypes = {
-  uri: PropTypes.string,
-  imageStyle: PropTypes.object,
-  rounded: PropTypes.bool,
+  uri: propTypes.string,
+  imageStyle: propTypes.object,
+  rounded: propTypes.bool,
 };
 
 export default Image;
