@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useContext, useCallback } from 'react';
+import { Alert } from 'react-native';
 import styled from 'styled-components';
 import { Image, Input, Button } from '../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -59,6 +60,7 @@ const Login = ({ navigation }) => {
         password: `${password}`
       })
       .then(function(response){
+        Alert.alert("로그인", "성공");
         return response.data;
       })
       .catch(function(error){
@@ -104,7 +106,7 @@ const Login = ({ navigation }) => {
         />
         <Button
           title="회원가입"
-          onPress={() => navigation.navigate('Mypage')}
+          onPress={() => navigation.navigate('Join')}
           isFilled={false}
         />
       </Container>

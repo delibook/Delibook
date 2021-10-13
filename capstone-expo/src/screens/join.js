@@ -65,10 +65,8 @@ const Join = ({ navigation }) => {
   };
 
   const _handleJoinButtonPress = useCallback(async() => {
-    console.log(1);
     let data;
     try {
-      console.log(2);
       data = await axios.post('https://dev.delibook.shop/delibook/user/sign-in', {
         name: `${name}`,
         phone: `${phone}`,
@@ -126,7 +124,6 @@ const Join = ({ navigation }) => {
           keyboardType={'email-address'}
           placeholder="이메일 주소 입력"
         />
-        <ErrorText>{errorMessage}</ErrorText>
         <Text style={styles.label}>비밀번호</Text>
         <TextInput
           style={styles.input}
@@ -304,12 +301,12 @@ const styles = StyleSheet.create({
     borderColor: '#b6b6b6',
     borderRadius: 4,
     color: '#b6b6b6',
-    padding: 16,
+    paddingLeft: 10,
     fontSize: 16,
   },
   header: {
     height: 60,
-    top: 10,
+    top: 20,
     zIndex: 10,
     borderColor: '#d5d5d5',
     borderBottomWidth: 0.25,
@@ -348,7 +345,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    marginBottom: 6,
     color: '#a6a6a6',
   },
 });
