@@ -68,6 +68,7 @@ module.exports = {
     FAIL_VERIFY : { "isSuccess": false, "code": 6016, "message": "인증에 실패했습니다." },
     VERIFY_NUMBER_NOT_MATCH : { "isSuccess": false, "code": 6017, "message": "인증코드가 다릅니다." },
     USER_PHONE_NOT_MATCH : { "isSuccess": false, "code": 6018, "message": "정보가 일치하는 유저가 없습니다." },
+    USER_ADDRESS_EMPTY : { "isSuccess": false, "code": 6019, "message": "해당 유저는 등록한 주소가 없습니다. 주소를 입력해주세요."},
 
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
