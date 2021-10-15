@@ -5,6 +5,7 @@ const baseResponse_j = require("../../../config/baseResponseStatus_j");
 const {response, errResponse} = require("../../../config/response");
 
 const libraryDao = require("./libraryDao");
+const addressDao = require("../Address/addressDao");
 
 
 exports.getMyLibrary = async function (userId) {
@@ -18,12 +19,15 @@ exports.getMyLibrary = async function (userId) {
     return myLibraryListResult;
 };
 
-exports.getLibraryBook = async function (libraryId, category) {
+exports.getLibraryBook = async function (libraryId, category, search) {
 
     const connection = await pool.getConnection(async (conn) => conn);
     condition = ''
     if(category != null) {
         condition += `and bc.name = '`+category+`'`;
+    }
+    if(search != null) {
+        condition += ` and b.name LIKE '%`+search+`%'`
     }
 
     // 입력한 libraryId가 존재하는지 확인
@@ -38,16 +42,23 @@ exports.getLibraryBook = async function (libraryId, category) {
     return response(baseResponse_j.SUCCESS, libraryBookListResult);
 };
 
-exports.getLibrary = async function (userId, distance) {
+exports.getLibrary = async function (userId, distance, search) {
 
     const connection = await pool.getConnection(async (conn) => conn);
+    const checkUserAddress = await addressDao.selectAddress(connection, userId);
+    if(checkUserAddress.length < 1) {
+        return response(baseResponse_j.USER_ADDRESS_EMPTY);
+    }
+
     condition = ''
     if(distance != null) {
         condition += `and (6371 * acos( cos( radians(a.latitude) ) * cos( radians(l.latitude) ) * cos( radians(a.longitude) - radians(l.longitude) ) + sin( radians(a.latitude) ) * sin( radians(l.latitude)))) <`+distance;
     }
+    if(search != null) {
+        condition += ` and l.name LIKE '%`+search+`%'`
+    }
     const libraryListResult = await libraryDao.getLibraryList(connection, userId, condition);
     connection.release();
-
 
     return response(baseResponse_j.SUCCESS, libraryListResult);
 };

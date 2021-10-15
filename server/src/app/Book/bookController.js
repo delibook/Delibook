@@ -9,7 +9,7 @@ const regexEmail = require("regex-email");
 const {emit} = require("nodemon");
 
 /**
- * API No. 42
+ * API No. 38
  * API Name : 특정 책 정보  API
  * [GET] /delibook/book/:bookId
  */
@@ -21,13 +21,27 @@ const {emit} = require("nodemon");
 };
 
 /**
- * API No. 43
+ * API No. 39
  * API Name : 책목록 조회(메인에서 대여버튼 눌렀을 때) API
  * [GET] /delibook/book
  */
  exports.getBooks = async function (req, res) {
-    category = req.query.category;
+    const category = req.query.category;
+    const search = req.query.search;
 
-    const booksResult = await bookProvider.getBooks(category);
+    const booksResult = await bookProvider.getBooks(category, search);
     return res.send(response(baseResponse.SUCCESS, booksResult));
+};
+
+/**
+ * API No. 42
+ * API Name : 책 카테고리 조회 API (+도서관 별 책 카테고리)
+ * [GET] /delibook/book/category
+ */
+ exports.getCategories = async function (req, res) {
+     libraryId = req.query.libraryId;
+
+
+    const getCategoriesResult = await bookProvider.getCategories(libraryId);
+    return res.send(getCategoriesResult);
 };

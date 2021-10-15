@@ -45,8 +45,9 @@ exports.likeLibrary = async function (req, res) {
  exports.getLibraryBook = async function (req, res) {
     const libraryId = req.params.libraryId;
     const category = req.query.category;
+    const search = req.query.search;
 
-    const getLibraryBookResult = await libraryProvider.getLibraryBook(libraryId, category);
+    const getLibraryBookResult = await libraryProvider.getLibraryBook(libraryId, category, search);
 
     return res.send(getLibraryBookResult);
 };
@@ -59,9 +60,10 @@ exports.likeLibrary = async function (req, res) {
  exports.getLibrary = async function (req, res) {
    
     const userId = req.query.userId;
-    const distance = req.query.distance     //1이면 1km 이내, 2면 2km 이내,' ...
+    const distance = req.query.distance;     //1이면 1km 이내, 2면 2km 이내,' ...
+    const search = req.query.search;
 
-    const getLibraryResult = await libraryProvider.getLibrary(userId, distance);
+    const getLibraryResult = await libraryProvider.getLibrary(userId, distance, search);
 
     return res.send(getLibraryResult);
 };
