@@ -4,4 +4,5 @@ import Mypage from './mypage';
 import FindId from './findId';
 import PhoneCode from './phoneCode';
 import ShowId from './showId';
-export { Login, Join, Mypage, FindId, PhoneCode, ShowId };
+import Home from './home';
+export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home };

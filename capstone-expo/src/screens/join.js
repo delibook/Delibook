@@ -74,7 +74,12 @@ const Join = ({ navigation }) => {
         password: `${password}`
       })
       .then(function(response){
-        Alert.alert("회원가입", "성공");
+        if (response.data.isSuccess == false) {
+          Alert.alert("Error", `${response.data.message}`);
+        } else {
+          Alert.alert("회원가입", "성공");
+          navigation.navigate('로그인');
+        }
         return response.data;
       })
       .catch(function(error){
@@ -91,7 +96,7 @@ const Join = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <EvilIcons
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('로그인')}
           style={{
             textAlign: 'center',
             width: 20,

@@ -59,7 +59,13 @@ const Login = ({ navigation }) => {
         password: `${password}`
       })
       .then(function(response){
-        Alert.alert("로그인", "성공");
+        if (response.data.isSuccess == false) {
+          Alert.alert("Error", `${response.data.message}`);
+        } else {
+          navigation.navigate('홈', {
+            token: `${response.data.result.jwt}`
+          });
+        }
         return response.data;
       })
       .catch(function(error){
@@ -114,11 +120,10 @@ const Login = ({ navigation }) => {
           <Button
             containerStyle={{ height: 10, width: 80 }}
             title="회원가입"    
-            onPress={() => navigation.navigate('Join')}
+            onPress={() => navigation.navigate('회원가입')}
             isFilled={false}
           />
         </View>
-        
       </Container>
     </KeyboardAwareScrollView>
   );

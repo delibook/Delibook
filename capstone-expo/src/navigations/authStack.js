@@ -23,12 +23,12 @@ const AuthStack = () => {
         options={{ headerBackTitleVisible: false }}
       />
       <Stack.Screen
-        name="Join"
+        name="회원가입"
         component={Join}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Mypage"
+        name="마이페이지"
         component={Mypage}
         options={{ headerShown: false }}
       />
@@ -43,6 +43,10 @@ const AuthStack = () => {
       <Stack.Screen
         name="아이디"
         component={ShowId}
+      />
+      <Stack.Screen
+        name="홈"
+        component={Home}
       />
     </Stack.Navigator>
   );
