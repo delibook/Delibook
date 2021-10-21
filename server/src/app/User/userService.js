@@ -132,3 +132,33 @@ exports.patchPassword = async function (userId, password, modifyPassword, checkP
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+//탈퇴
+exports.withdraw = async function (userId,password) {
+    try {
+            
+            // 비밀번호 확인
+                const hashedPassword = await crypto
+                .createHash("sha512")
+                .update(password)
+                .digest("hex");
+
+                
+            const selectUserPasswordParams = [userId, hashedPassword];
+            const passwordRows = await userProvider.passwordCheckToId(selectUserPasswordParams);
+    
+            if (passwordRows[0].password !== hashedPassword) {
+                return errResponse(baseResponse.SIGNIN_PASSWORD_WRONG);
+            }
+
+        const connection = await pool.getConnection(async (conn) => conn);
+        const withdrawRow = await userDao.withdrawUser(connection, userId);
+        connection.release();
+        return response(baseResponse.SUCCESS);
+
+
+    } catch (err) {
+        logger.error(`App - withdrawUser Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
