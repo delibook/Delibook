@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Login, Join, Mypage, Home } from '../screens';
+import { Login, Join, Mypage, Home, PhoneCode, ShowId } from '../screens';
+import FindId from '../screens/findId';
 
 const Stack = createStackNavigator();
 
@@ -9,7 +10,7 @@ const AuthStack = () => {
   const theme = useContext(ThemeContext);
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="로그인"
       screenOptions={{
         headerTitleAlign: 'center',
         cardStyle: { backgroundColor: theme.backgroundColor },
@@ -17,7 +18,7 @@ const AuthStack = () => {
       }}
     >
       <Stack.Screen
-        name="Login"
+        name="로그인"
         component={Login}
         options={{ headerBackTitleVisible: false }}
       />
@@ -30,6 +31,18 @@ const AuthStack = () => {
         name="Mypage"
         component={Mypage}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="아이디찾기"
+        component={FindId}
+      />
+      <Stack.Screen
+        name="휴대폰인증"
+        component={PhoneCode}
+      />
+      <Stack.Screen
+        name="아이디"
+        component={ShowId}
       />
     </Stack.Navigator>
   );

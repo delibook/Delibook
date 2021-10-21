@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext, useCallback } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View, Text } from 'react-native';
 import styled from 'styled-components';
 import { Image, Input, Button } from '../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -52,7 +52,6 @@ const Login = ({ navigation }) => {
   };
 
   const _handleLoginButtonPress = useCallback(async() => {
-    let data;
     try {
       spinner.start();
       data = await axios.post('https://dev.delibook.shop/delibook/user/login', {
@@ -104,11 +103,22 @@ const Login = ({ navigation }) => {
           onPress={_handleLoginButtonPress}
           disabled={disabled}
         />
-        <Button
-          title="회원가입"
-          onPress={() => navigation.navigate('Join')}
-          isFilled={false}
-        />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Button
+            containerStyle={{ height: 10, width: 90 }}
+            title="아이디찾기"
+            onPress={() => navigation.navigate('아이디찾기')}
+            isFilled={false}
+          />
+          <Text style={{ top: 12, color: '#3679fe' }}>|</Text>
+          <Button
+            containerStyle={{ height: 10, width: 80 }}
+            title="회원가입"    
+            onPress={() => navigation.navigate('Join')}
+            isFilled={false}
+          />
+        </View>
+        
       </Container>
     </KeyboardAwareScrollView>
   );
