@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { EvilIcons } from '@expo/vector-icons';
 import { Button } from '../components';
 import { validateEmail, removeWhitespace } from '../utils/common';
-import { ProgressContext } from '../contexts';
+import { ProgressContext, UserContext } from '../contexts';
 import axios from 'axios';
 
 const ErrorText = styled.Text`
@@ -39,6 +39,7 @@ const Join = ({ navigation }) => {
   const [disabled, setDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const { spinner } = useContext(ProgressContext);
+  const { dispatch } = useContext(UserContext);
 
   useEffect(() => {
     setDisabled(!(email && password && name && phone && !errorMessage));

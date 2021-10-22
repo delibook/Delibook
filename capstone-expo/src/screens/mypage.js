@@ -18,6 +18,7 @@ import {
   MaterialIcons,
   AntDesign,
 } from '@expo/vector-icons';
+import { UserContext } from '../contexts';
 /*
 const getFonts = () => {
   return Font.loadAsync({
@@ -28,12 +29,14 @@ const getFonts = () => {
 */
 const Mypage = ({ navigation }) => {
   //getFonts();
+
+  const { dispatch } = useContext(UserContext);
+
   const _handleLogoutButtonPress = async () => {
     try {
-      spinner.start();
     } catch (e) {
     } finally {
-      spinner.stop();
+      dispatch({});
     }
   };
   return (
