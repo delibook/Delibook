@@ -5,7 +5,7 @@ import { Image, Input, Button } from '../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, removeWhitespace } from '../utils/common';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ProgressContext } from '../contexts';
+import { ProgressContext, UserContext } from '../contexts';
 import axios from 'axios';
 
 const Container = styled.View`
@@ -34,6 +34,7 @@ const Login = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const passwordRef = useRef();
   const insets = useSafeAreaInsets();
+  const { dispatch } = useContext(UserContext);
 
   useEffect(() => {
     setDisabled(!(email && password && !errorMessage));
@@ -62,9 +63,9 @@ const Login = ({ navigation }) => {
         if (response.data.isSuccess == false) {
           Alert.alert("Error", `${response.data.message}`);
         } else {
-          navigation.navigate('홈', {
-            token: `${response.data.result.jwt}`
-          });
+          const token = response.data.result.jwt;
+          console.log('토큰 : ', token);
+          dispatch({ email, token});
         }
         return response.data;
       })
