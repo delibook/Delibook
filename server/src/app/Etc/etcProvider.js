@@ -17,3 +17,14 @@ exports.getNotice = async function () {
 
     return noticeListResult;
 };
+
+exports.getNoticeContent = async function (contentId) {
+
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const noticeContentResult = await etcDao.getNoticeContent(connection,contentId);
+    connection.release();
+
+
+    return noticeContentResult;
+};
