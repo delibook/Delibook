@@ -24,6 +24,7 @@ module.exports = function () {
     require('../src/app/Library/libraryRoute')(app);
     require('../src/app/Cart/cartRoute')(app);
     require('../src/app/Book/bookRoute')(app);
+    require('../src/app/Etc/etcRoute')(app);
 
     return app;
 };

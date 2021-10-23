@@ -82,4 +82,7 @@ module.exports = {
     CART_LIBRARY_ID_EMPTY: {"isSuccess": false, "code": 5203, "message": "카트에 들어갈 도서관 아이디를 입력하세요. " },
     CART_BOOK_LIBRARY_NOT_EXISTS : {"isSuccess": false, "code": 5204, "message": "해당 도서관에 해당 책이 존재하지 않습니다. 도서관 아이디와 책 아이디를 확인해주세요. "},
     CART_USER_NOT_MATCH: {"isSuccess": false, "code": 5205, "message": "해당 유저의 카트가 아닙니다. 카트아이디를 확인해주세요."},
+
+    TITLE_EMPTY : {"isSuccess": false, "code": 5300, "message": "제목을 입력하세요."},
+    CONTENT_EMPTY : {"isSuccess": false, "code": 5301, "message": "내용을 입력하세요."},
 }

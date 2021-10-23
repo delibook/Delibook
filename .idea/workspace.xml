@@ -3,34 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="5b23dd89-b5f1-498f-a68a-daf35775def3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capstone-expo/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/capstone-expo/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/baseResponseStatus_j.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/baseResponseStatus_j.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Address/addressController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Address/addressController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Address/addressDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Address/addressDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Address/addressProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Address/addressProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Address/addressRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Address/addressRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Address/addressService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Address/addressService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Book/bookController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Book/bookController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Book/bookDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Book/bookDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Book/bookProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Book/bookProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Book/bookRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Book/bookRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Book/bookService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Book/bookService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/BookCase/bookcaseService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Cart/cartController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Cart/cartController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Cart/cartDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Cart/cartDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Cart/cartProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Cart/cartProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Cart/cartRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Cart/cartRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Cart/cartService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Cart/cartService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/app/Library/libraryController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Library/libraryController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Library/libraryDao.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Library/libraryDao.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Library/libraryProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Library/libraryProvider.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/app/Library/libraryRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Library/libraryRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Library/libraryService.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Library/libraryService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/app/User/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/User/userController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/app/User/userRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/User/userRoute.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,5 +52,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

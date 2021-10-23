@@ -46,6 +46,20 @@ async function selectUserPassword(connection, selectUserPasswordParams) {
   return selectUserPasswordRow;
 }
 
+// 패스워드 체크
+async function selectUserPasswordForWithdraw(connection, selectUserPasswordParams) {
+  const selectUserPasswordQuery = `
+        SELECT id, name, password
+        FROM User
+        WHERE id = ? AND password = ?;`;
+  const selectUserPasswordRow = await connection.query(
+      selectUserPasswordQuery,
+      selectUserPasswordParams
+  );
+
+  return selectUserPasswordRow;
+}
+
 // 유저 계정 상태 체크 (jwt 생성 위해 id 값도 가져온다.)
 async function selectUserAccount(connection, email) {
   const selectUserAccountQuery = `
@@ -178,6 +192,14 @@ async function checkUserInfo(connection, name, phoneNumber) {
   const [checkUserInfoRow] = await connection.query(checkUserInfoQuery, [name, phoneNumber]);
   return checkUserInfoRow;
 }
+//탈퇴
+async function withdrawUser(connection, userId) {
+  const withdrawUserQuery = `
+    update User set status=1 where id=?
+  `
+  const [withdrawUserRow] = await connection.query(withdrawUserQuery, userId);
+  return withdrawUserRow;
+}
 
 
 module.exports = {
@@ -192,5 +214,7 @@ module.exports = {
   getUsagesList,
   checkUserPassword,
   patchPasswordInfo,
-  checkUserInfo
+  checkUserInfo,
+  selectUserPasswordForWithdraw,
+  withdrawUser,
 };
