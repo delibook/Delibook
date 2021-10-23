@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5b23dd89-b5f1-498f-a68a-daf35775def3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/app/Library/libraryController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Library/libraryController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/app/Library/libraryRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Library/libraryRoute.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/app/User/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/User/userController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/app/User/userRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/User/userRoute.js" afterDir="false" />
     </list>

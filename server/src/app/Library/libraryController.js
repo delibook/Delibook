@@ -15,7 +15,7 @@ const {emit} = require("nodemon");
  */
 exports.getMyLibrary = async function (req, res) {
 
-    const userId = req.query.userId;
+    const userId = req.verifiedToken.userId;
 
     const myLibraryResult = await libraryProvider.getMyLibrary(userId);
 
@@ -29,7 +29,7 @@ exports.getMyLibrary = async function (req, res) {
  */
 exports.likeLibrary = async function (req, res) {
 
-    const userId = req.query.userId;
+    const userId = req.verifiedToken.userId;
     const libraryId = req.params.libraryId;
 
     const setLikeLibraryResult = await libraryService.setLikeLibrary(userId, libraryId);
@@ -59,7 +59,7 @@ exports.likeLibrary = async function (req, res) {
  */
  exports.getLibrary = async function (req, res) {
    
-    const userId = req.query.userId;
+    const userId = req.verifiedToken.userId;
     const distance = req.query.distance;     //1이면 1km 이내, 2면 2km 이내,' ...
     const search = req.query.search;
 

@@ -75,7 +75,7 @@ exports.postUsers = async function (req, res) {
  */
 exports.getMyPage = async function (req, res) {
 
-    const userId = req.query.userId;
+    const userId = req.verifiedToken.userId;
     const caseId = req.query.caseId;
     let myCaseResult;
 
@@ -126,7 +126,7 @@ exports.login = async function (req, res) {
  */
  exports.patchPassword = async function (req, res) {
 
-    const userId = req.query.userId;
+    const userId = req.verifiedToken.userId;
     const {password, modifyPassword, checkPassword} = req.body;
 
     //빈 값 체크
@@ -168,7 +168,7 @@ exports.login = async function (req, res) {
  */
 exports.getUsages = async function (req, res) {
 
-    const userId = req.query.userId;
+    const userId = req.verifiedToken.userId;
     const type = req.query.type         // null : 전체내역, 1 : 대출내역, 2 : 반납내역
 
     const usagesResult = await userProvider.getUsagesResult(userId, type);
@@ -332,7 +332,7 @@ let userId, item_name, quantity, total_amount;
 
 exports.return = async function(req,res) {
 
-    userId = req.query.userId;              // jwt 토큰에서 받아오는 userId
+    userId = req.verifiedToken.userId;              // jwt 토큰에서 받아오는 userId
     item_name = req.query.item_name         // 상품명
     quantity = req.query.quantity           // 상품 개수
     total_amount = req.query.total_amount   // 상품 가격
