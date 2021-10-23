@@ -1,3 +1,5 @@
+import { Colors } from "react-native/Libraries/NewAppScreen";
+
 const color = {
   white: '#ffffff',
   black: '#000000',
@@ -27,4 +29,9 @@ export const theme = {
 
   spinnerBackground: color.black,
   spinnerIndicator: color.white,
+
+  listBorder: color.grey_0,
+  listTitle: color.black,
+  listDescription: color.grey_1,
+  listPrice: color.blue,
 };
