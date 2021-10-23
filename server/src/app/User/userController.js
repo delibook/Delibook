@@ -146,6 +146,21 @@ exports.login = async function (req, res) {
 
 /**
  * API No. 6
+ * API Name : 회원탈퇴 API
+ * [PATCH] /delibook/user/withdraw
+ */
+ exports.withdraw = async function (req, res) {
+
+    const userId = req.body.userId;
+    const password=req.body.password;
+   
+    withdrawResult = await userService.withdraw(userId,password);
+
+    return res.send(withdrawResult);
+};
+
+/**
+ * API No. 7
  * API Name : 이용내역 전체 조회 API
  * [GET] /delibook/user/usage
  */
