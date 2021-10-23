@@ -61,6 +61,6 @@ exports.getCategories = async function (libraryId) {
     const getCategoriesListResult = await bookDao.getCategoriesList(connection, condition);
     connection.release();
 
-    return getCategoriesListResult;
+    return response(baseResponse_j.SUCCESS, getCategoriesListResult);
   
 };
