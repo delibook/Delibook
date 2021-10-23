@@ -16,6 +16,8 @@ const phone = require('../../../config/phone');
 const crypto = require('crypto');
 const {smtpTransport} = require('../../../config/email');
 
+const request = require('request');
+
 /**
  * API No. 1
  * API Name : 유저 생성 (회원가입) API
@@ -322,4 +324,87 @@ exports.verifyPhoneNumber = async function (req, res) {
         return res.send(response(baseResponse.SUCCESS, getIdResult));
     }
 
+};
+
+// 반납 결제
+let tid;
+let userId, item_name, quantity, total_amount;
+
+exports.return = async function(req,res) {
+
+    userId = req.query.userId;              // jwt 토큰에서 받아오는 userId
+    item_name = req.query.item_name         // 상품명
+    quantity = req.query.quantity           // 상품 개수
+    total_amount = req.query.total_amount   // 상품 가격
+
+
+    let headers = {
+        'Authorization': 'KakaoAK '+'20e0754d1d30ba2ffea9ef112016b09c',
+        'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+    };
+
+    let params = {
+        'cid': 'TC0ONETIME', // 테스트 코드
+        'partner_order_id': '1',
+        'partner_user_id': `1`,
+        'item_name': `이코테`,
+        'quantity': 1,
+        'total_amount': 1,
+        'vat_amount': 0,
+        'tax_free_amount': 0,
+        'approval_url': 'http://localhost:3000/payment/approve',
+        'fail_url': 'http://localhost:3000/payment/fail',
+        'cancel_url': 'http://localhost:3000/payment/cancel',
+    };
+
+    let options = {
+        url: 'https://kapi.kakao.com/v1/payment/ready',
+        method: 'POST',
+        headers: headers,
+        form : params
+    };
+
+    let next_redirect_pc_url;
+
+    request(options, function result(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log(JSON.parse(body));      //JSON.parse : JSON 문자열의 구문을 분석하고, 그 결과에서 JavaScript 값이나 객체를 생성
+            next_redirect_app_url = (JSON.parse(body).next_redirect_app_url);
+            tid = (JSON.parse(body).tid);
+            return res.send(next_redirect_app_url) // redirect 하는 코드
+        }
+        else console.log("결제준비 실패");
+    });
+}
+
+//반납결제 승인요청
+exports.success = async function (req, res) {
+    const pg_token = req.query.pg_token;
+    let headers = {
+        'Authorization': 'KakaoAK '+'20e0754d1d30ba2ffea9ef112016b09c',
+        'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+    }
+
+    let params = {
+        'cid' : 'TC0ONETIME',
+        'tid' : `${tid}`,
+        'partner_order_id':'1',
+        'partner_user_id' : '1',
+        'pg_token' : `${pg_token}`
+    }
+
+    let options = {
+        url: 'https://kapi.kakao.com/v1/payment/approve',
+        method: 'POST',
+        headers: headers,
+        form : params
+    };
+
+    request(options, function result(error, response, body) {
+
+        if (!error && response.statusCode === 200) {
+            console.log(JSON.parse(body));
+        } else console.log("결제 승인 실패")
+
+    });
 };

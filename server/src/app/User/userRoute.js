@@ -28,4 +28,10 @@ module.exports = function(app){
 
     // 37. 아이디 찾기 API
     app.post('/delibook/user/findId-form', user.findId)
+
+    // 결제 준비
+    app.get('/delibook/return', user.return);
+
+    // 결제 승인 요청(결제
+    app.get('/payment/approve', user.success);
 };
