@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useContext, useCallback } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View, Text } from 'react-native';
 import styled from 'styled-components';
 import { Image, Input, Button } from '../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { validateEmail, removeWhitespace } from '../utils/common';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ProgressContext } from '../contexts';
+import { ProgressContext, UserContext } from '../contexts';
 import axios from 'axios';
 
 const Container = styled.View`
@@ -34,6 +34,7 @@ const Login = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const passwordRef = useRef();
   const insets = useSafeAreaInsets();
+  const { dispatch } = useContext(UserContext);
 
   useEffect(() => {
     setDisabled(!(email && password && !errorMessage));
@@ -52,7 +53,6 @@ const Login = ({ navigation }) => {
   };
 
   const _handleLoginButtonPress = useCallback(async() => {
-    let data;
     try {
       spinner.start();
       data = await axios.post('https://dev.delibook.shop/delibook/user/login', {
@@ -60,7 +60,13 @@ const Login = ({ navigation }) => {
         password: `${password}`
       })
       .then(function(response){
-        Alert.alert("로그인", "성공");
+        if (response.data.isSuccess == false) {
+          Alert.alert("Error", `${response.data.message}`);
+        } else {
+          const token = response.data.result.jwt;
+          console.log('토큰 : ', token);
+          dispatch({ email, token});
+        }
         return response.data;
       })
       .catch(function(error){
@@ -104,11 +110,21 @@ const Login = ({ navigation }) => {
           onPress={_handleLoginButtonPress}
           disabled={disabled}
         />
-        <Button
-          title="회원가입"
-          onPress={() => navigation.navigate('Join')}
-          isFilled={false}
-        />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Button
+            containerStyle={{ height: 10, width: 90 }}
+            title="아이디찾기"
+            onPress={() => navigation.navigate('아이디찾기')}
+            isFilled={false}
+          />
+          <Text style={{ top: 12, color: '#3679fe' }}>|</Text>
+          <Button
+            containerStyle={{ height: 10, width: 80 }}
+            title="회원가입"    
+            onPress={() => navigation.navigate('회원가입')}
+            isFilled={false}
+          />
+        </View>
       </Container>
     </KeyboardAwareScrollView>
   );

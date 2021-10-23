@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { ActivityIndicator } from 'react-native';
 import styled, { ThemeContext } from 'styled-components';
 
-const Container = styled.View`\
+const Container = styled.View`
   position: absolute;
   z-index: 2;
   opacity: 0.3;

@@ -1,14 +1,18 @@
 import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthStack from './authStack';
+import MainStack from './mainStack';
 import { Spinner } from '../components';
-import { ProgressContext } from '../contexts';
+import { ProgressContext, UserContext } from '../contexts';
 
 const Navigation = () => {
   const { inProgress } = useContext(ProgressContext);
+  const { user } = useContext(UserContext);
+  console.log(user.token);
+
   return (
     <NavigationContainer>
-      <AuthStack />
+      {user?.token ? <MainStack /> : <AuthStack />}
       {inProgress && <Spinner />}
     </NavigationContainer>
   );
