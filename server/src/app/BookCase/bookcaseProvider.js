@@ -16,6 +16,16 @@ exports.bookList = async function (userId, bookcaseName) {
   
 };
 
+exports.bookcaseList = async function (userId) {
+ 
+    const connection = await pool.getConnection(async (conn) => conn);
+    const bookcaseListResult = await bookcaseDao.bookcaseList(connection, userId);
+    connection.release();
+
+    return bookcaseListResult;
+  
+};
+
 exports.checkBookcase = async function (userId, bookcaseId) {
  
     
@@ -24,5 +34,16 @@ exports.checkBookcase = async function (userId, bookcaseId) {
     connection.release();
 
     return bookListResult;
+  
+};
+
+exports.checkDeleteBookcase = async function (userId, bookcaseId) {
+ 
+    
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkDeleteBookcaseRow = await bookcaseDao.checkDeleteBookcase(connection, userId,bookcaseId);
+    connection.release();
+
+    return checkDeleteBookcaseRow;
   
 };

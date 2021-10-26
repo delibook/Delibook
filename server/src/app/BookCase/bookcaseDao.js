@@ -18,6 +18,19 @@ async function selectBookListInBookCase(connection,userId,bookcaseName)
     return bookListRow[0];
 }
 
+// 내 책장 목록 조회
+async function bookcaseList(connection,userId)
+{
+    const bookcaseListQuery = `
+    select id as myBookCaseId, name as myBookCaseName
+    from MyBookList
+    where userId=? and status=0;
+`;
+    const bookcaseListRow = await connection.query(bookcaseListQuery,[userId]);
+    return bookcaseListRow[0];
+};
+
+
 // 책장이 존재하는지 체크 
 async function checkBookCase(connection,userId,bookcaseId)
 {
@@ -73,6 +86,25 @@ async function checkDrop(connection,bookcaseId,bookId)
     const  checkInsertRow = await connection.query(checkInsertQuery,[bookcaseId,bookId]);
     return checkInsertRow[0];
 }
+//책장제거
+async function deleteBookcase (connection,userId,bookcaseId){
+    const deleteBookcaseQuery=`
+    update MyBookList as bl join BookInList  as books on bl.id=books.listId set bl.status=1,books.status=1 where bl.id=? and userId=?;
+
+    `;
+    const  deleteBookcaseRow = await connection.query(deleteBookcaseQuery,[bookcaseId,userId]);
+    return deleteBookcaseRow[0];
+};
+//제거된 책장 체크
+async function checkDeleteBookcase (connection,userId,bookcaseId){
+    const deleteBookcaseQuery=`
+    select id as deletedBookcaseId
+    from MyBookList
+    where id=? and userId=?;
+    `;
+    const  checkDeleteBookcaseRow = await connection.query(deleteBookcaseQuery,[bookcaseId,userId]);
+    return checkDeleteBookcaseRow[0];
+};
 
   module.exports = {
     selectBookListInBookCase,
@@ -81,5 +113,8 @@ async function checkDrop(connection,bookcaseId,bookId)
     unLike,
     checkInsert,
     checkDrop,
+    bookcaseList,
+    deleteBookcase,
+    checkDeleteBookcase,
   };
   

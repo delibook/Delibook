@@ -55,3 +55,22 @@ const { query } = require("winston");
     const bookToBookcase = await bookcaseService.bookLike(userId, bookcaseId,bookId,type);
     return res.send(bookToBookcase);
 };
+
+/**
+ * API No. 43
+ * API Name : 특정책장제거  API
+ * [patch] /delibook/bookcase/:bookcaseId
+ */
+ exports.deleteBookcase = async function (req, res) {
+
+    
+    const bookcaseId = req.query.bookcaseId;
+    const userId= req.query.userId;
+
+
+    if (!bookcaseId) return res.send(errResponse(baseResponse.BOOKCASE_ID_EMPTY)); //5002, 책장ID을 입력하세요.
+    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY)) ; 
+
+    const deleteBookcaseResult = await bookcaseService.deleteBookcase(userId, bookcaseId);
+    return res.send(deleteBookcaseResult);
+};

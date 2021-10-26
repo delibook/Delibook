@@ -8,6 +8,9 @@ module.exports = function(app){
     //23. 마이책장에 책 넣기/빼기 
     app.post('/delibook/bookcase/:bookcaseId/:bookId/like',jwtMiddleware,bookcase.insertBook);
 
+    // 43.책장생성
+    //44.책장 삭제
+    app.patch('/delibook/bookcase/delete',bookcase.deleteBookcase);
 
 
 };

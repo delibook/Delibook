@@ -28,3 +28,26 @@ exports.getNoticeContent = async function (contentId) {
 
     return noticeContentResult;
 };
+
+
+exports.getAskedList = async function () {
+
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const askedListResult = await etcDao.getAskedList(connection);
+    connection.release();
+
+
+    return askedListResult;
+};
+
+exports.getAsked = async function (contentId) {
+
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const askedResult = await etcDao.getAsked(connection,contentId);
+    connection.release();
+
+
+    return askedResult;
+};

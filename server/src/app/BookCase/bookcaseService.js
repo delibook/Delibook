@@ -58,3 +58,26 @@ exports.bookLike = async function (userId, bookcaseId,bookId,type) {
         return errResponse(baseResponse.DB_ERROR);
     }
 }
+
+
+exports.deleteBookcase = async function (userId, bookcaseId) {
+    try {
+        
+        // 책장체크
+        const checkBookcase = await bookcaseProvider.checkBookcase(userId,bookcaseId);
+        if (checkBookcase.length < 1) 
+            return errResponse(baseResponse.BOOKCASE_NOT_MATCH); //5004 해당유저의 책장이 아닙니다. 책장Id를 확인하세요
+
+        const connection = await pool.getConnection(async (conn) => conn);
+        const deleteBookcaseRow = await bookcaseDao.deleteBookcase(connection,userId,bookcaseId);
+        connection.release(); 
+
+        const selectBookcaseThatDeleted = await bookcaseProvider.checkDeleteBookcase(userId,bookcaseId);   
+        return response(baseResponse.SUCCESS,{'DeletedBookcaseId': selectBookcaseThatDeleted[0].deletedBookcaseId});
+        
+        
+    }catch (err) {
+        logger.error(`App - deleteBookCase Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
