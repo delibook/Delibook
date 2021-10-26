@@ -25,7 +25,7 @@ const ItemLeftContainer = styled.View`
 `;
 
 const ItemRightContainer = styled.View`
-    flex: 0.5;
+    flex: 0.3;
     align-items: flex-end;
     flex-direction: column;
 `;
@@ -37,7 +37,7 @@ const ItemTitle = styled.Text`
 `;
 
 const ItemDescription = styled.Text`
-    font-size: 16px;
+    font-size: 15px;
     margin-top: 5px;
     color: ${({ theme }) => theme.listDescription};
 `;
