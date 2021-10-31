@@ -41,6 +41,15 @@ async function checkBookCase(connection,userId,bookcaseId)
     return bookListRow[0];
 }
 
+// 책장명 존재하는지 체크 
+async function checkBookCaseName(connection,userId,title)
+{
+    const bookListQuery = `
+    select bl.id as bookcaseId from MyBookList as bl join User on User.id= bl.userId where User.id=? AND bl.name like concat ("%",?,"%");
+`;
+    const bookListRow = await connection.query(bookListQuery,[userId,title]);
+    return bookListRow[0];
+}
 
 // 책장에 책 삽입
 async function Like(connection,bookcaseId,bookId)
@@ -106,6 +115,16 @@ async function checkDeleteBookcase (connection,userId,bookcaseId){
     return checkDeleteBookcaseRow[0];
 };
 
+//책장제거
+async function addBookcase (connection,userId,title){
+    const addBookcaseQuery=`
+   insert into MyBookList (userId,name) values (?,?);
+
+    `;
+    const  addBookcaseRow = await connection.query(addBookcaseQuery,[userId,title]);
+    return addBookcaseRow[0];
+};
+
   module.exports = {
     selectBookListInBookCase,
     checkBookCase,
@@ -116,5 +135,7 @@ async function checkDeleteBookcase (connection,userId,bookcaseId){
     bookcaseList,
     deleteBookcase,
     checkDeleteBookcase,
+    checkBookCaseName,
+    addBookcase,
   };
   

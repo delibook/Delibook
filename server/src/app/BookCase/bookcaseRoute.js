@@ -9,6 +9,7 @@ module.exports = function(app){
     app.post('/delibook/bookcase/:bookcaseId/:bookId/like',jwtMiddleware,bookcase.insertBook);
 
     // 43.책장생성
+    app.post('/delibook/bookcase/add',bookcase.addBookcase);
     //44.책장 삭제
     app.patch('/delibook/bookcase/delete',bookcase.deleteBookcase);
 

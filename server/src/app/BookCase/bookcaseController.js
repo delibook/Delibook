@@ -55,11 +55,29 @@ const { query } = require("winston");
     const bookToBookcase = await bookcaseService.bookLike(userId, bookcaseId,bookId,type);
     return res.send(bookToBookcase);
 };
-
 /**
- * API No. 43
+ * API No. 44
+ * API Name : 책장생성  API
+ * [patch] /delibook/bookcase/add
+ */
+ exports.addBookcase = async function (req, res) {
+
+    
+   
+    const userId= req.query.userId;
+    const title=req.body.title ;
+
+
+    if (!title) return res.send(errResponse(baseResponse.BOOKCASE_NAME_EMPTY)); //5000, 책장명을 입력하세요.
+    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY)) ; 
+
+    const addBookcaseResult = await bookcaseService.addBookcase(userId,title);
+    return res.send(addBookcaseResult);
+};
+/**
+ * API No. 44
  * API Name : 특정책장제거  API
- * [patch] /delibook/bookcase/:bookcaseId
+ * [patch] /delibook/bookcase/delete
  */
  exports.deleteBookcase = async function (req, res) {
 

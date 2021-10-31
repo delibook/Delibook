@@ -81,3 +81,25 @@ exports.deleteBookcase = async function (userId, bookcaseId) {
         return errResponse(baseResponse.DB_ERROR);
     }
 }
+
+
+exports.addBookcase = async function (userId, title) {
+    try {
+        
+        // 해당 유저에게 동일한 이름의 책장이 있는지 체크 
+        const checkBookcaseName = await bookcaseProvider.checkBookcaseName(userId,title);
+        if (checkBookcaseName.length  >= 1) 
+            return errResponse(baseResponse.BOOKCASE_NAME_REDUNDANT); //5007 동일한 책장이 존재합니다. 이름을 다시 설정해주세요.
+
+        const connection = await pool.getConnection(async (conn) => conn);
+        const addBookcaseRow = await bookcaseDao.addBookcase(connection,userId,title);
+        connection.release(); 
+        console.log(addBookcaseRow.insertId);
+        return response(baseResponse.SUCCESS,{'addBookcaseId': addBookcaseRow.insertId});
+        
+        
+    }catch (err) {
+        logger.error(`App - addBookCase Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
