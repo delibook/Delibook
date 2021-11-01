@@ -1,51 +1,51 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
 import { UserContext } from '../contexts';
-import axios from'axios';
+import axios from 'axios';
 
 const Container = styled.View`
   flex: 1;
-  background-color: ${({theme}) => theme.background};
+  background-color: ${({ theme }) => theme.background};
 `;
 
 const ItemContainer = styled.TouchableOpacity`
-    flex-direction: row;
-    align-items: center;
-    border-bottom-width: 1px;
-    border-color: ${({ theme }) => theme.listBorder};
-    padding: 10px 15px;
-    margin-right: 20px;
-    margin-left: 20px;
+  flex-direction: row;
+  align-items: center;
+  border-bottom-width: 1px;
+  border-color: ${({ theme }) => theme.listBorder};
+  padding: 10px 15px;
+  margin-right: 20px;
+  margin-left: 20px;
 `;
 
 const ItemLeftContainer = styled.View`
-    flex: 1;
-    flex-direction: column;
+  flex: 1;
+  flex-direction: column;
 `;
 
 const ItemRightContainer = styled.View`
-    flex: 0.5;
-    align-items: flex-end;
-    flex-direction: column;
+  flex: 0.5;
+  align-items: flex-end;
+  flex-direction: column;
 `;
 
 const ItemTitle = styled.Text`
-    font-size: 20px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.listTitle};
+  font-size: 20px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.listTitle};
 `;
 
 const ItemDescription = styled.Text`
-    font-size: 16px;
-    margin-top: 5px;
-    color: ${({ theme }) => theme.listDescription};
+  font-size: 16px;
+  margin-top: 5px;
+  color: ${({ theme }) => theme.listDescription};
 `;
 
 const ItemPrice = styled.Text`
-    font-size: 12px;
-    margin-top: 5px;
-    color: ${({ theme }) => theme.listPrice};
+  font-size: 12px;
+  margin-top: 5px;
+  color: ${({ theme }) => theme.listPrice};
 `;
 
 const librarys = [];
@@ -59,16 +59,20 @@ for (let idx = 0; idx < 1000; idx++) {
   });
 }
 
-
 const Item = React.memo(
-  ({ item: { id, name, cityName, sigunguName, closeDay, type, tip }, onPress }) => {
+  ({
+    item: { id, name, cityName, sigunguName, closeDay, type, tip },
+    onPress,
+  }) => {
     const theme = useContext(ThemeContext);
 
     return (
       <ItemContainer onPress={() => onPress({ id, title })}>
         <ItemLeftContainer>
           <ItemTitle>{name}</ItemTitle>
-          <ItemDescription>{cityName} {sigunguName}</ItemDescription>
+          <ItemDescription>
+            {cityName} {sigunguName}
+          </ItemDescription>
           <ItemDescription>휴관일 | {closeDay}</ItemDescription>
         </ItemLeftContainer>
         <ItemRightContainer>
@@ -77,69 +81,83 @@ const Item = React.memo(
         </ItemRightContainer>
       </ItemContainer>
     );
-  }
+  },
 );
 
 const LibraryList = ({ navigation }) => {
   const [librarys, setLibrarys] = useState([]);
   const [distance, setDistance] = useState('');
   const [search, setSearch] = useState('어린이');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { user } = useContext(UserContext);
+  const fetchItems = useCallback(() => {
+    if (!librarys) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  });
 
   useEffect(() => {
     try {
       const param = {
         distance: `${distance}`,
-        search: `${search}`
-      }
+        search: `${search}`,
+      };
       axios({
         method: 'get',
         url: 'https://dev.delibook.shop/delibook/library',
         params: { param },
         headers: {
-          'x-access-token': `${user?.token}`
-        }
+          'x-access-token': `${user?.token}`,
+        },
       })
-      .then(function(response){
-        const result = response.data.result;
-        const list = []
-        for (let i = 0; i < result.length; i++) {
-          list.push({
-            id: result[i].id,
-            name: result[i].name,
-            cityName: result[i].cityName,
-            sigunguName: result[i].sigunguName,
-            closeDay: result[i].closeDay,
-            type: result[i].type,
-            tip: result[i].tip,
-          });
-        }
-        setLibrarys(list);
-        return response.res;
-      })
-      .catch(function(error){
-        console.log(error);
-        alert("Error",error);
-      });
+        .then(function (response) {
+          const result = response.data.result;
+          const list = [];
+          0;
+          console.log(1);
+          console.log(`result:`, result);
+          for (let i = 0; i < result.length; i++) {
+            list.push({
+              id: result[i].id,
+              name: result[i].name,
+              cityName: result[i].cityName,
+              sigunguName: result[i].sigunguName,
+              closeDay: result[i].closeDay,
+              type: result[i].type,
+              tip: result[i].tip,
+            });
+          }
+          setLibrarys(list);
+          return response.res;
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert('Error', error);
+        });
     } catch (e) {
       console.log(e);
-      alert("Error", e);
+      alert('Error', e);
     } finally {
     }
   }, [distance, search, user]);
 
-  const _handleItemPress = params => {
+  const _handleItemPress = (params) => {
     navigation.navigate('도서', params);
   };
 
   return (
     <Container>
       <FlatList
-        keyExtractor={item => item['id'].toString()}
+        keyExtractor={(item) => item['id'].toString()}
         data={librarys}
         renderItem={({ item }) => (
           <Item item={item} onPress={_handleItemPress} />
         )}
+        onRefresh={fetchItems}
+        refreshing={isRefreshing}
         windowSize={3}
       />
     </Container>
