@@ -5,11 +5,11 @@ const bookcaseDao = require("./bookcaseDao");
 
 // Provider: Read 비즈니스 로직 처리
 
-exports.bookList = async function (userId, bookcaseName) {
+exports.bookListInBookcase = async function (userId, bookcaseId) {
  
-    bookcaseTitle =  "%" + bookcaseName +  "%";
+    
     const connection = await pool.getConnection(async (conn) => conn);
-    const bookListResult = await bookcaseDao.selectBookListInBookCase(connection, userId,bookcaseTitle);
+    const bookListResult = await bookcaseDao.selectBookListInBookCase(connection, userId,bookcaseId);
     connection.release();
 
     return bookListResult;

@@ -11,7 +11,7 @@ const { query } = require("winston");
 
 /**
  * API No. 7
- * API Name : 특정 책장의 책 조회 API
+ * API Name : 특정 책장의 책 조회 API+마이책장조회
  * [GET] /delibook/bookcase/books
  */
  exports.getBookList = async function (req, res) {
@@ -19,12 +19,15 @@ const { query } = require("winston");
     /**
      * Path Variable: bookcaseName
      */
-    const bookcaseName = req.query.bookcaseName;
-    const userId= req.verifiedToken.userId;
-    if (!bookcaseName) return res.send(errResponse(baseResponse.BOOKCASE_NAME_EMPTY)); //5000, 책장명을 입력하세요.
-    if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
+    const bookcaseId = req.query.bookcaseId;
+    const userId= req.query.userId;
 
-    const booklistInbookcase = await bookcaseProvider.bookList(userId, bookcaseName);
+    if (!userId) return res.send(errResponse(baseResponse.USER_ID_EMPTY)) ; //2012
+    if (!bookcaseId) {
+        const bookcaseList = await bookcaseProvider.bookcaseList(userId);
+        return res.send(response(baseResponse.SUCCESS, bookcaseList));
+    } 
+    const booklistInbookcase = await bookcaseProvider.bookListInBookcase(userId, bookcaseId);
     return res.send(response(baseResponse.SUCCESS, booklistInbookcase));
 };
 
