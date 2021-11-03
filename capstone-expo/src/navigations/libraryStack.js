@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Login, Mypage } from '../screens';
+import BookList from '../screens'
 import TabNavigation from './bottom-tab';
 
 const Stack = createStackNavigator();
@@ -28,8 +28,7 @@ const MainStack = () => {
         component={TabNavigation} 
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Mypage" component={Mypage} />
-      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name='BookList' component={BookList} />
     </Stack.Navigator>
   );
 };
