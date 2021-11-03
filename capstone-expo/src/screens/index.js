@@ -6,4 +6,15 @@ import PhoneCode from './phoneCode';
 import ShowId from './showId';
 import Home from './home';
 import LibraryList from './libraryList';
-export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList };
+import Bag from './bag';
+export {
+  Login,
+  Join,
+  Mypage,
+  FindId,
+  PhoneCode,
+  ShowId,
+  Home,
+  LibraryList,
+  Bag,
+};
