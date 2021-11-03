@@ -326,16 +326,17 @@ exports.verifyPhoneNumber = async function (req, res) {
 
 };
 
-// 반납 결제
+// 대출 결제
 let tid;
-let userId, item_name, quantity, total_amount;
+let userId, item_name, quantity, price, cartId;
 
 exports.return = async function(req,res) {
 
-    userId = req.verifiedToken.userId;              // jwt 토큰에서 받아오는 userId
-    item_name = req.query.item_name         // 상품명
-    quantity = req.query.quantity           // 상품 개수
-    total_amount = req.query.total_amount   // 상품 가격
+    userId = req.verifiedToken.userId;        // jwt 토큰에서 받아오는 userId
+    item_name = req.query.item_name;         // 상품명
+    quantity = req.query.quantity;           // 상품 개수
+    price = req.query.price;   // 상품 가격
+    cartId = req.query.cartId;
 
 
     let headers = {
@@ -346,10 +347,10 @@ exports.return = async function(req,res) {
     let params = {
         'cid': 'TC0ONETIME', // 테스트 코드
         'partner_order_id': '1',
-        'partner_user_id': `1`,
-        'item_name': `이코테`,
-        'quantity': 1,
-        'total_amount': 1,
+        'partner_user_id': `${userId}`,
+        'item_name': `${item_name}`,
+        'quantity': quantity,
+        'total_amount': price,
         'vat_amount': 0,
         'tax_free_amount': 0,
         'approval_url': 'http://localhost:3000/payment/approve',
@@ -364,7 +365,7 @@ exports.return = async function(req,res) {
         form : params
     };
 
-    let next_redirect_pc_url;
+    let next_redirect_app_url;
 
     request(options, function result(error, response, body) {
         if (!error && response.statusCode === 200) {
@@ -377,7 +378,7 @@ exports.return = async function(req,res) {
     });
 }
 
-//반납결제 승인요청
+//대출결제 승인요청
 exports.success = async function (req, res) {
     const pg_token = req.query.pg_token;
     let headers = {
@@ -389,7 +390,7 @@ exports.success = async function (req, res) {
         'cid' : 'TC0ONETIME',
         'tid' : `${tid}`,
         'partner_order_id':'1',
-        'partner_user_id' : '1',
+        'partner_user_id' : `${userId}`,
         'pg_token' : `${pg_token}`
     }
 
@@ -403,7 +404,8 @@ exports.success = async function (req, res) {
     request(options, function result(error, response, body) {
 
         if (!error && response.statusCode === 200) {
-            console.log(JSON.parse(body));
+            const insertBuyInfoResult = userService.insertBuyInfo(userId, cartId, price);
+            //나중에 결제완료 창으로 redirect되도록 만들예정
         } else console.log("결제 승인 실패")
 
     });

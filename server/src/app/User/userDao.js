@@ -201,6 +201,51 @@ async function withdrawUser(connection, userId) {
   return withdrawUserRow;
 }
 
+// 대출 정보 삽입
+async function insertLoanInfo(connection, userId, cartId, price) {
+  const insertLoanInfoQuery = `
+    INSERT INTO UsageInformation
+      (userId, cartId, price, status, toReturnDate)
+    VALUES
+      (?, ?, ?, 1, date_add(now(),interval 7 Day));
+  `
+  const [insertLoanInfoResult] = await connection.query(insertLoanInfoQuery, [userId, cartId, price]);
+  return insertLoanInfoResult;
+}
+
+//주문 책 수량 조회
+async function getBookAmount(connection, cartId) {
+  const getBookAmountQuery = `
+    select bookId, quantity
+    from BookInCart bic
+    where status = 0
+      and bic.cartId = ?
+  `
+  const [getBookAmountResult] = await connection.query(getBookAmountQuery, cartId);
+  return getBookAmountResult;
+}
+
+//수량만큼 재고에서 차감
+async function updateBookAmount(connection, bookId, quantity) {
+  const updateBookAmountQuery = `
+    update Book
+    set quantity = quantity - ?
+    where id = ?;
+  `
+  const [updateBookAmountResult] = await connection.query(updateBookAmountQuery, [quantity, bookId]);
+  return updateBookAmountResult;
+}
+
+//cart status 주문완료로 바꾸기
+async function updateCart(connection, cartId) {
+  const updateCartQuery = `
+    update Cart
+    set status = 1
+    where id = ?;
+  `
+  const [updateCartResult] = await connection.query(updateCartQuery, cartId);
+  return updateCartResult;
+}
 
 module.exports = {
   selectUser,
@@ -217,4 +262,8 @@ module.exports = {
   checkUserInfo,
   selectUserPasswordForWithdraw,
   withdrawUser,
+  insertLoanInfo,
+  getBookAmount,
+  updateBookAmount,
+  updateCart
 };

@@ -162,3 +162,32 @@ exports.withdraw = async function (userId,password) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+//대출 정보 입력 && 대출책 재고 차감 && cart status 변경
+exports.insertBuyInfo = async function(userId, cartId, price) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    console.log(userId, cartId, price)
+    try{
+        connection.beginTransaction();
+
+        //대출정보 삽입
+        const insertLoanInfoResult = await userDao.insertLoanInfo(connection, userId, cartId, price);
+
+        //장바구니 책 수량 조회하여 재고에서 빼기
+        const getBookAmountResult = await userDao.getBookAmount(connection, cartId);
+        for (let i = 0;i<getBookAmountResult.length;i++) {
+            const updateBookAmountResult = await userDao.updateBookAmount(connection, getBookAmountResult[i].bookId, getBookAmountResult[i].quantity);
+        }
+
+        //cart status 바꾸기
+        const updateCartResult = await userDao.updateCart(connection, cartId);
+
+        connection.commit();
+        connection.release();
+        return response(baseResponse.SUCCESS);
+    }catch (e) {
+        console.log(`service error : ${e.message}`);
+        connection.rollback()
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
