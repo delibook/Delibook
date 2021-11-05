@@ -166,7 +166,6 @@ exports.withdraw = async function (userId,password) {
 //대출 정보 입력 && 대출책 재고 차감 && cart status 변경
 exports.insertBuyInfo = async function(userId, cartId, price) {
     const connection = await pool.getConnection(async (conn) => conn);
-    console.log(userId, cartId, price)
     try{
         connection.beginTransaction();
 
@@ -181,6 +180,31 @@ exports.insertBuyInfo = async function(userId, cartId, price) {
 
         //cart status 바꾸기
         const updateCartResult = await userDao.updateCart(connection, cartId);
+
+        connection.commit();
+        connection.release();
+        return response(baseResponse.SUCCESS);
+    }catch (e) {
+        console.log(`service error : ${e.message}`);
+        connection.rollback()
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+//내역 status 반납으로 변경 && 책 재고 +
+exports.updateBuyInfo = async function(cartId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try{
+        connection.beginTransaction();
+
+        //내역 status 반납으로 변경
+        const patchReturnInfoResult = await userDao.patchReturnInfo(connection, cartId);
+
+        //장바구니 책 수량 조회하여 재고에서 더하기
+        const getBookAmountResult = await userDao.getBookAmount(connection, cartId);
+        for (let i = 0;i<getBookAmountResult.length;i++) {
+            const updateBookAmountResult = await userDao.updateBookAmountPlus(connection, getBookAmountResult[i].bookId, getBookAmountResult[i].quantity);
+        }
 
         connection.commit();
         connection.release();

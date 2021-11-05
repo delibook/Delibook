@@ -30,8 +30,14 @@ module.exports = function(app){
     app.post('/delibook/user/findId-form', user.findId)
 
     // 대출 결제 준비
-    app.get('/delibook/loan', jwtMiddleware, user.return);
+    app.post('/delibook/loan', jwtMiddleware, user.loan);
 
     // 대출 결제 승인 요청
-    app.get('/payment/approve', user.success);
+    app.get('/loan/payment/approve', user.loan_success);
+
+    // 반납 결제 준비
+    app.post('/delibook/return', jwtMiddleware, user.return);
+
+    // 반납 결제 승인 요청
+    app.get('/return/payment/approve', user.return_success);
 };
