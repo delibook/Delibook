@@ -54,7 +54,7 @@ const Item = React.memo(
     const theme = useContext(ThemeContext);
 
     return (
-      <ItemContainer onPress={() => onPress({ id })}>
+      <ItemContainer onPress={() => onPress({ id, name })}>
         <ItemLeftContainer>
           <ItemTitle>{name}</ItemTitle>
           <ItemDescription>{cityName} {sigunguName}</ItemDescription>

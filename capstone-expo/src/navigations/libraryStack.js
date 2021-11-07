@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { BookList, LibraryList } from '../screens';
-import BookTab from './bookStack';
+import { BookList, LibraryList, Information } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -14,7 +13,13 @@ const LibraryStack = () => {
         name="도서관목록" 
         component={LibraryList} 
       />
-      <Stack.Screen name="도서목록" component={BookList} />
+      <Stack.Screen 
+      name="도서목록" 
+      component={BookList} 
+      options={({ navigation, route }) => ({ 
+        headerTitle: route.params.name,
+      })}/>
+      <Stack.Screen name="편의정보" component={Information} />
     </Stack.Navigator>
   );
 };

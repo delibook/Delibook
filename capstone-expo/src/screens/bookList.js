@@ -1,7 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { FlatList } from 'react-native';
+import React, { useContext, useState, useEffect, useCallback, useLayoutEffect } from 'react';
+import { FlatList, Button, Text } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
 import { UserContext } from '../contexts';
+import {FontAwesome} from '@expo/vector-icons';
 import axios from'axios';
 
 const Container = styled.View`
@@ -9,7 +10,7 @@ const Container = styled.View`
   background-color: ${({theme}) => theme.background};
 `;
 
-const ItemContainer = styled.TouchableOpacity`
+const ItemContainer = styled.View`
     flex-direction: row;
     align-items: center;
     border-bottom-width: 1px;
@@ -21,8 +22,9 @@ const ItemContainer = styled.TouchableOpacity`
 
 const ItemImageContainer = styled.Image`
     flex: 0.2;
-    width: 80;
-    height: 80;
+    width: 100%;
+    height: 100%;
+    resizeMode: contain;
     margin-right: 10px;
 `;
 
@@ -37,16 +39,30 @@ const ItemRightContainer = styled.View`
     flex-direction: column;
 `;
 
+const ItemBottomContainer = styled.View`
+    flex: 1;
+    flex-direction: row;
+`;
+
 const ItemTitle = styled.Text`
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     color: ${({ theme }) => theme.listTitle};
 `;
 
-const ItemDescription = styled.Text`
+const ItemAuthor = styled.Text`
+    flex: 0.9;
     font-size: 15px;
     margin-top: 5px;
-    color: ${({ theme }) => theme.listDescription};
+    margin-right: 30px;
+    color: #6F6F6F;
+`;
+
+const ItemPublisher = styled.Text`
+    flex: 1;
+    font-size: 15px;
+    margin-top: 5px;
+    color: #6F6F6F;
 `;
 
 const ItemPrice = styled.Text`
@@ -55,9 +71,28 @@ const ItemPrice = styled.Text`
     color: ${({ theme }) => theme.listPrice};
 `;
 
+const ButtonContainer = styled.TouchableOpacity`
+    width: 90px;
+    align-items: center;
+    border-radius: 4px;
+    padding: 5px;
+    margin-top: 5px;
+    margin-right: 30px;
+    background-color: #00A5F1;
+`;
+
+const ButtonTitle = styled.Text`
+    font-size: 16px;
+    color: ${({ theme}) => theme.buttonTitle};
+`;
+
 const Item = React.memo(
   ({ item: { id, imageURL, name, author, publisher, quantity }, onPress }) => {
     const theme = useContext(ThemeContext);
+
+    const _handleLoanPress = useCallback(async() => {
+
+    }, []);
 
     return (
       <ItemContainer onPress={() => onPress({ id })}>
@@ -68,8 +103,18 @@ const Item = React.memo(
         />
         <ItemLeftContainer>
           <ItemTitle>{name}</ItemTitle>
-          <ItemDescription>{author}</ItemDescription>
-          <ItemDescription>출판사 | {publisher}</ItemDescription>
+          <ItemBottomContainer>
+            <ItemAuthor>{author}</ItemAuthor>
+            <ItemPublisher>{publisher}</ItemPublisher>
+          </ItemBottomContainer>
+          <ItemBottomContainer>
+            <ButtonContainer onPress={_handleLoanPress}>
+              <ButtonTitle>대출</ButtonTitle>
+            </ButtonContainer>
+            <ButtonContainer>
+              <ButtonTitle>책가방 담기</ButtonTitle>
+            </ButtonContainer>
+          </ItemBottomContainer>
         </ItemLeftContainer>
         <ItemRightContainer>
           <ItemPrice>재고: {quantity}</ItemPrice>
@@ -84,6 +129,22 @@ const BookList = ({ navigation, route }) => {
   const [books, setBooks] = useState([]);
   const [category, setCategory] = useState('');
   const [search, setSearch] = useState('');
+  const [like, setLike] = useState(0);
+  const { user } = useContext(UserContext);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <FontAwesome
+          style={{ right: 20 }}
+          size={25}
+          color="red"
+          name={like > 0 ? "heart-o":"heart"}
+          onPress={() => like > 0 ? setLike(0):setLike(1)} 
+        />
+      ),
+    });
+  }, [navigation, setLike, like]);
 
   useEffect(() => {
     try {
