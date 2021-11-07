@@ -126,7 +126,6 @@ const LibraryList = ({ navigation }) => {
   };
 
   const _handleSearchSubmit = useCallback(async() => {
-    console.log(search);
     try {
       axios({
         method: 'get',

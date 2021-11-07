@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect, useCallback, useLayoutEffect } from 'react';
-import { FlatList, Button, Text } from 'react-native';
+import { FlatList, Alert } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
 import { UserContext } from '../contexts';
-import {FontAwesome} from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import { SearchBar } from '../components';
 import axios from'axios';
 
 const Container = styled.View`
@@ -72,6 +73,7 @@ const ItemPrice = styled.Text`
 `;
 
 const ButtonContainer = styled.TouchableOpacity`
+    flex: 1;
     width: 90px;
     align-items: center;
     border-radius: 4px;
@@ -87,12 +89,40 @@ const ButtonTitle = styled.Text`
 `;
 
 const Item = React.memo(
-  ({ item: { id, imageURL, name, author, publisher, quantity }, onPress }) => {
+  ({ item: { id, imageURL, name, author, publisher, quantity, libraryId }, onPress }) => {
     const theme = useContext(ThemeContext);
+    const { user } = useContext(UserContext);
+
 
     const _handleLoanPress = useCallback(async() => {
 
     }, []);
+
+    const _handleBagPress = useCallback(async() => {
+      try {
+        axios({
+          method: 'post',
+          url: 'https://dev.delibook.shop/delibook/cart/insert',
+          params: {
+            bookId: `${id}`,
+            libraryId: `${libraryId}`,
+          },
+          headers: {
+            'x-access-token': `${user?.token}`
+          }
+        })
+        .then(function(response){
+          Alert.alert("알림", "책가방에 담겼습니다.");
+          return response.data;
+        })
+        .catch(function(error){
+          alert("Error",error);
+        });
+      } catch (e) {
+        alert(libraryId);
+      } finally {
+      }
+    }, [id, libraryId, user]);
 
     return (
       <ItemContainer onPress={() => onPress({ id })}>
@@ -111,7 +141,7 @@ const Item = React.memo(
             <ButtonContainer onPress={_handleLoanPress}>
               <ButtonTitle>대출</ButtonTitle>
             </ButtonContainer>
-            <ButtonContainer>
+            <ButtonContainer onPress={_handleBagPress}>
               <ButtonTitle>책가방 담기</ButtonTitle>
             </ButtonContainer>
           </ItemBottomContainer>
@@ -132,6 +162,29 @@ const BookList = ({ navigation, route }) => {
   const [like, setLike] = useState(0);
   const { user } = useContext(UserContext);
 
+  const _handleLikePress = useCallback(async() => {
+    const libraryId = route.params.id;
+    try {
+      axios({
+        method: 'post',
+        url: 'https://dev.delibook.shop/delibook/library/'+libraryId+'/like',
+        headers: {
+          'x-access-token': `${user?.token}`
+        }
+      })
+      .then(function(response){
+        console.log(response);
+        return response.data;
+      })
+      .catch(function(error){
+        alert("Error",error);
+      });
+    } catch (e) {
+      alert(libraryId);
+    } finally {
+    }
+  }, [route.params.id, user]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -140,7 +193,7 @@ const BookList = ({ navigation, route }) => {
           size={25}
           color="red"
           name={like > 0 ? "heart-o":"heart"}
-          onPress={() => like > 0 ? setLike(0):setLike(1)} 
+          onPress={_handleLikePress} 
         />
       ),
     });
@@ -168,6 +221,7 @@ const BookList = ({ navigation, route }) => {
             author: result[i].author,
             publisher: result[i].publisher,
             quantity: result[i].quantity,
+            libraryId: route.params.id,
           });
         }
         setBooks(list);
@@ -182,14 +236,63 @@ const BookList = ({ navigation, route }) => {
       alert("Error", e);
     } finally {
     }
-  }, [category, search]);
+  }, [category, search, setBooks, route.params.id]);
 
   const _handleItemPress = params => {
     navigation.navigate('도서목록', params);
   };
+
+  const _handleBookSearchChange = (search) => {
+    setSearch(search);
+  };
+
+  const _handleBookSearchSubmit = useCallback(async() => {
+    try {
+      axios({
+        method: 'get',
+        url: 'https://dev.delibook.shop/delibook/library/'+id+'/book',
+        params: { 
+          search: `${search}` 
+        },
+        headers: {
+          'x-access-token': `${user?.token}`
+        }
+      })
+      .then(function(response){
+        const result = response.data.result;
+        const list = []
+        for (let i = 0; i < result.length; i++) {
+          list.push({
+            id: result[i].id,
+            imageURL: result[i].imageURL,
+            name: result[i].name,
+            author: result[i].author,
+            publisher: result[i].publisher,
+            quantity: result[i].quantity,
+          });
+        }
+        setBooks(list);
+        return response.res;
+      })
+      .catch(function(error){
+        console.log(error);
+        alert("Error",error);
+      });
+    } catch (e) {
+      console.log(e);
+      alert("Error", e);
+    } finally {
+    }
+  }, [search, user, setBooks]);
   
   return (
     <Container>
+      <SearchBar 
+        value={search}
+        onChangeText={_handleBookSearchChange}
+        onSubmitEditing={_handleBookSearchSubmit}
+        placeholder="도서명을 입력하세요"
+      />
       <FlatList
         keyExtractor={item => item['id'].toString()}
         data={books}
