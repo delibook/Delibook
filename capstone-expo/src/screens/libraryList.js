@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
 import { UserContext } from '../contexts';
@@ -121,9 +121,60 @@ const LibraryList = ({ navigation }) => {
     navigation.navigate('도서목록', params);
   };
 
+  const _handleSearchChange = (search) => {
+    setSearch(search);
+  };
+
+  const _handleSearchSubmit = useCallback(async() => {
+    console.log(search);
+    try {
+      axios({
+        method: 'get',
+        url: 'https://dev.delibook.shop/delibook/library',
+        params: { 
+          search: `${search}` 
+        },
+        headers: {
+          'x-access-token': `${user?.token}`
+        }
+      })
+      .then(function(response){
+        const result = response.data.result;
+        const list = []
+        for (let i = 0; i < result.length; i++) {
+          list.push({
+            id: result[i].id,
+            name: result[i].name,
+            cityName: result[i].cityName,
+            sigunguName: result[i].sigunguName,
+            closeDay: result[i].closeDay,
+            type: result[i].type,
+            tip: result[i].tip,
+          });
+        }
+        console.log(list);
+        setLibrarys(list);
+        return response.res;
+      })
+      .catch(function(error){
+        console.log(error);
+        alert("Error",error);
+      });
+    } catch (e) {
+      console.log(e);
+      alert("Error", e);
+    } finally {
+    }
+  }, [distance, search, user]);
+
   return (
     <Container>
-      <SearchBar />
+      <SearchBar 
+        value={search}
+        onChangeText={_handleSearchChange}
+        onSubmitEditing={_handleSearchSubmit}
+        placeholder="도서관을 입력하세요"
+      />
       <FlatList
         keyExtractor={item => item['id'].toString()}
         data={librarys}

@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
+import propTypes from 'prop-types';
 
 const SearchBarWrapper = styled.View`
   flex-direction: row;
@@ -13,18 +14,13 @@ const SearchBarWrapper = styled.View`
 `;
 
 const SearchInput = styled.TextInput`
+  width: 300px;
   margin-left: 10px;
   include-font-padding: false;
   padding: 0px;
 `;
 
-const SearchIcon = styled.Image`
-  width: 18px;
-  height: 18px;
-`;
-
-const SearchBar = () => {
-    const [value, setValue] = useState('');
+const SearchBar = ({value, onChangeText, onSubmitEditing, placeholder}) => {
 
     return (
         <SearchBarWrapper>
@@ -32,14 +28,22 @@ const SearchBar = () => {
           <SearchInput
             autoCapitalize="none"
             autoCorrect={false}
-            onChangeText={setValue}
-            placeholder="검색어를 입력해 주세요."
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmitEditing}
+            placeholder={placeholder}
             returnKeyType="search"
             returnKeyLabel="search"
             value={value}
           />
         </SearchBarWrapper>
       );
+};
+
+SearchBar.propTypes = {
+  value: propTypes.string.isRequired,
+  onChangeText: propTypes.func.isRequired,
+  onSubmitEditing: propTypes.func.isRequired,
+  placeholder: propTypes.string,
 };
 
 export default SearchBar;
