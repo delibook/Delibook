@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
 import { UserContext } from '../contexts';
 import axios from'axios';
@@ -19,13 +19,20 @@ const ItemContainer = styled.TouchableOpacity`
     margin-left: 20px;
 `;
 
+const ItemImageContainer = styled.Image`
+    flex: 0.2;
+    width: 80;
+    height: 80;
+    margin-right: 10px;
+`;
+
 const ItemLeftContainer = styled.View`
     flex: 1;
     flex-direction: column;
 `;
 
 const ItemRightContainer = styled.View`
-    flex: 0.3;
+    flex: 0.2;
     align-items: flex-end;
     flex-direction: column;
 `;
@@ -54,6 +61,11 @@ const Item = React.memo(
 
     return (
       <ItemContainer onPress={() => onPress({ id })}>
+        <ItemImageContainer 
+          source={{
+            uri: `${imageURL}`,
+          }}
+        />
         <ItemLeftContainer>
           <ItemTitle>{name}</ItemTitle>
           <ItemDescription>{author}</ItemDescription>
