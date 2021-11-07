@@ -1,6 +1,6 @@
 
 // 내 책장의 책 목록 조회
-async function selectBookListInBookCase(connection,userId,bookcaseName)
+async function selectBookListInBookCase(connection,userId,bookcaseId)
 {
     const bookListQuery = `
         select myBookList.name as BookListName,l.name as libraryName, c.name as category , book.name as bookTitle,
@@ -12,11 +12,24 @@ async function selectBookListInBookCase(connection,userId,bookcaseName)
         join Library as l  on l.id= book.libraryId
         join BookCategory as c on c.id=book.categoryId
     
-        where userId= ? AND myBookList.name like ?
+        where userId= ? AND myBookList.id = ?
 `;
-    const bookListRow = await connection.query(bookListQuery,[userId,bookcaseName]);
+    const bookListRow = await connection.query(bookListQuery,[userId,bookcaseId]);
     return bookListRow[0];
 }
+
+// 내 책장 목록 조회
+async function bookcaseList(connection,userId)
+{
+    const bookcaseListQuery = `
+    select id as myBookCaseId, name as myBookCaseName
+    from MyBookList
+    where userId=? and status=0;
+`;
+    const bookcaseListRow = await connection.query(bookcaseListQuery,[userId]);
+    return bookcaseListRow[0];
+};
+
 
 // 책장이 존재하는지 체크 
 async function checkBookCase(connection,userId,bookcaseId)
@@ -28,6 +41,15 @@ async function checkBookCase(connection,userId,bookcaseId)
     return bookListRow[0];
 }
 
+// 책장명 존재하는지 체크 
+async function checkBookCaseName(connection,userId,title)
+{
+    const bookListQuery = `
+    select bl.id as bookcaseId from MyBookList as bl join User on User.id= bl.userId where User.id=? AND bl.name like concat ("%",?,"%");
+`;
+    const bookListRow = await connection.query(bookListQuery,[userId,title]);
+    return bookListRow[0];
+}
 
 // 책장에 책 삽입
 async function Like(connection,bookcaseId,bookId)
@@ -73,6 +95,35 @@ async function checkDrop(connection,bookcaseId,bookId)
     const  checkInsertRow = await connection.query(checkInsertQuery,[bookcaseId,bookId]);
     return checkInsertRow[0];
 }
+//책장제거
+async function deleteBookcase (connection,userId,bookcaseId){
+    const deleteBookcaseQuery=`
+    update MyBookList as bl join BookInList  as books on bl.id=books.listId set bl.status=1,books.status=1 where bl.id=? and userId=?;
+
+    `;
+    const  deleteBookcaseRow = await connection.query(deleteBookcaseQuery,[bookcaseId,userId]);
+    return deleteBookcaseRow[0];
+};
+//제거된 책장 체크
+async function checkDeleteBookcase (connection,userId,bookcaseId){
+    const deleteBookcaseQuery=`
+    select id as deletedBookcaseId
+    from MyBookList
+    where id=? and userId=?;
+    `;
+    const  checkDeleteBookcaseRow = await connection.query(deleteBookcaseQuery,[bookcaseId,userId]);
+    return checkDeleteBookcaseRow[0];
+};
+
+//책장제거
+async function addBookcase (connection,userId,title){
+    const addBookcaseQuery=`
+   insert into MyBookList (userId,name) values (?,?);
+
+    `;
+    const  addBookcaseRow = await connection.query(addBookcaseQuery,[userId,title]);
+    return addBookcaseRow[0];
+};
 
   module.exports = {
     selectBookListInBookCase,
@@ -81,5 +132,10 @@ async function checkDrop(connection,bookcaseId,bookId)
     unLike,
     checkInsert,
     checkDrop,
+    bookcaseList,
+    deleteBookcase,
+    checkDeleteBookcase,
+    checkBookCaseName,
+    addBookcase,
   };
   

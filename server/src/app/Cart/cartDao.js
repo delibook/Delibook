@@ -5,12 +5,25 @@ async function selectCart(connection,userId)
     const selectCartQuery = `
     select distinct c.id as cartId ,l.id as libraryId,l.name as library , b.id as bookId,b.imageURL as bookThumbnail,
                 b.name as bookTitle , b.author , (select case when b.quantity !=0 then "대여가능" else "대여불가능" end)
-              as canLoan, b.quantity as bookQuantity
-    from Cart as c join Library as l on c.libraryId = l.id
+              as canLoan, b.quantity as bookQuantity, (select IFNULL(MAX((select case when Distance.distance <= 1 then l.tip
+            when Distance.distance between 1 and 2 then  l.tip+l.plusTip
+            when Distance.distance between 2 and 3 then  l.tip+(l.plusTip*2)
+            when Distance.distance between 3 and 4 then  l.tip+(l.plusTip*3)
+            when Distance.distance between 4 and 5 then l.tip+(l.plusTip*4)
+            else '배달불가' end )),'주소설정필수' )) as cost
+from Cart as c join Library as l on c.libraryId = l.id
                join BookInCart as bc on c.id = bc.cartId
                join Book as b on bc.bookId = b.id
                join User as user on user.id= c.userId
-    where user.id=? && c.status=0; -- cartID는 안넣어도돼
+               join
+                (SELECT (6371*acos(cos(radians(a.latitude))*cos(radians(l.latitude))*cos(radians(l.longitude)
+                        -radians(a.longitude))+sin(radians(a.latitude))*sin(radians(l.latitude)))) AS distance , User.id as id
+                    FROM Library as l join Cart as c on  c.libraryId=l.id
+                                      join User on User.id= c.userId join Address as a on User.id = a.userId
+                                      where  User.id=3 AND  a.isMain=1  and c.status=0
+                                      HAVING distance <= 5
+                                      ORDER BY distance) as Distance on Distance.id = c.userId
+where user.id=3 && c.status=0; -- cartID는 안넣어도돼
     `;
     const  selectCartRow = await connection.query(selectCartQuery,userId);
     return selectCartRow[0];
