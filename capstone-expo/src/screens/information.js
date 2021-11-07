@@ -9,7 +9,7 @@ const Container = styled.View`
   background-color: ${({theme}) => theme.background};
 `;
 
-const BookList = ({ navigation }) => {
+const Information = ({ navigation }) => {
   
   return (
     <Container>
@@ -17,4 +17,4 @@ const BookList = ({ navigation }) => {
   );
 };
 
-export default BookList;
+export default Information;

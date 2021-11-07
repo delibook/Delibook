@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { FlatList } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
 import { UserContext } from '../contexts';
+import { SearchBar } from '../components';
 import axios from'axios';
 
 const Container = styled.View`
@@ -25,7 +26,7 @@ const ItemLeftContainer = styled.View`
 `;
 
 const ItemRightContainer = styled.View`
-    flex: 0.5;
+    flex: 0.3;
     align-items: flex-end;
     flex-direction: column;
 `;
@@ -37,7 +38,7 @@ const ItemTitle = styled.Text`
 `;
 
 const ItemDescription = styled.Text`
-    font-size: 16px;
+    font-size: 15px;
     margin-top: 5px;
     color: ${({ theme }) => theme.listDescription};
 `;
@@ -48,24 +49,12 @@ const ItemPrice = styled.Text`
     color: ${({ theme }) => theme.listPrice};
 `;
 
-const librarys = [];
-for (let idx = 0; idx < 1000; idx++) {
-  librarys.push({
-    id: idx,
-    title: idx,
-    description: idx,
-    type: idx,
-    price: idx,
-  });
-}
-
-
 const Item = React.memo(
   ({ item: { id, name, cityName, sigunguName, closeDay, type, tip }, onPress }) => {
     const theme = useContext(ThemeContext);
 
     return (
-      <ItemContainer onPress={() => onPress({ id, title })}>
+      <ItemContainer onPress={() => onPress({ id })}>
         <ItemLeftContainer>
           <ItemTitle>{name}</ItemTitle>
           <ItemDescription>{cityName} {sigunguName}</ItemDescription>
@@ -83,7 +72,7 @@ const Item = React.memo(
 const LibraryList = ({ navigation }) => {
   const [librarys, setLibrarys] = useState([]);
   const [distance, setDistance] = useState('');
-  const [search, setSearch] = useState('어린이');
+  const [search, setSearch] = useState('');
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -129,11 +118,12 @@ const LibraryList = ({ navigation }) => {
   }, [distance, search, user]);
 
   const _handleItemPress = params => {
-    navigation.navigate('도서', params);
+    navigation.navigate('도서목록', params);
   };
 
   return (
     <Container>
+      <SearchBar />
       <FlatList
         keyExtractor={item => item['id'].toString()}
         data={librarys}

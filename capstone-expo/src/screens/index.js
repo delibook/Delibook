@@ -6,4 +6,6 @@ import PhoneCode from './phoneCode';
 import ShowId from './showId';
 import Home from './home';
 import LibraryList from './libraryList';
-export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList };
+import BookList from './bookList';
+import Information from './information';
+export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information };
