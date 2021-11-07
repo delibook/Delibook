@@ -90,7 +90,7 @@ const { query } = require("winston");
 
     /**
      * header :  x-access--token
-     * query string : cartId, userId 
+     * query string : cartId, ]bookId 
      */
     
     const userId= req.verifiedToken.userId;

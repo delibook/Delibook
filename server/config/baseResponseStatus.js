@@ -64,7 +64,7 @@ module.exports = {
     BOOKCASE_ACTION_TYPE_EMPTY : {"isSuccess": false, "code": 5003, "message": "type을 입력하세요. (insert or drop)" },
     BOOKCASE_NOT_MATCH: {"isSuccess": false, "code": 5004, "message": "해당유저의 책장이 아닙니다. 책장Id를 확인하세요" },
     BOOKCASE_BOOK_ALREADY_EXISTS :{"isSuccess": false, "code": 5005, "message": "이미 찜해짐" },
-    BOOKCASE_BOOK_NOT_EXISTS:{"isSuccess": false, "code": 5006, "message": "찜취소할 책이 없음, 책 아이디 확인해" },
+    BOOKCASE_BOOK_NOT_EXISTS:{"isSuccess": false, "code": 5006, "message": "찜 취소할 책이 없음, 책 아이디 확인해" },
     BOOKCASE_NAME_REDUNDANT:{"isSuccess": false, "code": 5007, "message": "동일한 책장이 존재합니다. 이름을 다시 설정하세요." },
 
     ADDRESS_ID_EMPTY :  { "isSuccess": false, "code": 5100, "message": "주소 ID를 입력하세요." },
