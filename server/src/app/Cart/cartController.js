@@ -24,7 +24,7 @@ const { query } = require("winston");
     if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
 
     const getCartResult = await cartProvider.getCart(userId);
-    const getCostResult = await cartProvider.getCost(userId);
+    
     return res.send(response(baseResponse.SUCCESS, getCartResult));
 };
 /**
