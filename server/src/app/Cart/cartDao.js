@@ -5,29 +5,40 @@ async function selectCart(connection,userId)
     const selectCartQuery = `
     select distinct c.id as cartId ,l.id as libraryId,l.name as library , b.id as bookId,b.imageURL as bookThumbnail,
                 b.name as bookTitle , b.author , (select case when b.quantity !=0 then "대여가능" else "대여불가능" end)
-              as canLoan, b.quantity as bookQuantity, (select IFNULL(MAX((select case when Distance.distance <= 1 then l.tip
-            when Distance.distance between 1 and 2 then  l.tip+l.plusTip
-            when Distance.distance between 2 and 3 then  l.tip+(l.plusTip*2)
-            when Distance.distance between 3 and 4 then  l.tip+(l.plusTip*3)
-            when Distance.distance between 4 and 5 then l.tip+(l.plusTip*4)
-            else '배달불가' end )),'주소설정필수' )) as cost
+              as canLoan, b.quantity as bookQuantity
 from Cart as c join Library as l on c.libraryId = l.id
                join BookInCart as bc on c.id = bc.cartId
                join Book as b on bc.bookId = b.id
                join User as user on user.id= c.userId
-               join
-                (SELECT (6371*acos(cos(radians(a.latitude))*cos(radians(l.latitude))*cos(radians(l.longitude)
-                        -radians(a.longitude))+sin(radians(a.latitude))*sin(radians(l.latitude)))) AS distance , User.id as id
-                    FROM Library as l join Cart as c on  c.libraryId=l.id
-                                      join User on User.id= c.userId join Address as a on User.id = a.userId
-                                      where  User.id=? AND  a.isMain=1  and c.status=0
-                                      
-                                    ) as Distance on Distance.id = c.userId
-where user.id=? && c.status=0; -- cartID는 안넣어도돼
+where user.id=? && c.status=0 && bc.status = 0 ; -- cartID는 안넣어도돼
+
     `;
-    const  selectCartRow = await connection.query(selectCartQuery,[userId,userId]);
+    const  selectCartRow = await connection.query(selectCartQuery,userId);
     return selectCartRow[0];
 }
+
+// 책가방의 가격 조회
+async function selectCost(connection, userId)
+{
+    const costQuery = `select distinct IFNULL((select case when Distance.distance <= 1 then l.tip
+        when Distance.distance between 1 and 2 then  l.tip+l.plusTip
+        when Distance.distance between 2 and 3 then  l.tip+(l.plusTip*2)
+        when Distance.distance between 3 and 4 then  l.tip+(l.plusTip*3)
+        when Distance.distance between 4 and 5 then l.tip+(l.plusTip*4)
+        else '배달불가' end ),'주소설정필수' ) as cost
+from Library as l  join Cart as c on c.libraryId = l.id
+join
+(SELECT (6371*acos(cos(radians(a.latitude))*cos(radians(l.latitude))*cos(radians(l.longitude)
+            -radians(a.longitude))+sin(radians(a.latitude))*sin(radians(l.latitude)))) AS distance , User.id as id
+      FROM Library as l join Cart as c on  c.libraryId=l.id
+                        join User on User.id = c.userId join Address as a on User.id = a.userId
+      where User.id=13 AND  a.isMain=1  and c.status=0
+      ) as Distance
+on Distance.id = c.userId
+where c.userId=?;`;
+        const selectCostRow = await connection.query(costQuery,userId);
+        return selectCostRow[0];
+};
 
 // 유저의 카트에 들어있는 책이 맞는지 체크
 async function checkCart(connection,userId,cartId,bookId)
@@ -109,5 +120,6 @@ async function dropCartBook (connection,cartId,bookId) {
     checkUserCart,
     dropCart,
     dropCartBook,
+    selectCost,
   };
   
