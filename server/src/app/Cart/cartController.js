@@ -24,6 +24,7 @@ const { query } = require("winston");
     if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
 
     const getCartResult = await cartProvider.getCart(userId);
+    const getCostResult = await cartProvider.getCost(userId);
     return res.send(response(baseResponse.SUCCESS, getCartResult));
 };
 /**
@@ -90,7 +91,7 @@ const { query } = require("winston");
 
     /**
      * header :  x-access--token
-     * query string : cartId, userId 
+     * query string : cartId, ]bookId 
      */
     
     const userId= req.verifiedToken.userId;
