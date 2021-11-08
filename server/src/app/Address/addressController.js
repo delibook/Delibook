@@ -39,7 +39,7 @@ const {emit} = require("nodemon");
 
     const patchAddressResult = await addressService.ServicePatchAddress(userId, addressId,address, detailAddress, latitude, longitude,isMain);
 
-    return res.send(response(baseResponse.SUCCESS, patchAddressResult));
+    return res.send(patchAddressResult);
 };
 
 /**
@@ -99,8 +99,8 @@ exports.getAddress = async function(req, res)
    
      addressId= req.params.addressId;
      userId= req.verifiedToken.userId;
-     if (!userId) return res.send(errResponse(baseResponse.ADDRESS_ID_EMPTY)); 
-     if (!addressId) return res.send(errResponse(baseResponse.TOKEN_EMPTY));
+     if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)); 
+     if (!addressId) return res.send(errResponse(baseResponse.ADDRESS_ID_EMPTY));
  
      const deleteAddressResult = await addressService.deleteAddress(userId,addressId) ;
      return res.send(deleteAddressResult);
@@ -122,8 +122,8 @@ exports.getAddress = async function(req, res)
    
      addressId= req.params.addressId;
      userId= req.verifiedToken.userId;
-     if (!userId) return res.send(errResponse(baseResponse.ADDRESS_ID_EMPTY)); 
-     if (!addressId) return res.send(errResponse(baseResponse.TOKEN_EMPTY));
+     if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)); 
+     if (!addressId) return res.send(errResponse(baseResponse.ADDRESS_ID_EMPTY));
  
      const setMainResult = await addressService.setMainAddress(userId,addressId) ;
      return res.send(setMainResult);

@@ -26,7 +26,7 @@ exports.editCartBookNum = async function (userId,cartId,bookId,type) {
         const connection = await pool.getConnection(async (conn) => conn);
         const editCartBookNum = await cartDao.editCartBookNum(connection,cartId,bookId, type);
           connection.release(); 
-            console.log(editCartBookNum[0][0]);
+        
           return response(baseResponse.SUCCESS,editCartBookNum[0][0]);
        
     } catch (err) {
