@@ -20,12 +20,12 @@ from Cart as c join Library as l on c.libraryId = l.id
                         -radians(a.longitude))+sin(radians(a.latitude))*sin(radians(l.latitude)))) AS distance , User.id as id
                     FROM Library as l join Cart as c on  c.libraryId=l.id
                                       join User on User.id= c.userId join Address as a on User.id = a.userId
-                                      where  User.id=3 AND  a.isMain=1  and c.status=0
-                                      HAVING distance <= 5
-                                      ORDER BY distance) as Distance on Distance.id = c.userId
-where user.id=3 && c.status=0; -- cartID는 안넣어도돼
+                                      where  User.id=? AND  a.isMain=1  and c.status=0
+                                      
+                                    ) as Distance on Distance.id = c.userId
+where user.id=? && c.status=0; -- cartID는 안넣어도돼
     `;
-    const  selectCartRow = await connection.query(selectCartQuery,userId);
+    const  selectCartRow = await connection.query(selectCartQuery,[userId,userId]);
     return selectCartRow[0];
 }
 
