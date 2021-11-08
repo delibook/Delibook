@@ -7,6 +7,26 @@ const {response, errResponse} = require("../../../config/response");
 
 const { query } = require("winston");
 
+/**
+ * API No. 18
+ * API Name : 자주묻는 질문 조회 API
+ * [GET] /delibook/etc/frequently-asked
+ */
+ exports.getAsked = async function (req,res) {
+    
+    
+    contentId = req.query.contentId;
+    if (contentId){
+        const getAskedResult = await etcProvider.getAsked(contentId); 
+        return res.send(response(baseResponse.SUCCESS, getAskedResult));
+    }
+    else {
+        const askedListResult = await etcProvider.getAskedList();
+         return res.send(response(baseResponse.SUCCESS, askedListResult));
+    }
+    
+};
+
 
 /**
  * API No. 30
@@ -49,4 +69,3 @@ exports.getNotice = async function (req,res) {
     return res.send(inquiryResult);
     
 };
-

@@ -58,3 +58,48 @@ exports.bookLike = async function (userId, bookcaseId,bookId,type) {
         return errResponse(baseResponse.DB_ERROR);
     }
 }
+
+
+exports.deleteBookcase = async function (userId, bookcaseId) {
+    try {
+        
+        // 책장체크
+        const checkBookcase = await bookcaseProvider.checkBookcase(userId,bookcaseId);
+        if (checkBookcase.length < 1) 
+            return errResponse(baseResponse.BOOKCASE_NOT_MATCH); //5004 해당유저의 책장이 아닙니다. 책장Id를 확인하세요
+
+        const connection = await pool.getConnection(async (conn) => conn);
+        const deleteBookcaseRow = await bookcaseDao.deleteBookcase(connection,userId,bookcaseId);
+        connection.release(); 
+
+        const selectBookcaseThatDeleted = await bookcaseProvider.checkDeleteBookcase(userId,bookcaseId);   
+        return response(baseResponse.SUCCESS,{'DeletedBookcaseId': selectBookcaseThatDeleted[0].deletedBookcaseId});
+        
+        
+    }catch (err) {
+        logger.error(`App - deleteBookCase Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+
+exports.addBookcase = async function (userId, title) {
+    try {
+        
+        // 해당 유저에게 동일한 이름의 책장이 있는지 체크 
+        const checkBookcaseName = await bookcaseProvider.checkBookcaseName(userId,title);
+        if (checkBookcaseName.length  >= 1) 
+            return errResponse(baseResponse.BOOKCASE_NAME_REDUNDANT); //5007 동일한 책장이 존재합니다. 이름을 다시 설정해주세요.
+
+        const connection = await pool.getConnection(async (conn) => conn);
+        const addBookcaseRow = await bookcaseDao.addBookcase(connection,userId,title);
+        connection.release(); 
+        console.log(addBookcaseRow.insertId);
+        return response(baseResponse.SUCCESS,{'addBookcaseId': addBookcaseRow.insertId});
+        
+        
+    }catch (err) {
+        logger.error(`App - addBookCase Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
