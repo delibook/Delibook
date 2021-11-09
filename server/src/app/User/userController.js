@@ -326,16 +326,17 @@ exports.verifyPhoneNumber = async function (req, res) {
 
 };
 
-// 반납 결제
+// 대출 결제
 let tid;
-let userId, item_name, quantity, total_amount;
+let userId, item_name, quantity, price, cartId;
 
-exports.return = async function(req,res) {
+exports.loan = async function(req,res) {
 
-    userId = req.verifiedToken.userId;              // jwt 토큰에서 받아오는 userId
-    item_name = req.query.item_name         // 상품명
-    quantity = req.query.quantity           // 상품 개수
-    total_amount = req.query.total_amount   // 상품 가격
+    userId = req.verifiedToken.userId;        // jwt 토큰에서 받아오는 userId
+    item_name = req.query.item_name;         // 상품명
+    quantity = req.query.quantity;           // 상품 개수
+    price = req.query.price;   // 상품 가격
+    cartId = req.query.cartId;
 
 
     let headers = {
@@ -346,13 +347,13 @@ exports.return = async function(req,res) {
     let params = {
         'cid': 'TC0ONETIME', // 테스트 코드
         'partner_order_id': '1',
-        'partner_user_id': `1`,
-        'item_name': `이코테`,
-        'quantity': 1,
-        'total_amount': 1,
+        'partner_user_id': `${userId}`,
+        'item_name': `${item_name}`,
+        'quantity': quantity,
+        'total_amount': price,
         'vat_amount': 0,
         'tax_free_amount': 0,
-        'approval_url': 'http://localhost:3000/payment/approve',
+        'approval_url': 'http://localhost:3000/loan/payment/approve',
         'fail_url': 'http://localhost:3000/payment/fail',
         'cancel_url': 'http://localhost:3000/payment/cancel',
     };
@@ -364,7 +365,7 @@ exports.return = async function(req,res) {
         form : params
     };
 
-    let next_redirect_pc_url;
+    let next_redirect_app_url;
 
     request(options, function result(error, response, body) {
         if (!error && response.statusCode === 200) {
@@ -373,12 +374,12 @@ exports.return = async function(req,res) {
             tid = (JSON.parse(body).tid);
             return res.send(next_redirect_app_url) // redirect 하는 코드
         }
-        else console.log("결제준비 실패");
+        else console.log("대출 결제준비 실패");
     });
 }
 
-//반납결제 승인요청
-exports.success = async function (req, res) {
+//대출결제 승인요청
+exports.loan_success = async function (req, res) {
     const pg_token = req.query.pg_token;
     let headers = {
         'Authorization': 'KakaoAK '+'20e0754d1d30ba2ffea9ef112016b09c',
@@ -389,7 +390,7 @@ exports.success = async function (req, res) {
         'cid' : 'TC0ONETIME',
         'tid' : `${tid}`,
         'partner_order_id':'1',
-        'partner_user_id' : '1',
+        'partner_user_id' : `${userId}`,
         'pg_token' : `${pg_token}`
     }
 
@@ -403,7 +404,92 @@ exports.success = async function (req, res) {
     request(options, function result(error, response, body) {
 
         if (!error && response.statusCode === 200) {
-            console.log(JSON.parse(body));
+            const insertBuyInfoResult = userService.insertBuyInfo(userId, cartId, price);
+            //나중에 결제완료 창으로 redirect되도록 만들예정
+        } else console.log("결제 승인 실패")
+
+    });
+};
+
+
+//반납결제
+let loan_tid;
+let loan_userId, loan_item_name, loan_quantity, loan_price, loan_cartId;
+exports.return = async function(req,res) {
+
+    loan_userId = req.verifiedToken.userId;        // jwt 토큰에서 받아오는 userId
+    loan_item_name = req.query.item_name;         // 상품명
+    loan_quantity = req.query.quantity;           // 상품 개수
+    loan_price = req.query.price;   // 상품 가격
+    loan_cartId = req.query.cartId;
+
+    let headers = {
+        'Authorization': 'KakaoAK '+'20e0754d1d30ba2ffea9ef112016b09c',
+        'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+    };
+
+    let params = {
+        'cid': 'TC0ONETIME', // 테스트 코드
+        'partner_order_id': '1',
+        'partner_user_id': `${loan_userId}`,
+        'item_name': `${loan_item_name}`,
+        'quantity': loan_quantity,
+        'total_amount': loan_price,
+        'vat_amount': 0,
+        'tax_free_amount': 0,
+        'approval_url': 'http://localhost:3000/return/payment/approve',
+        'fail_url': 'http://localhost:3000/payment/fail',
+        'cancel_url': 'http://localhost:3000/payment/cancel',
+    };
+
+    let options = {
+        url: 'https://kapi.kakao.com/v1/payment/ready',
+        method: 'POST',
+        headers: headers,
+        form : params
+    };
+
+    let next_redirect_app_url;
+
+    request(options, function result(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            console.log(JSON.parse(body));      //JSON.parse : JSON 문자열의 구문을 분석하고, 그 결과에서 JavaScript 값이나 객체를 생성
+            next_redirect_app_url = (JSON.parse(body).next_redirect_app_url);
+            loan_tid = (JSON.parse(body).tid);
+            return res.send(next_redirect_app_url) // redirect 하는 코드
+        }
+        else console.log("반납 결제준비 실패");
+    });
+}
+
+// 반납결제 승인요청
+exports.return_success = async function (req, res) {
+    const pg_token = req.query.pg_token;
+    let headers = {
+        'Authorization': 'KakaoAK '+'20e0754d1d30ba2ffea9ef112016b09c',
+        'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+    }
+
+    let params = {
+        'cid' : 'TC0ONETIME',
+        'tid' : `${loan_tid}`,
+        'partner_order_id':'1',
+        'partner_user_id' : `${loan_userId}`,
+        'pg_token' : `${pg_token}`
+    }
+
+    let options = {
+        url: 'https://kapi.kakao.com/v1/payment/approve',
+        method: 'POST',
+        headers: headers,
+        form : params
+    };
+
+    request(options, function result(error, response, body) {
+
+        if (!error && response.statusCode === 200) {
+            const updateBuyInfoResult = userService.updateBuyInfo(loan_cartId);
+            //나중에 결제완료 창으로 redirect 되도록 만들예정
         } else console.log("결제 승인 실패")
 
     });

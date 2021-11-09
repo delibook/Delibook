@@ -11,10 +11,14 @@ exports.getCart = async function (userId) {
     const connection = await pool.getConnection(async (conn) => conn);
     const selectCart = await cartDao.selectCart(connection, userId);
     connection.release();
-
+    const selectCost = await cartDao.selectCost(connection, userId);
+    connection.release();
+    selectCart.push(selectCost);
     return selectCart;
   
 };
+
+
 
 exports.checkCart= async function(userId,cartId,bookId){
     const connection = await pool.getConnection(async (conn) => conn);
