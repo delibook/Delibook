@@ -111,6 +111,17 @@ async function dropCartBook (connection,cartId,bookId) {
     return selectDropCartBookRow[0]; 
 
 } 
+
+async function canInsertCart(connection,userId,libraryId) {
+    const canInsertCartQuery = `
+    select c.id as cartId
+    from Cart as c
+    where c.userId=? and c.libraryId!=? and c.status =0;
+    `;
+    const editRow = await connection.query(canInsertCartQuery,[userId,libraryId]);
+    return editRow[0];
+}
+
   module.exports = {
     selectCart,
     checkCart,
@@ -121,5 +132,6 @@ async function dropCartBook (connection,cartId,bookId) {
     dropCart,
     dropCartBook,
     selectCost,
+    canInsertCart,
   };
   
