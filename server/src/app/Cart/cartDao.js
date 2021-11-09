@@ -32,11 +32,11 @@ join
             -radians(a.longitude))+sin(radians(a.latitude))*sin(radians(l.latitude)))) AS distance , User.id as id
       FROM Library as l join Cart as c on  c.libraryId=l.id
                         join User on User.id = c.userId join Address as a on User.id = a.userId
-      where User.id=13 AND  a.isMain=1  and c.status=0
+      where User.id=? AND  a.isMain=1  and c.status=0
       ) as Distance
 on Distance.id = c.userId
 where c.userId=?;`;
-        const selectCostRow = await connection.query(costQuery,userId);
+        const selectCostRow = await connection.query(costQuery,[userId,userId]);
         return selectCostRow[0];
 };
 
