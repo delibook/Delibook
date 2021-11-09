@@ -56,6 +56,7 @@ const Bag = ({ navigation }) => {
   const [cartList, setCartList] = useState([]);
   const [mainAddress, setMainAddress] = useState('');
   const [mainDetailAddress, setMainDetailAddress] = useState('');
+  const [cost, setCost] = useState('');
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -70,7 +71,7 @@ const Bag = ({ navigation }) => {
         .then(function (response) {
           const result = response.data.result;
           const list = [];
-          for (let i = 0; i < result.length; i++) {
+          for (let i = 0; i < result.length - 1; i++) {
             list.push({
               id: result[i].cartId,
               libraryId: result[i].libraryId,
@@ -82,6 +83,7 @@ const Bag = ({ navigation }) => {
               bookQuantity: result[i].bookQuantity,
             });
           }
+          setCost(result[result.length - 1][0].cost);
           setCartList(list);
           setLibName(list[0].library);
           return () => {};
@@ -139,9 +141,6 @@ const Bag = ({ navigation }) => {
     navigation.navigate('도서', params);
   };
 
-  console.log(cartList);
-  console.log('주소:', mainAddress);
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.libname}>
@@ -156,8 +155,9 @@ const Bag = ({ navigation }) => {
       </View>
 
       <View style={styles.square}></View>
+
       <FlatList
-        keyExtractor={(item) => item['id'].toString()}
+        keyExtractor={(item) => item.toString()}
         data={cartList}
         renderItem={({ item }) => (
           <Item item={item} onPress={_handleItemPress} />
@@ -199,11 +199,12 @@ const Bag = ({ navigation }) => {
           size={50}
         />
       </View>
-      <Button
+      <TouchableOpacity
         style={styles.pay}
-        title="얼마?"
         onPress={() => console.log(`navigate to pay`)}
-      />
+      >
+        <Text style={styles.pay_text}>{cost}원 결제하기</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -289,11 +290,20 @@ const styles = StyleSheet.create({
     top: 5,
   },
   pay: {
-    backgroundColor: '#3679fe',
+    backgroundColor: '#30BDFF',
     alignItems: 'center',
     borderRadius: 4,
-    width: 100,
-    padding: 10,
+    flex: 0.3,
+    padding: 20,
+  },
+  pay_text: {
+    fontSize: 19,
+    lineHeight: 25,
+    alignItems: 'center',
+    textAlign: 'center',
+    letterSpacing: 0.05,
+    color: '#FFFFFF',
+    //border: 0.4px solid #FFFFFF;
   },
   touchable: {
     flex: 0.18,
