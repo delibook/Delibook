@@ -24,7 +24,7 @@ const { query } = require("winston");
     if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
 
     const getCartResult = await cartProvider.getCart(userId);
-    const getCostResult = await cartProvider.getCost(userId);
+    
     return res.send(response(baseResponse.SUCCESS, getCartResult));
 };
 /**
@@ -42,6 +42,7 @@ const { query } = require("winston");
     const userId= req.verifiedToken.userId; 
     const bookId= req.query.bookId; 
     const libraryId= req.query.libraryId;
+   
 
     if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
     
@@ -111,4 +112,29 @@ const { query } = require("winston");
         return res.send( dropCartBookResult);
     }
     
+};
+
+
+/**
+ * API No. 46
+ * API Name :  다른 도서관 인지체크
+ * [GET] /delibook/cart/check
+ */
+ exports.canInsertCheck = async function (req, res) {
+
+    /**
+     * header :  x-access--token
+     */
+    
+    const userId= req.verifiedToken.userId;
+    //const bookId= req.query.bookId; 
+    const libraryId= req.query.libraryId;
+
+    if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
+   // if(!bookId)  return res.send(errResponse(baseResponse.BOOK_ID_EMPTY)) ; //4901 
+    if(!libraryId)  return res.send(errResponse(baseResponse.CART_LIBRARY_ID_EMPTY)) ; //5203
+
+    const checkResult = await cartProvider.canInsertCheck(userId,libraryId);
+    
+    return res.send(response(baseResponse.SUCCESS, checkResult));
 };
