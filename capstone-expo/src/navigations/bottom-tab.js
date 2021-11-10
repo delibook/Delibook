@@ -1,7 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+<<<<<<< HEAD
 import { Home, Mypage, LibraryList } from '../screens';
 import LibraryStack from './libraryStack';
+=======
+import { Home, Mypage, LibraryList, Bag } from '../screens';
+>>>>>>> a348f6f962f717799df619c0bbc88090187c7c83
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TabIcon = ({ name, size, color }) => {
@@ -30,7 +34,7 @@ const TabNavigation = () => {
       />
       <Tab.Screen
         name="책가방"
-        component={Home}
+        component={Bag}
         options={{
           tabBarIcon: (props) => TabIcon({ ...props, name: 'bag-personal' }),
         }}
