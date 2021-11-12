@@ -7,7 +7,8 @@ const pool = mysql.createPool({
     user: 'mango',
     port: '3306',
     password: 'wlasl102003!',
-    database: 'Delibook'
+    database: 'Delibook',
+    multipleStatements : true
 });
 
 module.exports = {
