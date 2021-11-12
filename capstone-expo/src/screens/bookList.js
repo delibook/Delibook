@@ -76,11 +76,11 @@ const ButtonContainer = styled.TouchableOpacity`
     flex: 1;
     width: 90px;
     align-items: center;
-    border-radius: 4px;
+    border-radius: 7px;
     padding: 5px;
     margin-top: 5px;
     margin-right: 30px;
-    background-color: #00A5F1;
+    background-color: #3CB4EC;
 `;
 
 const ButtonTitle = styled.Text`
@@ -94,7 +94,7 @@ const Item = React.memo(
     const { user } = useContext(UserContext);
 
 
-    const _handleLoanPress = useCallback(async() => {
+    const _handleBookCasePress = useCallback(async() => {
 
     }, []);
 
@@ -138,11 +138,11 @@ const Item = React.memo(
             <ItemPublisher>{publisher}</ItemPublisher>
           </ItemBottomContainer>
           <ItemBottomContainer>
-            <ButtonContainer onPress={_handleLoanPress}>
-              <ButtonTitle>대출</ButtonTitle>
-            </ButtonContainer>
             <ButtonContainer onPress={_handleBagPress}>
               <ButtonTitle>책가방 담기</ButtonTitle>
+            </ButtonContainer>
+            <ButtonContainer onPress={_handleBookCasePress}>
+              <ButtonTitle>책장에 꽂기</ButtonTitle>
             </ButtonContainer>
           </ItemBottomContainer>
         </ItemLeftContainer>
@@ -159,7 +159,7 @@ const BookList = ({ navigation, route }) => {
   const [books, setBooks] = useState([]);
   const [category, setCategory] = useState('');
   const [search, setSearch] = useState('');
-  const [like, setLike] = useState(0);
+  const [like, setLike] = useState(1);
   const { user } = useContext(UserContext);
 
   const _handleLikePress = useCallback(async() => {
@@ -173,7 +173,7 @@ const BookList = ({ navigation, route }) => {
         }
       })
       .then(function(response){
-        console.log(response);
+        setLike(response.data.result);
         return response.data;
       })
       .catch(function(error){
@@ -183,7 +183,7 @@ const BookList = ({ navigation, route }) => {
       alert(libraryId);
     } finally {
     }
-  }, [route.params.id, user]);
+  }, [route.params.id, user, setLike]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -192,12 +192,12 @@ const BookList = ({ navigation, route }) => {
           style={{ right: 20 }}
           size={25}
           color="red"
-          name={like > 0 ? "heart-o":"heart"}
+          name={like === 0 ? "heart":"heart-o"}
           onPress={_handleLikePress} 
         />
       ),
     });
-  }, [navigation, setLike, like]);
+  }, [navigation, like]);
 
   useEffect(() => {
     try {

@@ -6,7 +6,7 @@ import propTypes from 'prop-types';
 const SearchBarWrapper = styled.View`
   flex-direction: row;
   align-items: center;
-  background-color: #efefef;
+  background-color: #E6F2F4;
   border-radius: 4px;
   padding: 10px 14px 10px 12px;
   margin: 10px 20px;
@@ -24,7 +24,7 @@ const SearchBar = ({value, onChangeText, onSubmitEditing, placeholder}) => {
 
     return (
         <SearchBarWrapper>
-          <Ionicons name="search" size={18} />
+          <Ionicons name="search" size={18} color={"skyblue"} />
           <SearchInput
             autoCapitalize="none"
             autoCorrect={false}
