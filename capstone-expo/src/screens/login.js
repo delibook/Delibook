@@ -26,6 +26,13 @@ const ErrorText = styled.Text`
   color: ${({ theme }) => theme.errorText};
 `;
 
+const ItemImageContainer = styled.Image`
+    flex: 0.4;
+    width: 200px;
+    height: 100px;
+    resizeMode: contain;
+`;
+
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -85,7 +92,9 @@ const Login = ({ navigation }) => {
       extraScrollHeight={20}
     >
       <Container insets={insets}>
-        <Image imageStyle={{ borderRadius: 8 }} />
+        <ItemImageContainer 
+          source={require('../../assets/splash.png')}
+        />
         <Input
           label="Email"
           value={email}
