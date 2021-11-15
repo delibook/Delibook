@@ -73,18 +73,19 @@ const Bag = ({ navigation }) => {
           const list = [];
           for (let i = 0; i < result.length - 1; i++) {
             list.push({
-              id: result[i].cartId,
-              libraryId: result[i].libraryId,
-              library: result[i].library,
-              bookId: result[i].bookId,
-              bookThumbnail: result[i].bookThumbnail,
-              bookTitle: result[i].bookTitle,
-              canLoan: result[i].canLoan,
-              bookQuantity: result[i].bookQuantity,
+              id: result[0][i].cartId,
+              libraryId: result[0][i].libraryId,
+              library: result[0][i].library,
+              bookId: result[0][i].bookId,
+              bookThumbnail: result[0][i].bookThumbnail,
+              bookTitle: result[0][i].bookTitle,
+              canLoan: result[0][i].canLoan,
+              bookQuantity: result[0][i].bookQuantity,
             });
           }
           setCost(result[result.length - 1][0].cost);
           setCartList(list);
+          console.log(list);
           setLibName(list[0].library);
           return () => {};
         })
@@ -142,70 +143,76 @@ const Bag = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.libname}>
-        <Text
-          style={{
-            fontSize: 25,
-            fontWeight: '500',
-          }}
-        >
-          {libName}
-        </Text>
-      </View>
-
-      <View style={styles.square}></View>
-
-      <FlatList
-        keyExtractor={(item) => item.toString()}
-        data={cartList}
-        renderItem={({ item }) => (
-          <Item item={item} onPress={_handleItemPress} />
-        )}
-        windowSize={3}
-      />
-
-      <View style={styles.more}>
-        <Button
-          color="#30BDFF"
-          title="+더 담으러 가기"
-          onPress={() => console.log(`navigate to borrow`)}
-        />
-      </View>
-      <View style={styles.square}></View>
-      <View style={styles.delivery}>
-        <View style={styles.address}>
-          <Text style={styles.mainAddressText}>{mainAddress}(으)로 배달</Text>
-          <Text style={styles.mainDetailAddressText}>{mainDetailAddress}</Text>
-        </View>
-        <View style={styles.modify}>
-          <Button
-            color="#30BDFF"
-            title="수정"
-            onPress={() => console.log(`modify main address`)}
-          />
-        </View>
-      </View>
-      <View style={styles.payment}>
-        <View style={styles.payway}>
-          <Text style={{ fontSize: 20, lineHeight: 25 }}>결제수단</Text>
-          <Text style={{ fontSize: 15, lineHeight: 25 }}>카카오페이</Text>
-        </View>
-        <EvilIcons
-          onPress={() => console.log(`change way of payment`)}
-          style={styles.navigateIcon}
-          name="chevron-right"
-          color="#30BDFF"
-          size={50}
-        />
-      </View>
-      <TouchableOpacity
-        style={styles.pay}
-        onPress={() => console.log(`navigate to pay`)}
-      >
-        <Text style={styles.pay_text}>{cost}원 결제하기</Text>
-      </TouchableOpacity>
-    </ScrollView>
+    <FlatList
+      style={{ backgroundColor: 'white' }}
+      ListHeaderComponent={
+        <>
+          <View style={styles.libname}>
+            <Text
+              style={{
+                fontSize: 25,
+                fontWeight: '500',
+              }}
+            >
+              {libName}
+            </Text>
+          </View>
+          <View style={styles.square}></View>
+        </>
+      }
+      keyExtractor={(item) => item.toString()}
+      data={cartList}
+      renderItem={({ item }) => <Item item={item} onPress={_handleItemPress} />}
+      windowSize={3}
+      ListFooterComponent={
+        <>
+          <View style={styles.more}>
+            <Button
+              color="#30BDFF"
+              title="+더 담으러 가기"
+              onPress={() => console.log(`navigate to borrow`)}
+            />
+          </View>
+          <View style={styles.square}></View>
+          <View style={styles.delivery}>
+            <View style={styles.address}>
+              <Text style={styles.mainAddressText}>
+                {mainAddress}(으)로 배달
+              </Text>
+              <Text style={styles.mainDetailAddressText}>
+                {mainDetailAddress}
+              </Text>
+            </View>
+            <View style={styles.modify}>
+              <Button
+                color="#30BDFF"
+                title="수정"
+                onPress={() => console.log(`modify main address`)}
+              />
+            </View>
+          </View>
+          <View style={styles.payment}>
+            <View style={styles.payway}>
+              <Text style={{ fontSize: 20, lineHeight: 25 }}>결제수단</Text>
+              <Text style={{ fontSize: 15, lineHeight: 25 }}>카카오페이</Text>
+            </View>
+            <EvilIcons
+              onPress={() => console.log(`change way of payment`)}
+              style={styles.navigateIcon}
+              name="chevron-right"
+              color="#30BDFF"
+              size={50}
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.pay}
+            onPress={() => console.log(`navigate to pay`)}
+          >
+            <Text style={styles.pay_text}>{cost}원 결제하기</Text>
+          </TouchableOpacity>
+        </>
+      }
+    />
   );
 };
 

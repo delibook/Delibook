@@ -7,6 +7,9 @@ import ShowId from './showId';
 import Home from './home';
 import LibraryList from './libraryList';
 import Bag from './bag';
+import BookList from './bookList';
+import Information from './information';
+import Address from './address';
 export {
   Login,
   Join,
@@ -16,5 +19,8 @@ export {
   ShowId,
   Home,
   LibraryList,
+  BookList,
+  Information,
   Bag,
+  Address,
 };
