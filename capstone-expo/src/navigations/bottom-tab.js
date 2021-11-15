@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home, Mypage, LibraryList, Bag } from '../screens';
+import { Home, Mypage, Bag } from '../screens';
+import LibraryStack from './libraryStack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TabIcon = ({ name, size, color }) => {
@@ -21,9 +22,10 @@ const TabNavigation = () => {
       />
       <Tab.Screen
         name="도서관"
-        component={LibraryList}
+        component={LibraryStack}
         options={{
           tabBarIcon: (props) => TabIcon({ ...props, name: 'library' }),
+          headerShown: false
         }}
       />
       <Tab.Screen

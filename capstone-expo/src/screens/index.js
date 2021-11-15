@@ -7,14 +7,6 @@ import ShowId from './showId';
 import Home from './home';
 import LibraryList from './libraryList';
 import Bag from './bag';
-export {
-  Login,
-  Join,
-  Mypage,
-  FindId,
-  PhoneCode,
-  ShowId,
-  Home,
-  LibraryList,
-  Bag,
-};
+import BookList from './bookList';
+import Information from './information';
+export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information, Bag };

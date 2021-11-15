@@ -26,7 +26,7 @@ const MainStack = () => {
       <Stack.Screen 
         name="Main" 
         component={TabNavigation} 
-        options={{ headerShown: false }}              
+        options={{ headerShown: false }}
       />
       <Stack.Screen name="Mypage" component={Mypage} />
       <Stack.Screen name="Login" component={Login} />
