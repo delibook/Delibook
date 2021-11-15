@@ -75,13 +75,18 @@ async function selectUserAccount(connection, email) {
 
 // 유저 책장 조회
 async function getCasesList(connection, userId) {
+  const getUserNameQuery = `
+    select u.name userName
+    from User u
+    where u.id = ${userId};
+  `
   const getCasesListQuery = `
-      select mbl.name
+      select mbl.name caseName
       from MyBookList mbl
       where mbl.userId = ${userId}
-      and mbl.status = 0
+      and mbl.status = 0;
     `;
-  const [getCasesListRow] = await connection.query(getCasesListQuery);
+  const [getCasesListRow] = await connection.query(getUserNameQuery+getCasesListQuery);
   return getCasesListRow;
 }
 

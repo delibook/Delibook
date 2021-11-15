@@ -12,7 +12,8 @@ module.exports = function(app){
     app.patch('/delibook/cart/:cartId/drop',jwtMiddleware,cart.dropCart);
     //32. 책가방 책 수량 지정
     app.patch('/delibook/cart/:cartId/:bookId',jwtMiddleware,cart.editBookNum); 
-
+    // 46. 카트에 담길 때 다른 도서관인지 체크
+    app.get('/delibook/cart/check',jwtMiddleware,cart.canInsertCheck);
 
 
 };
