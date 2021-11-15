@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { EvilIcons } from '@expo/vector-icons';
 import { UserContext } from '../contexts';
 import axios from 'axios';
-
 import {
   View,
   ScrollView,
@@ -14,14 +13,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-/*
-const getFonts = () => {
-  return Font.loadAsync({
-    nanumB: require('../../assets/fonts/NanumSquareB.ttf'),
-    nanumR: require('../../assets/fonts/NanumSquareR.ttf'),
-  });
-};
-*/
+
 const Item = React.memo(
   ({ item: { bookThumbnail, bookTitle, canLoan, bookQuantity } }) => {
     return (
@@ -57,6 +49,7 @@ const Bag = ({ navigation }) => {
   const [mainAddress, setMainAddress] = useState('');
   const [mainDetailAddress, setMainDetailAddress] = useState('');
   const [cost, setCost] = useState('');
+  const [url, setUrl] = useState('');
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -141,6 +134,50 @@ const Bag = ({ navigation }) => {
   const _handleItemPress = (params) => {
     navigation.navigate('도서', params);
   };
+
+  const _handleLoanPayment = useCallback(async () => {
+    try {
+      axios({
+        method: 'post',
+        url: 'https://dev.delibook.shop/delibook/loan',
+        params: {
+          item_name: `${cartList[0].bookId} 외 ${cartList.length - 1}`,
+          quantity: `${cartList.length}`,
+          price: `${cost}`,
+          cartId: `${cartList[0].cartId}`,
+        },
+        headers: {
+          'x-access-token': `${user?.token}`,
+        },
+      })
+        .then(function (response) {
+          const result = response.data;
+          setUrl(result);
+          return response.data;
+        })
+        .catch(function (error) {
+          alert('Error', error);
+        });
+    } catch (e) {
+      alert(libraryId);
+    } finally {
+    }
+
+    const WebviewContainer = ({ handleSetRef, handleEndLoading }) => {
+      const handleOnMessage = ({ nativeEvent: { data } }) => {
+        console.log(data);
+      };
+    };
+
+    return (
+      <WebView
+        onLoadEnd={handleEndLoading}
+        onMessage={handleOnMessage}
+        ref={handleSetRef}
+        source={{ uri: `${url}` }}
+      />
+    );
+  }, [user, cost, cartList, url, setUrl]);
 
   return (
     <FlatList
