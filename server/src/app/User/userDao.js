@@ -136,8 +136,10 @@ async function getUsagesList(connection, userId, condition,loan_condition) {
         end) as status,
        l.id libraryId, l.name libraryName,
         (case ui.status
-        when 0 or 1 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.toReturnDate, '%Y-%m-%d'))
-        when 3 or 4 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.updatedAt, '%Y-%m-%d'))
+        when 0 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.toReturnDate, '%Y-%m-%d'))
+        when 1 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.toReturnDate, '%Y-%m-%d'))
+        when 3 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.updatedAt, '%Y-%m-%d'))
+        when 4 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.updatedAt, '%Y-%m-%d'))
         else ''
         end) as period,
        (case x.bookCount
@@ -157,11 +159,20 @@ async function getUsagesList(connection, userId, condition,loan_condition) {
       group by ui.id
       ) x on ui.id = x.id
     where not ui.status = 5
-      and ui.userId = ?
+      and ui.userId = ${userId}
     `+condition+`
     order by loanDate DESC;
   `
-  const [getUsagesListRow] = await connection.query(getUsagesListQuery, userId);
+  const getBooksQuery = `
+    select b.imageURL, b.name, b.publisher, b.author, c.id cartId
+    from Book b
+           join BookInCart bic on bic.bookId = b.id
+           join Cart c on c.id = bic.cartId
+           join UsageInformation ui on ui.cartId = c.id
+    where c.userId = 3 
+    `+condition+`
+  `
+  const [getUsagesListRow] = await connection.query(getUsagesListQuery+getBooksQuery);
   return getUsagesListRow;
 }
 
