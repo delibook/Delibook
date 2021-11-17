@@ -10,4 +10,4 @@ import Bag from './bag';
 import BookList from './bookList';
 import Information from './information';
 import Complete from './completedOrder';
-export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information, Bag, Complete, LoanHistory };
+export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information, Bag, Complete };
