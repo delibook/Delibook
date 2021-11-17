@@ -35,6 +35,7 @@ const TabNavigation = () => {
         component={Bag}
         options={{
           tabBarIcon: (props) => TabIcon({ ...props, name: 'bag-personal' }),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen

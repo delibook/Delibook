@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import styled from 'styled-components';
 import Swiper from 'react-native-swiper';
@@ -14,7 +14,17 @@ const Container = styled.View`
 `;
 
 const Home = ({ navigation }) => {
+  const [search, setSearch] = useState('');
   const testtext = '공지사항';
+
+  const _handleSearchChange = (search) => {
+    setSearch(search);
+  };
+
+  const _handleSearchSubmit = useCallback(async() => {
+    
+  }, []);
+
   return (
     <Container>
       <View style={styles.banner}>
@@ -31,7 +41,12 @@ const Home = ({ navigation }) => {
         </Swiper>
       </View>
       <View style={{ flex: 0.4 }}>
-        <SearchBar />
+        <SearchBar 
+          value={search}
+          onChangeText={_handleSearchChange}
+          onSubmitEditing={_handleSearchSubmit}
+          placeholder="검색어를 입력하세요"
+        />
       </View>
       <View style={{ flex: 0.7, flexDirection: 'row', top: 20 }}>
         <View
@@ -125,9 +140,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   banner: {
-    flex: 0.5,
-    height: 150,
-    width: 300,
+    flex: 0.7,
+    height: 200,
+    width: 350,
     alignItems: 'center',
     borderRadius: 10,
     marginTop: 20,
