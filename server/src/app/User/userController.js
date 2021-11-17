@@ -400,7 +400,7 @@ exports.loan_success = async function (req, res) {
         headers: headers,
         form : params
     };
-
+    console.log(pg_token)
     request(options, function result(error, response, body) {
 
         if (!error && response.statusCode === 200) {
