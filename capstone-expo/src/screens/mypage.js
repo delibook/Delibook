@@ -31,14 +31,15 @@ const getFonts = () => {
 const Mypage = ({ navigation }) => {
   //getFonts();
 
-  const { user } = useContext(UserContext);
+  const { dispatch, user } = useContext(UserContext);
+
   const [name, setName] = useState('');
 
   const _handleLogoutButtonPress = async () => {
     try {
     } catch (e) {
     } finally {
-      user({});
+      dispatch({});
     }
   };
 
