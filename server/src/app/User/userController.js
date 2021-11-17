@@ -401,6 +401,7 @@ exports.loan_success = async function (req, res) {
         headers: headers,
         form : params
     };
+    sleep(1000);
     console.log(pg_token, userId, tid, cartId, price)
     request(options, function result(error, response, body) {
 
@@ -456,7 +457,7 @@ exports.return = async function(req,res) {
     request(options, function result(error, response, body) {
         if (!error && response.statusCode === 200) {
             console.log(JSON.parse(body));      //JSON.parse : JSON 문자열의 구문을 분석하고, 그 결과에서 JavaScript 값이나 객체를 생성
-            next_redirect_app_url = (JSON.parse(body).next_redirect_app_url);
+            next_redirect_app_url = (JSON.parse(body).next_redirect_mobile_url);
             loan_tid = (JSON.parse(body).tid);
             return res.send(next_redirect_app_url) // redirect 하는 코드
         }
