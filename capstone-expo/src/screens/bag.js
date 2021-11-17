@@ -9,13 +9,17 @@ import {
   Image,
   Button,
   StyleSheet,
-  TextInput,
+  SafeAreaView,
   TouchableOpacity,
   FlatList,
+  Linking, 
+  Alert
 } from 'react-native';
 
 const Item = React.memo(
   ({ item: { bookThumbnail, bookTitle, canLoan, bookQuantity } }) => {
+    
+
     return (
       <View style={styles.item}>
         <Image
@@ -64,16 +68,17 @@ const Bag = ({ navigation }) => {
         .then(function (response) {
           const result = response.data.result;
           const list = [];
-          for (let i = 0; i < result.length - 1; i++) {
+          for (let i = 0; i < result[0].length; i++) {
             list.push({
-              cartId: result[i].cartId,
-              libraryId: result[i].libraryId,
-              library: result[i].library,
-              bookId: result[i].bookId,
-              bookThumbnail: result[i].bookThumbnail,
-              bookTitle: result[i].bookTitle,
-              canLoan: result[i].canLoan,
-              bookQuantity: result[i].bookQuantity,
+              id: i,
+              cartId: result[0][i].cartId,
+              libraryId: result[0][i].libraryId,
+              library: result[0][i].library,
+              bookId: result[0][i].bookId,
+              bookThumbnail: result[0][i].bookThumbnail,
+              bookTitle: result[0][i].bookTitle,
+              canLoan: result[0][i].canLoan,
+              bookQuantity: result[0][i].bookQuantity,
             });
           }
           setCost(result[result.length - 1][0].cost);
@@ -152,7 +157,6 @@ const Bag = ({ navigation }) => {
       .then(function(response){
         const result = response.data;
         setUrl(result);
-        return response.data;
       })
       .catch(function(error){
         alert("Error",error);
@@ -162,24 +166,18 @@ const Bag = ({ navigation }) => {
     } finally {
     }
 
-    const WebviewContainer = ({ handleSetRef, handleEndLoading }) => {
-      const handleOnMessage = ({ nativeEvent: { data } }) => {
-        console.log(data);
-      }
-    };
-
-    return (
-      <WebView 
-        onLoadEnd={handleEndLoading}
-        onMessage={handleOnMessage}
-        ref={handleSetRef}
-        source={{ uri: `${url}` }}
-      />
-    )
+    console.log(url);
+    const supported = await Linking.canOpenURL(url);
+    
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
   }, [user, cost, cartList, url, setUrl]);
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.libname}>
         <Text
           style={{
@@ -194,7 +192,7 @@ const Bag = ({ navigation }) => {
       <View style={styles.square}></View>
 
       <FlatList
-        keyExtractor={(item) => item.toString()}
+        keyExtractor={(item) => item['id'].toString()}
         data={cartList}
         renderItem={({ item }) => (
           <Item item={item} onPress={_handleItemPress} />
@@ -242,7 +240,7 @@ const Bag = ({ navigation }) => {
       >
         <Text style={styles.pay_text}>{cost}원 결제하기</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
