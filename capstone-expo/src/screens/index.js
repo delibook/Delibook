@@ -9,4 +9,5 @@ import LibraryList from './libraryList';
 import Bag from './bag';
 import BookList from './bookList';
 import Information from './information';
-export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information, Bag };
+import Complete from './completedOrder';
+export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information, Bag, Complete };

@@ -30,9 +30,9 @@ const MainStack = () => {
       />
       <Stack.Screen name="Mypage" component={Mypage} />
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen 
-        name="주문완료" 
-        component={Complete} 
+      <Stack.Screen
+        name="주문완료"
+        component={Complete}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

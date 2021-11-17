@@ -401,7 +401,6 @@ exports.loan_success = async function (req, res) {
         headers: headers,
         form : params
     };
-    sleep(1000);
     console.log(pg_token, userId, tid, cartId, price)
     request(options, function result(error, response, body) {
 

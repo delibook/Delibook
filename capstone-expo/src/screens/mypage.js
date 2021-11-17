@@ -121,7 +121,7 @@ const Mypage = ({ navigation }) => {
           }}
         >
           <Ionicons
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('반납내역')}
             style={{
               textAlign: 'center',
               top: 20,
