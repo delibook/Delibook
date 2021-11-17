@@ -12,7 +12,9 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="홈"
+    >
       <Tab.Screen
         name="홈"
         component={Home}

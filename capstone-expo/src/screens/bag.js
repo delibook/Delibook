@@ -135,17 +135,13 @@ const Bag = ({ navigation }) => {
     }
   }, [user]);
 
-  const _handleItemPress = (params) => {
-    navigation.navigate('도서', params);
-  };
-
   const _handleLoanPayment = useCallback(async() => {
     try {
       axios({
         method: 'post',
         url: 'https://dev.delibook.shop/delibook/loan',
         params: {
-          item_name: `${cartList[0].bookId} 외 ${cartList.length - 1}`,
+          item_name: `${cartList[0].bookTitle} 외 ${cartList.length - 1}개`,
           quantity: `${cartList.length}`,
           price: `${cost}`,
           cartId: `${cartList[0].cartId}`,
@@ -171,13 +167,15 @@ const Bag = ({ navigation }) => {
     
     if (supported) {
       await Linking.openURL(url);
+      navigation.navigate('주문완료');
     } else {
       Alert.alert(`Don't know how to open this URL: ${url}`);
     }
+
   }, [user, cost, cartList, url, setUrl]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.libname}>
         <Text
           style={{
@@ -195,7 +193,7 @@ const Bag = ({ navigation }) => {
         keyExtractor={(item) => item['id'].toString()}
         data={cartList}
         renderItem={({ item }) => (
-          <Item item={item} onPress={_handleItemPress} />
+          <Item item={item} />
         )}
         windowSize={3}
       />
@@ -240,7 +238,7 @@ const Bag = ({ navigation }) => {
       >
         <Text style={styles.pay_text}>{cost}원 결제하기</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
