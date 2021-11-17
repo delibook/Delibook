@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Login, Mypage, LoanHistory } from '../screens';
+import { Login, Mypage, Complete, LoanHistory } from '../screens';
 import TabNavigation from './bottom-tab';
 
 const Stack = createStackNavigator();
