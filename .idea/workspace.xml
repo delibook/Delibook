@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b23dd89-b5f1-498f-a68a-daf35775def3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app/Book/bookProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/Book/bookProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/app/User/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app/User/userController.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +30,9 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
@@ -40,19 +40,6 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\김재원\Desktop\지민\DKU\3-2\캡스톤\Delibook\server\config" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -64,7 +51,20 @@
       <updated>1633348194135</updated>
       <workItem from="1634103105542" duration="3128000" />
       <workItem from="1634212841364" duration="3243000" />
-      <workItem from="1634971868220" duration="1135000" />
+      <workItem from="1634971868220" duration="2649000" />
+      <workItem from="1635160312142" duration="1193000" />
+      <workItem from="1635324780590" duration="141000" />
+      <workItem from="1635329492400" duration="662000" />
+      <workItem from="1635661688139" duration="738000" />
+      <workItem from="1635834590288" duration="10328000" />
+      <workItem from="1635860295870" duration="624000" />
+      <workItem from="1636283693356" duration="2724000" />
+      <workItem from="1636348344226" duration="3567000" />
+      <workItem from="1636530425100" duration="4329000" />
+      <workItem from="1636630941748" duration="3785000" />
+      <workItem from="1636709154024" duration="1204000" />
+      <workItem from="1637051513908" duration="4532000" />
+      <workItem from="1637125700200" duration="3018000" />
     </task>
     <servers />
   </component>

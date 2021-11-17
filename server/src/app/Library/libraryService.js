@@ -28,6 +28,7 @@ exports.setLikeLibrary = async function(userId, libraryId) {
         // 없으면 insert
         const checkLikeStatusResult = await libraryDao.checkLikeStatus(connection, userId, libraryId)
         if(checkLikeStatusResult.length < 1) {
+            status = 0
             insertLikeLibraryResult = await libraryDao.insertLikeLibrary(connection, userId, libraryId);
         }
 
@@ -42,7 +43,7 @@ exports.setLikeLibrary = async function(userId, libraryId) {
         }
 
         connection.release();
-        return response(baseResponse.SUCCESS);
+        return response(baseResponse.SUCCESS, status);
     }
     catch(err) {
         logger.error(`App - setLikeLibrary Service error\n: ${err.message}`);

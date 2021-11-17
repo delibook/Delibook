@@ -19,6 +19,7 @@ import {
   AntDesign,
 } from '@expo/vector-icons';
 import { UserContext } from '../contexts';
+import axios from 'axios';
 /*
 const getFonts = () => {
   return Font.loadAsync({
@@ -30,7 +31,9 @@ const getFonts = () => {
 const Mypage = ({ navigation }) => {
   //getFonts();
 
-  const { dispatch } = useContext(UserContext);
+  const { dispatch, user } = useContext(UserContext);
+
+  const [name, setName] = useState('');
 
   const _handleLogoutButtonPress = async () => {
     try {
@@ -39,6 +42,31 @@ const Mypage = ({ navigation }) => {
       dispatch({});
     }
   };
+
+  useEffect(() => {
+    try {
+      axios({
+        method: 'get',
+        url: 'https://dev.delibook.shop/delibook/user/my-page',
+        headers: {
+          'x-access-token': `${user?.token}`,
+        },
+      })
+        .then(function (response) {
+          const result = response.data.result[0];
+          setName(result[0].userName);
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert('Error', error);
+        });
+    } catch (e) {
+      console.log(e);
+      alert('Error', e);
+    } finally {
+    }
+  }, [setName, user]);
+
   return (
     <View style={styles.container}>
       <View style={{ flex: 0.1, flexDirection: 'row', top: 50, left: 35 }}>
@@ -48,17 +76,16 @@ const Mypage = ({ navigation }) => {
             fontWeight: '500',
           }}
         >
-          고찌님
+          {name}
         </Text>
         <Text
           style={{
             fontSize: 20,
-            top: 3,
+            top: 7,
             fontWeight: '500',
           }}
         >
-          {' '}
-          안녕하세요!
+          님 안녕하세요!
         </Text>
       </View>
       <View

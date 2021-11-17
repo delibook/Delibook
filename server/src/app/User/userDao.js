@@ -75,13 +75,18 @@ async function selectUserAccount(connection, email) {
 
 // 유저 책장 조회
 async function getCasesList(connection, userId) {
+  const getUserNameQuery = `
+    select u.name userName
+    from User u
+    where u.id = ${userId};
+  `
   const getCasesListQuery = `
-      select mbl.name
+      select mbl.name caseName
       from MyBookList mbl
       where mbl.userId = ${userId}
-      and mbl.status = 0
+      and mbl.status = 0;
     `;
-  const [getCasesListRow] = await connection.query(getCasesListQuery);
+  const [getCasesListRow] = await connection.query(getUserNameQuery+getCasesListQuery);
   return getCasesListRow;
 }
 
@@ -114,12 +119,14 @@ async function getCaseList(connection, caseId) {
 }
 
 // 책장 id로 조회
-async function getUsagesList(connection, userId, condition) {
+async function getUsagesList(connection, userId, condition,loan_condition) {
   const getUsagesListQuery = `
-    select (case ui.status
+    select ui.cartId,
+           (case ui.status
               when 0 or 1 then date_format(ui.createdAt, '%Y-%m-%d')
               else date_format(ui.updatedAt, '%Y-%m-%d')
-      end) as date,
+      end) as loanDate,
+           `+loan_condition+`
        (case ui.status
         when 0 then '대여배달중'
         when 1 then '대여중'
@@ -129,8 +136,10 @@ async function getUsagesList(connection, userId, condition) {
         end) as status,
        l.id libraryId, l.name libraryName,
         (case ui.status
-        when 0 or 1 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.toReturnDate, '%Y-%m-%d'))
-        when 3 or 4 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.updatedAt, '%Y-%m-%d'))
+        when 0 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.toReturnDate, '%Y-%m-%d'))
+        when 1 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.toReturnDate, '%Y-%m-%d'))
+        when 3 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.updatedAt, '%Y-%m-%d'))
+        when 4 then concat(date_format(ui.createdAt, '%Y-%m-%d'), ' ~ ', date_format(ui.updatedAt, '%Y-%m-%d'))
         else ''
         end) as period,
        (case x.bookCount
@@ -150,11 +159,20 @@ async function getUsagesList(connection, userId, condition) {
       group by ui.id
       ) x on ui.id = x.id
     where not ui.status = 5
-      and ui.userId = ?
+      and ui.userId = ${userId}
     `+condition+`
-    order by date DESC;
+    order by loanDate DESC;
   `
-  const [getUsagesListRow] = await connection.query(getUsagesListQuery, userId);
+  const getBooksQuery = `
+    select b.imageURL, b.name, b.publisher, b.author, c.id cartId
+    from Book b
+           join BookInCart bic on bic.bookId = b.id
+           join Cart c on c.id = bic.cartId
+           join UsageInformation ui on ui.cartId = c.id
+    where c.userId = 3 
+    `+condition+`
+  `
+  const [getUsagesListRow] = await connection.query(getUsagesListQuery+getBooksQuery);
   return getUsagesListRow;
 }
 
@@ -201,6 +219,73 @@ async function withdrawUser(connection, userId) {
   return withdrawUserRow;
 }
 
+// 대출 정보 삽입
+async function insertLoanInfo(connection, userId, cartId, price) {
+  const insertLoanInfoQuery = `
+    INSERT INTO UsageInformation
+      (userId, cartId, price, status, toReturnDate)
+    VALUES
+      (?, ?, ?, 1, date_add(now(),interval 7 Day));
+  `
+  const [insertLoanInfoRow] = await connection.query(insertLoanInfoQuery, [userId, cartId, price]);
+  return insertLoanInfoRow;
+}
+
+//주문 책 수량 조회
+async function getBookAmount(connection, cartId) {
+  const getBookAmountQuery = `
+    select bookId, quantity
+    from BookInCart bic
+    where status = 0
+      and bic.cartId = ?
+  `
+  const [getBookAmountRow] = await connection.query(getBookAmountQuery, cartId);
+  return getBookAmountRow;
+}
+
+//수량만큼 재고에서 차감
+async function updateBookAmount(connection, bookId, quantity) {
+  const updateBookAmountQuery = `
+    update Book
+    set quantity = quantity - ?
+    where id = ?;
+  `
+  const [updateBookAmountRow] = await connection.query(updateBookAmountQuery, [quantity, bookId]);
+  return updateBookAmountRow;
+}
+
+//cart status 주문완료로 바꾸기
+async function updateCart(connection, cartId) {
+  const updateCartQuery = `
+    update Cart
+    set status = 1
+    where id = ?;
+  `
+  const [updateCartRow] = await connection.query(updateCartQuery, cartId);
+  return updateCartRow;
+}
+
+// 내역 status 반납으로 바꾸기
+async function patchReturnInfo(connection, cartId) {
+  const patchReturnInfoQuery = `
+    update UsageInformation
+    set status = 4
+    where cartId = ?;
+  `
+  const [patchReturnInfoRow] = await connection.query(patchReturnInfoQuery, cartId);
+  return patchReturnInfoRow;
+}
+
+//수량만큼 재고에서 더하기
+async function updateBookAmountPlus(connection, bookId, quantity) {
+  const updateBookAmountPlusQuery = `
+    update Book
+    set quantity = quantity + ?
+    where id = ?;
+  `
+  const [updateBookAmountPlusRow] = await connection.query(updateBookAmountPlusQuery, [quantity, bookId]);
+  return updateBookAmountPlusRow;
+}
 
 module.exports = {
   selectUser,
@@ -217,4 +302,10 @@ module.exports = {
   checkUserInfo,
   selectUserPasswordForWithdraw,
   withdrawUser,
+  insertLoanInfo,
+  getBookAmount,
+  updateBookAmount,
+  updateCart,
+  patchReturnInfo,
+  updateBookAmountPlus
 };

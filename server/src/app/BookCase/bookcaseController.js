@@ -11,7 +11,7 @@ const { query } = require("winston");
 
 /**
  * API No. 7
- * API Name : 특정 책장의 책 조회 API
+ * API Name : 특정 책장의 책 조회 API+마이책장조회
  * [GET] /delibook/bookcase/books
  */
  exports.getBookList = async function (req, res) {
@@ -19,12 +19,15 @@ const { query } = require("winston");
     /**
      * Path Variable: bookcaseName
      */
-    const bookcaseName = req.query.bookcaseName;
-    const userId= req.verifiedToken.userId;
-    if (!bookcaseName) return res.send(errResponse(baseResponse.BOOKCASE_NAME_EMPTY)); //5000, 책장명을 입력하세요.
-    if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ;
+    const bookcaseId = req.query.bookcaseId;
+    const userId= req.query.userId;
 
-    const booklistInbookcase = await bookcaseProvider.bookList(userId, bookcaseName);
+    if (!userId) return res.send(errResponse(baseResponse.USER_ID_EMPTY)) ; //2012
+    if (!bookcaseId) {
+        const bookcaseList = await bookcaseProvider.bookcaseList(userId);
+        return res.send(response(baseResponse.SUCCESS, bookcaseList));
+    } 
+    const booklistInbookcase = await bookcaseProvider.bookListInBookcase(userId, bookcaseId);
     return res.send(response(baseResponse.SUCCESS, booklistInbookcase));
 };
 
@@ -54,4 +57,41 @@ const { query } = require("winston");
 
     const bookToBookcase = await bookcaseService.bookLike(userId, bookcaseId,bookId,type);
     return res.send(bookToBookcase);
+};
+/**
+ * API No. 44
+ * API Name : 책장생성  API
+ * [patch] /delibook/bookcase/add
+ */
+ exports.addBookcase = async function (req, res) {
+
+    
+   
+    const userId= req.query.userId;
+    const title=req.body.title ;
+
+
+    if (!title) return res.send(errResponse(baseResponse.BOOKCASE_NAME_EMPTY)); //5000, 책장명을 입력하세요.
+    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY)) ; 
+
+    const addBookcaseResult = await bookcaseService.addBookcase(userId,title);
+    return res.send(addBookcaseResult);
+};
+/**
+ * API No. 44
+ * API Name : 특정책장제거  API
+ * [patch] /delibook/bookcase/delete
+ */
+ exports.deleteBookcase = async function (req, res) {
+
+    
+    const bookcaseId = req.query.bookcaseId;
+    const userId= req.query.userId;
+
+
+    if (!bookcaseId) return res.send(errResponse(baseResponse.BOOKCASE_ID_EMPTY)); //5002, 책장ID을 입력하세요.
+    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY)) ; 
+
+    const deleteBookcaseResult = await bookcaseService.deleteBookcase(userId, bookcaseId);
+    return res.send(deleteBookcaseResult);
 };

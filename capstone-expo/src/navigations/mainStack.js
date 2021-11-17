@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Login, Mypage } from '../screens';
+import { Login, Mypage, Complete } from '../screens';
 import TabNavigation from './bottom-tab';
 
 const Stack = createStackNavigator();
@@ -26,10 +26,15 @@ const MainStack = () => {
       <Stack.Screen 
         name="Main" 
         component={TabNavigation} 
-        options={{ headerShown: false }}              
+        options={{ headerShown: false }}
       />
       <Stack.Screen name="Mypage" component={Mypage} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen 
+        name="주문완료" 
+        component={Complete} 
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

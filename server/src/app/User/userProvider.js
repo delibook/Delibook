@@ -98,16 +98,28 @@ exports.getMyCase = async function (userId, caseId) {
 //이용내역 조회
 exports.getUsagesResult = async function (userId, type) {
   let condition = ''
+  let loan_condition = ''
   switch(type) {
     case '1':
       condition += 'and (ui.status = 0 or ui.status = 1)';
+      loan_condition += 'date_format(ui.toReturnDate,\'%Y-%m-%d\') as toReturnDate,\n' +
+          '       (case\n' +
+          '           when datediff(now(), ui.toReturnDate) <= 0\n' +
+          '           then 0\n' +
+          '           else datediff(now(), ui.toReturnDate)\n' +
+          '           end) as lateDateCount,\n' +
+          '       (case\n' +
+          '           when datediff(now(), ui.toReturnDate) <= 0\n' +
+          '           then l.tip\n' +
+          '           else l.tip+l.lateFee*(datediff(now(), ui.toReturnDate))\n' +
+          '           end) as price,'
       break
     case '2':
       condition += 'and (ui.status = 3 or ui.status = 4)';
       break
   }
   const connection = await pool.getConnection(async (conn) => conn);
-  const usagesListResult = await userDao.getUsagesList(connection, userId, condition);
+  const usagesListResult = await userDao.getUsagesList(connection, userId, condition, loan_condition);
 
   connection.release();
   return response(baseResponse.SUCCESS, usagesListResult);

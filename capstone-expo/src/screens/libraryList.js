@@ -1,7 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
 import { UserContext } from '../contexts';
+import { SearchBar } from '../components';
 import axios from'axios';
 
 const Container = styled.View`
@@ -48,24 +49,12 @@ const ItemPrice = styled.Text`
     color: ${({ theme }) => theme.listPrice};
 `;
 
-const librarys = [];
-for (let idx = 0; idx < 1000; idx++) {
-  librarys.push({
-    id: idx,
-    title: idx,
-    description: idx,
-    type: idx,
-    price: idx,
-  });
-}
-
-
 const Item = React.memo(
   ({ item: { id, name, cityName, sigunguName, closeDay, type, tip }, onPress }) => {
     const theme = useContext(ThemeContext);
 
     return (
-      <ItemContainer onPress={() => onPress({ id, title })}>
+      <ItemContainer onPress={() => onPress({ id, name })}>
         <ItemLeftContainer>
           <ItemTitle>{name}</ItemTitle>
           <ItemDescription>{cityName} {sigunguName}</ItemDescription>
@@ -83,7 +72,7 @@ const Item = React.memo(
 const LibraryList = ({ navigation }) => {
   const [librarys, setLibrarys] = useState([]);
   const [distance, setDistance] = useState('');
-  const [search, setSearch] = useState('어린이');
+  const [search, setSearch] = useState('');
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -129,11 +118,62 @@ const LibraryList = ({ navigation }) => {
   }, [distance, search, user]);
 
   const _handleItemPress = params => {
-    navigation.navigate('도서', params);
+    navigation.navigate('도서목록', params);
   };
+
+  const _handleSearchChange = (search) => {
+    setSearch(search);
+  };
+
+  const _handleSearchSubmit = useCallback(async() => {
+    try {
+      axios({
+        method: 'get',
+        url: 'https://dev.delibook.shop/delibook/library',
+        params: { 
+          search: `${search}` 
+        },
+        headers: {
+          'x-access-token': `${user?.token}`
+        }
+      })
+      .then(function(response){
+        const result = response.data.result;
+        const list = []
+        for (let i = 0; i < result.length; i++) {
+          list.push({
+            id: result[i].id,
+            name: result[i].name,
+            cityName: result[i].cityName,
+            sigunguName: result[i].sigunguName,
+            closeDay: result[i].closeDay,
+            type: result[i].type,
+            tip: result[i].tip,
+          });
+        }
+        console.log(list);
+        setLibrarys(list);
+        return response.res;
+      })
+      .catch(function(error){
+        console.log(error);
+        alert("Error",error);
+      });
+    } catch (e) {
+      console.log(e);
+      alert("Error", e);
+    } finally {
+    }
+  }, [distance, search, user]);
 
   return (
     <Container>
+      <SearchBar 
+        value={search}
+        onChangeText={_handleSearchChange}
+        onSubmitEditing={_handleSearchSubmit}
+        placeholder="도서관을 입력하세요"
+      />
       <FlatList
         keyExtractor={item => item['id'].toString()}
         data={librarys}
