@@ -353,9 +353,9 @@ exports.loan = async function(req,res) {
         'total_amount': price,
         'vat_amount': 0,
         'tax_free_amount': 0,
-        'approval_url': 'http://localhost:3000/loan/payment/approve',
-        'fail_url': 'http://localhost:3000/payment/fail',
-        'cancel_url': 'http://localhost:3000/payment/cancel',
+        'approval_url': 'https://dev.delibook.shop/loan/payment/approve',
+        'fail_url': 'https://dev.delibook.shop/payment/fail',
+        'cancel_url': 'https://dev.delibook.shop/payment/cancel',
     };
 
     let options = {
