@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Login, Mypage } from '../screens';
+import { Login, Mypage, LoanHistory } from '../screens';
 import TabNavigation from './bottom-tab';
 
 const Stack = createStackNavigator();
@@ -30,6 +30,7 @@ const MainStack = () => {
       />
       <Stack.Screen name="Mypage" component={Mypage} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="반납내역" component={LoanHistory} />
     </Stack.Navigator>
   );
 };
