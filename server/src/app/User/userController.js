@@ -372,7 +372,7 @@ exports.loan = async function(req,res) {
             console.log(JSON.parse(body));      //JSON.parse : JSON 문자열의 구문을 분석하고, 그 결과에서 JavaScript 값이나 객체를 생성
             next_redirect_app_url = (JSON.parse(body).next_redirect_mobile_url);
             tid = (JSON.parse(body).tid);
-            console.log(pg_token, userId, tid, cartId, price)
+            console.log(userId, tid, cartId, price)
             return res.send(next_redirect_app_url) // redirect 하는 코드
         }
         else console.log("대출 결제준비 실패");
