@@ -407,7 +407,7 @@ exports.loan_success = async function (req, res) {
             const insertBuyInfoResult = userService.insertBuyInfo(userId, cartId, price);
             return res.send("성공");
             //나중에 결제완료 창으로 redirect되도록 만들예정
-        } else console.log("결제 승인 실패")
+        } else console.log("결제 승인 실패", error)
 
     });
 };
