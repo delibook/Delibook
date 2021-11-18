@@ -16,9 +16,33 @@ import {
   Alert
 } from 'react-native';
 
-const Item = React.memo(
-  ({ item: { bookThumbnail, bookTitle, canLoan} }) => {
-    
+const Item = React.memo(({ item: { bookId, bookThumbnail, bookTitle, canLoan, cartId }}) => {
+    const { user } = useContext(UserContext);
+
+    const _handleBookCancle = useCallback(async() => {
+      try {
+        axios({
+          method: 'patch',
+          url: 'https://dev.delibook.shop/delibook/cart/'+cartId+'/drop',
+          params: {
+            bookId: `${bookId}`,
+          },
+          headers: {
+            'x-access-token': `${user?.token}`
+          }
+        })
+        .then(function(response){
+          console.log(bookId, cartId);
+        })
+        .catch(function(error){
+          alert("Error",error);
+          console.log(error);
+        });
+      } catch (e) {
+        alert(cartId);
+      } finally {
+      }
+    }, [user, bookId, cartId]);
 
     return (
       <View style={styles.item}>
@@ -35,7 +59,7 @@ const Item = React.memo(
         </View>
         <View style={{ width: 50, alignItems: 'flex-end' }}>
           <EvilIcons
-            onPress={() => console.log(`hi`)}
+            onPress={_handleBookCancle}
             style={styles.eraseIcon}
             name="close"
             size={20}
@@ -47,7 +71,6 @@ const Item = React.memo(
 );
 
 const Bag = ({ navigation }) => {
-  //getFonts();
   const [libName, setLibName] = useState('');
   const [cartList, setCartList] = useState([]);
   const [mainAddress, setMainAddress] = useState('');
