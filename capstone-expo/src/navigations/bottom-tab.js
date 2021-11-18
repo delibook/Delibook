@@ -27,7 +27,8 @@ const TabNavigation = () => {
         component={LibraryStack}
         options={{
           tabBarIcon: (props) => TabIcon({ ...props, name: 'library' }),
-          headerShown: false
+          headerShown: false,
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
