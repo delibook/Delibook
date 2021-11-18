@@ -16,7 +16,7 @@ import {
   Alert
 } from 'react-native';
 
-const Item = React.memo(({ item: { bookId, bookThumbnail, bookTitle, canLoan, cartId }}) => {
+const Item = React.memo(({ item: { bookId, bookThumbnail, bookTitle, canLoan, putQuantity, cartId }}) => {
     const { user } = useContext(UserContext);
 
     const _handleBookCancle = useCallback(async() => {
@@ -55,7 +55,7 @@ const Item = React.memo(({ item: { bookId, bookThumbnail, bookTitle, canLoan, ca
         <View style={styles.item_texts}>
           <Text style={styles.item_text}>[제목] {bookTitle}</Text>
           <Text style={styles.item_text}>[상태] {canLoan}</Text>
-          <Text style={styles.item_text}>[대여수량] 1</Text>
+          <Text style={styles.item_text}>[대여수량] {putQuantity}</Text>
         </View>
         <View style={{ width: 50, alignItems: 'flex-end' }}>
           <EvilIcons
@@ -101,6 +101,7 @@ const Bag = ({ navigation }) => {
               bookTitle: result[0][i].bookTitle,
               canLoan: result[0][i].canLoan,
               bookQuantity: result[0][i].bookQuantity,
+              putQuantity: result[0][i].putQuantity,
             });
           }
           setCost(result[result.length - 1][0].cost);
