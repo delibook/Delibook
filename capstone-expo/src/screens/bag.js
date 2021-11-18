@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 const Item = React.memo(
-  ({ item: { bookThumbnail, bookTitle, canLoan, bookQuantity } }) => {
+  ({ item: { bookThumbnail, bookTitle, canLoan} }) => {
     
 
     return (
@@ -31,7 +31,7 @@ const Item = React.memo(
         <View style={styles.item_texts}>
           <Text style={styles.item_text}>[제목] {bookTitle}</Text>
           <Text style={styles.item_text}>[상태] {canLoan}</Text>
-          <Text style={styles.item_text}>[대여수량] {bookQuantity}</Text>
+          <Text style={styles.item_text}>[대여수량] 1</Text>
         </View>
         <View style={{ width: 50, alignItems: 'flex-end' }}>
           <EvilIcons
@@ -53,7 +53,6 @@ const Bag = ({ navigation }) => {
   const [mainAddress, setMainAddress] = useState('');
   const [mainDetailAddress, setMainDetailAddress] = useState('');
   const [cost, setCost] = useState('');
-  const [url, setUrl] = useState('');
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -151,28 +150,25 @@ const Bag = ({ navigation }) => {
         }
       })
       .then(function(response){
-        const result = response.data;
-        setUrl(result);
+        const url = response.data;
+        console.log(url);
+        const supported = Linking.canOpenURL(url);
+      
+        if (supported) {
+          Linking.openURL(url);
+          navigation.navigate('주문완료');
+        } else {
+          Alert.alert(`Don't know how to open this URL: ${url}`);
+        }
       })
       .catch(function(error){
         alert("Error",error);
       });
     } catch (e) {
-      alert(libraryId);
+      alert(cartId);
     } finally {
     }
-
-    console.log(url);
-    const supported = await Linking.canOpenURL(url);
-    
-    if (supported) {
-      await Linking.openURL(url);
-      navigation.navigate('주문완료');
-    } else {
-      Alert.alert(`Don't know how to open this URL: ${url}`);
-    }
-
-  }, [user, cost, cartList, url, setUrl]);
+  }, [user, cost, cartList]);
 
   return (
     <ScrollView style={styles.container}>
@@ -202,7 +198,7 @@ const Bag = ({ navigation }) => {
         <Button
           color="#30BDFF"
           title="+더 담으러 가기"
-          onPress={() => console.log(`navigate to borrow`)}
+          onPress={() => navigation.navigate('도서관')}
         />
       </View>
       <View style={styles.square}></View>
