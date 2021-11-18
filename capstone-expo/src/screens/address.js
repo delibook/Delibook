@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  FlatList,
 } from 'react-native';
 import styled from 'styled-components';
 import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
@@ -25,74 +26,75 @@ const ErrorText = styled.Text`
   color: ${({ theme }) => theme.errorText};
 `;
 
+const Item = React.memo(({ item: { address, detailAddress } }) => {
+  return (
+    <View style={styles.item}>
+      <View style={styles.mainAddress}>
+        <Text style={styles.currentAddress}>{address}</Text>
+        <Text style={styles.currentDetailAddress}>{detailAddress}</Text>
+      </View>
+      <View style={{ width: 50, alignItems: 'flex-end' }}>
+        <EvilIcons
+          onPress={() => console.log(`hi`)}
+          style={{ zIndex: 10 }}
+          name="close"
+          size={20}
+        />
+      </View>
+    </View>
+  );
+});
+
 const Address = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [allCheckbox, setAllCheckbox] = useState(false);
-  const [checkbox1, setCheckbox1] = useState(false);
-  const [checkbox2, setCheckbox2] = useState(false);
-  const [checkbox3, setCheckbox3] = useState(false);
-  const [checkbox4, setCheckbox4] = useState(false);
-  const [checkbox5, setCheckbox5] = useState(false);
-  const [disabled, setDisabled] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
-  const { spinner } = useContext(ProgressContext);
-  const { dispatch } = useContext(UserContext);
+  const [addressList, setAddressList] = useState();
+  const [mainAddress, setMainAddress] = useState('');
+  const [mainDetailAddress, setMainDetailAddress] = useState('');
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    setDisabled(!(email && password && name && phone && !errorMessage));
-  }, [email, password, name, phone, errorMessage]);
-
-  const _handleEmailChange = (email) => {
-    const changedEmail = removeWhitespace(email);
-    setEmail(changedEmail);
-    setErrorMessage(
-      validateEmail(changedEmail) ? '' : '이메일 형식이 잘못되었습니다.',
-    );
-  };
-
-  const _handlePasswordChange = (password) => {
-    setPassword(removeWhitespace(password));
-  };
-
-  const _handlePhoneChange = (phone) => {
-    setPhone(phone);
-  };
-
-  const _handleNameChange = (name) => {
-    setName(name);
-  };
-
-  const _handleJoinButtonPress = useCallback(async () => {
-    let data;
     try {
-      data = await axios
-        .post('https://dev.delibook.shop/delibook/user/sign-in', {
-          name: `${name}`,
-          phone: `${phone}`,
-          email: `${email}`,
-          password: `${password}`,
-        })
+      axios({
+        method: 'get',
+        url: 'https://dev.delibook.shop/delibook/address',
+        headers: {
+          'x-access-token': `${user?.token}`,
+        },
+      })
         .then(function (response) {
-          if (response.data.isSuccess == false) {
-            Alert.alert('Error', `${response.data.message}`);
-          } else {
-            Alert.alert('회원가입', '성공');
-            navigation.navigate('로그인');
+          const result = response.data.result;
+          const list = [];
+          for (let i = 0; i < result.length; i++) {
+            list.push({
+              addressId: result[i].addressId,
+              userId: result[i].userId,
+              detailAddress: result[i].detailAddress,
+              address: result[i].address,
+              latitude: result[i].latitude,
+              longitude: result[i].longitude,
+              isMain: result[i].isMain,
+            });
+            if (result[i].isMain === 'main') {
+              setMainAddress(result[i].address);
+              setMainDetailAddress(result[i].detailAddress);
+            }
           }
-          return response.data;
+          setAddressList(list);
+          return () => {};
         })
         .catch(function (error) {
-          alert('Error', error);
           console.log(error);
+          alert('Error', error);
         });
     } catch (e) {
-      alert(email);
+      console.log(e);
+      alert('Error', e);
     } finally {
     }
-  }, [name, phone, email, password]);
+  }, [user]);
+
+  const _handleItemPress = (params) => {
+    console.log(params);
+  };
 
   return (
     <View style={styles.container}>
@@ -105,6 +107,18 @@ const Address = ({ navigation }) => {
           <Text style={styles.findAddress_text}>현재 위치로 주소 찾기</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.mainAddress}>
+        <Text style={styles.currentAddress}>{mainAddress}</Text>
+        <Text style={styles.currentDetailAddress}>{mainDetailAddress}</Text>
+      </View>
+      <View style={styles.square}></View>
+      <FlatList>
+        keyExtractor={(item) => item.toString()}
+        data={addressList}
+        renderItem=
+        {({ item }) => <Item item={item} onPress={_handleItemPress} />}
+        windowSize={3}
+      </FlatList>
       <View style={styles.square}></View>
     </View>
   );
@@ -113,20 +127,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  text: {
-    textAlign: 'center',
-  },
-  input: {
-    marginTop: 10,
-    marginBottom: 20,
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#b6b6b6',
-    borderRadius: 4,
-    color: '#b6b6b6',
-    paddingLeft: 10,
-    fontSize: 16,
   },
   square: {
     flex: 0.03,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   findAddress_GPS: {
     backgroundColor: '#30BDFF',
     borderRadius: 4,
-    flex: 0.07,
+    flex: 0.08,
     flexDirection: 'column',
     alignItems: 'center',
   },
@@ -149,10 +149,31 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     //border: 0.4px solid #FFFFFF;
   },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#a6a6a6',
+  mainAddress: {
+    flex: 0.08,
+    justifyContent: 'center',
+  },
+  currentAddress: {
+    fontSize: 18,
+    lineHeight: 25,
+  },
+  currentDetailAddress: {
+    fontSize: 15,
+    lineHeight: 15,
+  },
+  item: {
+    flex: 0.2,
+    flexDirection: 'row',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EFEFEF',
+  },
+  item_texts: {
+    left: 10,
+    width: 220,
+  },
+  item_text: {
+    lineHeight: 25,
   },
 });
 

@@ -75,6 +75,7 @@ const Item = React.memo(
 );
 
 const LibraryList = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [librarys, setLibrarys] = useState([]);
   const [distance, setDistance] = useState('');
   const [search, setSearch] = useState('');
@@ -196,7 +197,7 @@ const LibraryList = ({ navigation }) => {
           <Item item={item} onPress={_handleItemPress} />
         )}
         onRefresh={fetchItems}
-        refreshing={isRefreshing}
+        refreshing={isLoading}
         windowSize={3}
       />
     </Container>
