@@ -16,56 +16,114 @@ const ItemContainer = styled.View`
     width : 100%
 `;
 
-const LibraryContainer = styled.View`
+const TopLibraryContainer = styled.View`
     background-color : white;
-    flex : 1;
-    flex-direction: column;
-    margin-bottom : 20px;
-    width : 100%
-    
+    flex : 0.13;
+    flex-direction: row;
+    margin-top : 10px;
 `;
+
+const BottomLibraryContainer = styled.View`
+    background-color : white;
+    flex : 0.1;
+    flex-direction : row;
+`;
+
+const PriceContainer = styled.View`
+   background-color : white;
+    flex : 1;
+    flex-direction : row;
+`;
+
 
 const BookContainer = styled.View`
     background-color : white;
     flex-direction: row;
     margin-bottom : 10px;
     width : 100%;
-    padding : 10px;
+    padding-bottom : 10px;
     border-bottom-width: 1px;
     height : 120px;
     border-color: ${({ theme }) => theme.listBorder};
 `;
 
+const BookInfoContainer = styled.View`
+    background-color : white;
+    flex-direction: column;
+`
+
+const BookDetailInfoContainer = styled.View`
+    background-color : white;
+    flex-direction: row;
+    padding-top : 10px;
+    padding-bottom : 10px;
+`
+
 const BookTitleText = styled.Text`
-    font-size : 12px;
+    padding: 10px; 
+    font-size : 14px;
+    
 `;
 const BookInfoText = styled.Text`
-    font-size : 7px;
+    font-size : 10px;
+    padding: 10px;
+    color : gray;
 `;
 
-const StyledText = styled.Text`
-  font-size: 10px;
+const LibraryNameText = styled.Text`
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-left : 10px;
+  margin-top : 7px;
+`;
+
+const StatusText = styled.Text`
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-left : 10px;
+  color : blue;
+  padding-left : 232px;
+  margin-top : 7px;s
+`;
+
+const PeriodText = styled.Text`
+  font-size: 12px;
   margin-bottom: 10px;
   margin-left : 10px;
 `;
 
+const LateDayText = styled.Text`
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-left : 10px;
+  color : red;
+  padding-left : 100px;
+`;
+
+const PriceText = styled.Text`
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-top : 10px;
+  margin-left : 230px;
+  color: ${({ theme }) => theme.listPrice};
+`;
+
 const ItemImageContainer = styled.Image`
-    flex: 1;
-    width: 100%;
+    flex: 0.4;
+    width : 100%;
     height: 100%;
     resizeMode: contain;
-    margin-right: 10px;
-    margin-left : 0;
+    margin-left : 10px;
 `;
 
 const ButtonContainer = styled.TouchableOpacity`
-   
     width: 90px;
+    height : 26px;
     align-items: center;
     border-radius: 7px;
     padding: 5px;
     margin-top: 5px;
-    margin-right: 30px;
+    margin-left : 20px;
     background-color: #3CB4EC;
 `;
 
@@ -79,35 +137,51 @@ const LoanHistory = () => {
     return (
         <Container>
             <ItemContainer>
-            <LibraryContainer>
-                <StyledText>판교어린이도서관</StyledText>
-                <StyledText>대여중</StyledText>
-                <BookContainer>
-                    <ItemImageContainer
-                        source={{
-                            uri: `http://image.yes24.com/goods/91433923/XL`,
-                        }}
-
-                    />
-                    <BookTitleText>이것이 코딩 테스트다</BookTitleText>
-                    <BookInfoText>나동빈</BookInfoText>
-                    <BookInfoText>한빛미디어</BookInfoText>
-               </BookContainer>
-                <BookContainer>
-                    <ItemImageContainer
-                        source={{
-                            uri: `http://image.yes24.com/goods/91433923/XL`,
-                        }}
-                    />
+            <TopLibraryContainer>
+                <LibraryNameText>판교어린이도서관</LibraryNameText>
+                <StatusText>대여중</StatusText>
+            </TopLibraryContainer>
+            <BookContainer>
+                <ItemImageContainer
+                    source={{
+                        uri: `http://image.yes24.com/goods/91433923/XL`,
+                    }}
+                />
+                <BookInfoContainer>
+                <BookTitleText>이것이 코딩 테스트다</BookTitleText>
+                    <BookDetailInfoContainer>
+                <BookInfoText>나동빈</BookInfoText>
+                <BookInfoText>한빛미디어</BookInfoText>
+                    </BookDetailInfoContainer>
+                </BookInfoContainer>
                 </BookContainer>
-                <StyledText>기간 : 2021-10-01 ~ 2021-10-22</StyledText>
-                <StyledText>연체일 : 22일</StyledText>
-                <StyledText>3500원</StyledText>
+                <BookContainer>
+                    <ItemImageContainer
+                        source={{
+                            uri: `http://image.yes24.com/goods/91433923/XL`,
+                        }}
+                    />
+                    <BookInfoContainer>
+                        <BookTitleText>이것이 코딩 테스트다</BookTitleText>
+                        <BookDetailInfoContainer>
+                            <BookInfoText>나동빈</BookInfoText>
+                            <BookInfoText>한빛미디어</BookInfoText>
+                        </BookDetailInfoContainer>
+                    </BookInfoContainer>
+                </BookContainer>
+            <BottomLibraryContainer>
+                <PeriodText>기간 : 2021-10-01 ~ 2021-10-22</PeriodText>
+                <LateDayText>연체일 : 22일</LateDayText>
+            </BottomLibraryContainer>
+                <PriceContainer>
+                <PriceText>3500원</PriceText>
                 <ButtonContainer>
                     <ButtonTitle>반납 신청</ButtonTitle>
                 </ButtonContainer>
-            </LibraryContainer>
+                </PriceContainer>
+
             </ItemContainer>
+
         </Container>
     );
 };
