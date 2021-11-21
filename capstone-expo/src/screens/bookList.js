@@ -11,6 +11,20 @@ const Container = styled.View`
   background-color: ${({theme}) => theme.background};
 `;
 
+const TopContainer = styled.View`
+  flex-direction: row;
+`;
+
+const TopLeftItem = styled.View`
+  flex: 1;
+`;
+
+const TopRightItem = styled.View`
+  flex: 0.3;
+  margin: auto;
+  height: 60%;
+`;
+
 const ItemContainer = styled.View`
     flex-direction: row;
     align-items: center;
@@ -246,6 +260,10 @@ const BookList = ({ navigation, route }) => {
     setSearch(search);
   };
 
+  const _handleInformationPress = useCallback(async() => {
+    navigation.navigate('상세페이지', { libraryId: route.params.id });
+  },[]);
+
   const _handleBookSearchSubmit = useCallback(async() => {
     try {
       axios({
@@ -287,12 +305,21 @@ const BookList = ({ navigation, route }) => {
   
   return (
     <Container>
-      <SearchBar 
-        value={search}
-        onChangeText={_handleBookSearchChange}
-        onSubmitEditing={_handleBookSearchSubmit}
-        placeholder="도서명을 입력하세요"
-      />
+      <TopContainer>
+        <TopLeftItem>
+          <SearchBar 
+          value={search}
+          onChangeText={_handleBookSearchChange}
+          onSubmitEditing={_handleBookSearchSubmit}
+          placeholder="도서명을 입력하세요"
+          />
+        </TopLeftItem>
+        <TopRightItem>
+          <ButtonContainer onPress={_handleInformationPress}>
+            <ButtonTitle>도서관 정보</ButtonTitle>
+          </ButtonContainer>
+        </TopRightItem>
+      </TopContainer>
       <FlatList
         keyExtractor={item => item['id'].toString()}
         data={books}
