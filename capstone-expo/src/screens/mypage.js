@@ -135,7 +135,7 @@ const Mypage = ({ navigation }) => {
         </View>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           <MaterialCommunityIcons
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('상세페이지')}
             style={{
               textAlign: 'center',
               top: 20,
