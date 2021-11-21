@@ -1,10 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { View,Text,FlatList,StyleSheet } from 'react-native';
-import styled, { ThemeContext } from 'styled-components/native';
-import { UserContext } from '../contexts';
-import { MapView } from 'expo';
-import axios from'axios';
-import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 //<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAt5c5qD37duKCVYw-LQOrFW3lnLXWW48c" async ></script>
 // &callback=initMap&libraries=&v=weekly
 
