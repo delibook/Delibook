@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { Button } from 'react-native';
+import { UserContext } from '../contexts';
+import { FlatList, Image } from 'react-native';
+import axios from'axios';
 
 const Container = styled.View`
   align-items: center;
@@ -132,49 +134,93 @@ const ButtonTitle = styled.Text`
     color: ${({ theme}) => theme.buttonTitle};
 `;
 
-
-const LoanHistory = () => {
-    return (
-        <Container>
-            <ItemContainer>
-            <TopLibraryContainer>
-                <LibraryNameText>판교어린이도서관</LibraryNameText>
-                <StatusText>대여중</StatusText>
-            </TopLibraryContainer>
-            <BookContainer>
-                <ItemImageContainer
+const Book = React.memo(
+    ({ item: { bookId, bookThumbnail, bookTitle, canLoan, cartId } }) => {
+  
+      return (
+          <BookContainer>
+              <Image
                     source={{
-                        uri: `http://image.yes24.com/goods/91433923/XL`,
+                        uri: `${bookThumbnail}`,
                     }}
                 />
                 <BookInfoContainer>
-                <BookTitleText>이것이 코딩 테스트다</BookTitleText>
+                <BookTitleText>{bookTitle}</BookTitleText>
                     <BookDetailInfoContainer>
                 <BookInfoText>나동빈</BookInfoText>
                 <BookInfoText>한빛미디어</BookInfoText>
                     </BookDetailInfoContainer>
                 </BookInfoContainer>
-                </BookContainer>
-                <BookContainer>
-                    <ItemImageContainer
-                        source={{
-                            uri: `http://image.yes24.com/goods/91433923/XL`,
-                        }}
-                    />
-                    <BookInfoContainer>
-                        <BookTitleText>이것이 코딩 테스트다</BookTitleText>
-                        <BookDetailInfoContainer>
-                            <BookInfoText>나동빈</BookInfoText>
-                            <BookInfoText>한빛미디어</BookInfoText>
-                        </BookDetailInfoContainer>
-                    </BookInfoContainer>
-                </BookContainer>
+          </BookContainer>
+      );
+    }
+);
+
+const Item = React.memo(
+  ({ item: { cartId, lateDateCount, libraryName, period, price, status } }) => {
+    const [cartList, setCartList] = useState([]);
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        try {
+          axios({
+            method: 'get',
+            url: 'https://dev.delibook.shop/delibook/cart',
+            headers: {
+              'x-access-token': `${user?.token}`,
+            },
+          })
+            .then(function (response) {
+              const result = response.data.result;
+              const list = [];
+              for (let i = 0; i < result[0].length; i++) {
+                list.push({
+                  id: i,
+                  cartId: result[0][i].cartId,
+                  libraryId: result[0][i].libraryId,
+                  library: result[0][i].library,
+                  bookId: result[0][i].bookId,
+                  bookThumbnail: result[0][i].bookThumbnail,
+                  bookTitle: result[0][i].bookTitle,
+                  canLoan: result[0][i].canLoan,
+                  bookQuantity: result[0][i].bookQuantity,
+                });
+              }
+              setCartList(list);
+              return () => {};
+            })
+            .catch(function (error) {
+              console.log(error);
+              alert('Error', error);
+            });
+        } catch (e) {
+          console.log(e);
+          alert('Error', e);
+        } finally {
+        }
+      }, [user. cartId]);
+
+    return (
+        <Container>
+            <ItemContainer>
+            <TopLibraryContainer>
+                <LibraryNameText>{libraryName}</LibraryNameText>
+                <StatusText>{status}</StatusText>
+            </TopLibraryContainer>
+            <FlatList
+                keyExtractor={item => item['id'].toString()}
+                data={cartList}
+                renderItem={({ item }) => (
+                    <Book item={item} />
+                )}
+                windowSize={3}
+            />
             <BottomLibraryContainer>
-                <PeriodText>기간 : 2021-10-01 ~ 2021-10-22</PeriodText>
-                <LateDayText>연체일 : 22일</LateDayText>
+                <PeriodText>기간 : {period}</PeriodText>
+                <LateDayText>연체일 : {lateDateCount}</LateDayText>
             </BottomLibraryContainer>
                 <PriceContainer>
-                <PriceText>3500원</PriceText>
+                <PriceText>{price}원</PriceText>
                 <ButtonContainer>
                     <ButtonTitle>반납 신청</ButtonTitle>
                 </ButtonContainer>
@@ -182,6 +228,67 @@ const LoanHistory = () => {
 
             </ItemContainer>
 
+        </Container>
+    );
+  }
+);
+
+const LoanHistory = () => {
+    const [loanHistory, setLoanHistory] = useState([]);
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        try {
+          axios({
+            method: 'get',
+            url: 'https://dev.delibook.shop/delibook/user/usage',
+            params: { type: 1 },
+            headers: {
+              'x-access-token': `${user?.token}`
+            }
+          })
+          .then(function(response){
+            const result = response.data.result[0];
+            const list = []
+            for (let i = 0; i < result.length; i++) {
+                list.push({
+                    id: i,
+                    book: result[i].book,
+                    cartId: result[i].cartId,
+                    lateDateCount: result[i].lateDateCount,
+                    libraryId: result[i].libraryId,
+                    libraryName: result[i].libraryName,
+                    loanDate: result[i].loanDate,
+                    period: result[i].period,
+                    price: result[i].price,
+                    status: result[i].status,
+                    toReturnDate: result[i].toReturnDate,
+                });
+            }
+            setLoanHistory(list);
+            return response.res;
+          })
+          .catch(function(error){
+            console.log(error);
+            alert("Error",error);
+          });
+        } catch (e) {
+          console.log(e);
+          alert("Error", e);
+        } finally {
+        }
+      }, [user]);
+
+    return (
+        <Container>
+            <FlatList
+                keyExtractor={item => item['id'].toString()}
+                data={loanHistory}
+                renderItem={({ item }) => (
+                    <Item item={item} />
+                )}
+                windowSize={3}
+            />
         </Container>
     );
 };
