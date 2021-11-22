@@ -58,3 +58,12 @@ exports.canInsertCheck = async function (userId,libraryId) {
     return can;
   
 };
+
+exports.getOneCart = async function (cartId) 
+{
+    const connection = await pool.getConnection(async (conn) => conn);
+    const oneCartResult = await cartDao.getOneCart(connection,cartId);
+    connection.release();
+
+    return oneCartResult;
+};

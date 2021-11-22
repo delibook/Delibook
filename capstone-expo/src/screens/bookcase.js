@@ -1,6 +1,8 @@
-import React from 'react';
+import React,{ useState, useEffect }  from 'react';
 import styled from 'styled-components';
-import { Button } from 'react-native';
+import { Button ,FlatList,View, Text, StyleSheet} from 'react-native';
+import axios from 'axios';
+
 
 const Container = styled.View`
   align-items: center;
@@ -23,13 +25,6 @@ const TopLibraryContainer = styled.View`
     margin-top : 10px;
 `;
 
-
-
-const PriceContainer = styled.View`
-   background-color : white;
-    flex : 1;
-    flex-direction : row;
-`;
 
 
 const BookContainer = styled.View`
@@ -79,13 +74,7 @@ const PeriodText = styled.Text`
   margin-left : 10px;
 `;
 
-const PriceText = styled.Text`
-  font-size: 12px;
-  margin-bottom: 10px;
-  margin-top : 10px;
-  margin-left : 230px;
-  color: ${({ theme }) => theme.listPrice};
-`;
+
 
 const ItemImageContainer = styled.Image`
     flex: 0.4;
@@ -94,67 +83,113 @@ const ItemImageContainer = styled.Image`
     resizeMode: contain;
     margin-left : 10px;
 `;
+const styles = StyleSheet.create({
+image: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
+  },
+  item_texts: {
+    left: 10,
+    width: 220,
+  },
+  item_text: {
+    lineHeight: 25,
+  },
+  libName: {
+    fontSize:15
+  },
+});
 
-const ButtonContainer = styled.TouchableOpacity`
-    width: 90px;
-    height : 26px;
-    align-items: center;
-    border-radius: 7px;
-    padding: 5px;
-    margin-top: 5px;
-    margin-left : 20px;
-    background-color: #3CB4EC;
-`;
+const Item = React.memo(
+    ({ item: { libraryName, category, bookTitle, thumbnail } }) => {
+  
+      return (
+        <View>
+          <Image
+            source={{
+              uri: `${Thumbnail}`,
+            }}
+            style={styles.image}
+          />
+          <Text style={styles.libName}> {libraryName}</Text>
+          <View style={styles.item_texts}>
+          
+            <Text style={styles.item_text}>[제목] {bookTitle}</Text>
+            <Text style={styles.item_text}>[카테고리] {category}</Text>
+          </View>
+          <View style={{ width: 50, alignItems: 'flex-end' }}>
+            <EvilIcons
+              onPress={_handleBookCancle}
+              style={styles.eraseIcon}
+              name="close"
+              size={20}
+            />
+          </View>
+        </View>
+      );
+    },
+  );
+const Bookcase = ({navigation,route}) => {
+    const [likeList, setLikeList] = useState([]); 
+    const userId =route.params.userId;
+   
+    useEffect(() => {
+        try {
+          axios({
+            method: 'get',
+            url: 'https://dev.delibook.shop/bookcase?userId='+userId,
+            
+          })
+          .then(function(response){
+            const result = response.data.result[0];
+            const list=[];
+            for (let i = 0; i < result[0].length; i++) {
+                list.push({
+                    id : i,
+                    libraryName: result[0][i].libraryName,
+                    category: result[0][i].category,
+                    bookTitle: result[0][i].bookTitle,
+                    thumbnail: result[0][i].thumbnail,
+                  });               
+             }
+             console.log(list);
+             setLikeList(list);
+    
+          })
+          .catch(function(error){
+            console.log(error);
+            alert("Error",error);
+          });
+        } catch (e) {
+          console.log(e);
+          alert("Error", e);
+        } finally {
+        }
+      }, [userId]);
 
-const ButtonTitle = styled.Text`
-    font-size: 10px;
-    color: ${({ theme}) => theme.buttonTitle};
-`;
-
-const Bookcase = () => {
     return (
+        
         <Container>
             <ItemContainer>
-            <TopLibraryContainer>
-                <LibraryNameText>판교어린이도서관</LibraryNameText>
-                
-            </TopLibraryContainer>
-            <BookContainer>
+           <BookContainer>
+            <LibraryNameText>판교어린이도서관</LibraryNameText>
                 <ItemImageContainer
                     source={{
                         uri: `http://image.yes24.com/goods/91433923/XL`,
                     }}
                 />
                 <BookInfoContainer>
-                <BookTitleText>이것이 코딩 테스트다</BookTitleText>
-                    <BookDetailInfoContainer>
-                <BookInfoText>나동빈</BookInfoText>
-                <BookInfoText>한빛미디어</BookInfoText>
-                    </BookDetailInfoContainer>
+                <FlatList
+                keyExtractor={(item) => item['id'].toString()}
+                data={likeList}
+                renderItem={({ item }) => <Item item={item} />}
+                 windowSize={3}
+                 />
                 </BookInfoContainer>
                 </BookContainer>
-                <BookContainer>
-                    <ItemImageContainer
-                        source={{
-                            uri: `http://image.yes24.com/goods/91433923/XL`,
-                        }}
-                    />
-                <BookInfoContainer>
-                        <BookTitleText>이것이 코딩 테스트다</BookTitleText>
-                        <BookDetailInfoContainer>
-                            <BookInfoText>나동빈</BookInfoText>
-                            <BookInfoText>한빛미디어</BookInfoText>
-                        </BookDetailInfoContainer>
-                    </BookInfoContainer>
-                </BookContainer>
-            
-                <PriceContainer>
-                <PriceText>3500원</PriceText>
-                <ButtonContainer>
-                    <ButtonTitle>책가방 담기</ButtonTitle>
-                </ButtonContainer>
-                </PriceContainer>
 
+                
             </ItemContainer>
 
         </Container>
