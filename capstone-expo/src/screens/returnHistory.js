@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from 'react-native';
 
 const Container = styled.View`
   align-items: center;
@@ -92,22 +91,6 @@ const PeriodText = styled.Text`
   margin-left : 10px;
 `;
 
-const LateDayText = styled.Text`
-  font-size: 12px;
-  margin-bottom: 10px;
-  margin-left : 10px;
-  color : red;
-  padding-left : 100px;
-`;
-
-const PriceText = styled.Text`
-  font-size: 12px;
-  margin-bottom: 10px;
-  margin-top : 10px;
-  margin-left : 230px;
-  color: ${({ theme }) => theme.listPrice};
-`;
-
 const ItemImageContainer = styled.Image`
     flex: 0.4;
     width : 100%;
@@ -116,44 +99,28 @@ const ItemImageContainer = styled.Image`
     margin-left : 10px;
 `;
 
-const ButtonContainer = styled.TouchableOpacity`
-    width: 90px;
-    height : 26px;
-    align-items: center;
-    border-radius: 7px;
-    padding: 5px;
-    margin-top: 5px;
-    margin-left : 20px;
-    background-color: #3CB4EC;
-`;
 
-const ButtonTitle = styled.Text`
-    font-size: 10px;
-    color: ${({ theme}) => theme.buttonTitle};
-`;
-
-
-const LoanHistory = () => {
+const ReturnHistory = () => {
     return (
         <Container>
             <ItemContainer>
-            <TopLibraryContainer>
-                <LibraryNameText>판교어린이도서관</LibraryNameText>
-                <StatusText>대여중</StatusText>
-            </TopLibraryContainer>
-            <BookContainer>
-                <ItemImageContainer
-                    source={{
-                        uri: `http://image.yes24.com/goods/91433923/XL`,
-                    }}
-                />
-                <BookInfoContainer>
-                <BookTitleText>이것이 코딩 테스트다</BookTitleText>
-                    <BookDetailInfoContainer>
-                <BookInfoText>나동빈</BookInfoText>
-                <BookInfoText>한빛미디어</BookInfoText>
-                    </BookDetailInfoContainer>
-                </BookInfoContainer>
+                <TopLibraryContainer>
+                    <LibraryNameText>판교어린이도서관</LibraryNameText>
+                    <StatusText>반납 완료</StatusText>
+                </TopLibraryContainer>
+                <BookContainer>
+                    <ItemImageContainer
+                        source={{
+                            uri: `http://image.yes24.com/goods/91433923/XL`,
+                        }}
+                    />
+                    <BookInfoContainer>
+                        <BookTitleText>이것이 코딩 테스트다</BookTitleText>
+                        <BookDetailInfoContainer>
+                            <BookInfoText>나동빈</BookInfoText>
+                            <BookInfoText>한빛미디어</BookInfoText>
+                        </BookDetailInfoContainer>
+                    </BookInfoContainer>
                 </BookContainer>
                 <BookContainer>
                     <ItemImageContainer
@@ -169,16 +136,9 @@ const LoanHistory = () => {
                         </BookDetailInfoContainer>
                     </BookInfoContainer>
                 </BookContainer>
-            <BottomLibraryContainer>
-                <PeriodText>기간 : 2021-10-01 ~ 2021-10-22</PeriodText>
-                <LateDayText>연체일 : 22일</LateDayText>
-            </BottomLibraryContainer>
-                <PriceContainer>
-                <PriceText>3500원</PriceText>
-                <ButtonContainer>
-                    <ButtonTitle>반납 신청</ButtonTitle>
-                </ButtonContainer>
-                </PriceContainer>
+                <BottomLibraryContainer>
+                    <PeriodText>기간 : 2021-10-01 ~ 2021-10-22</PeriodText>
+                </BottomLibraryContainer>
 
             </ItemContainer>
 
@@ -186,4 +146,4 @@ const LoanHistory = () => {
     );
 };
 
-export default LoanHistory;
+export default ReturnHistory;

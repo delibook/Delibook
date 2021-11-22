@@ -14,6 +14,10 @@ module.exports = function(app){
     app.patch('/delibook/cart/:cartId/:bookId',jwtMiddleware,cart.editBookNum); 
     // 46. 카트에 담길 때 다른 도서관인지 체크
     app.get('/delibook/cart/check',jwtMiddleware,cart.canInsertCheck);
+    //47. cartID로 특정 카트 조회
+    app.get('/delibook/cart/:cartId',cart.oneCart);
+
+
 
 
 };
