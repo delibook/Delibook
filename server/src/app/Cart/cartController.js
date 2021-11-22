@@ -138,3 +138,20 @@ const { query } = require("winston");
     
     return res.send(response(baseResponse.SUCCESS, checkResult));
 };
+
+/**
+ * API No. 47
+ * API Name :  카트아이디로 특정 카트 조회
+ * [GET] /delibook/cart/check
+ */
+ exports.oneCart = async function (req, res) {
+
+    
+    const cartId= req.params.cartId
+
+    if (!cartId) return res.send(errResponse(baseResponse.CART_ID_EMPTY)) ;
+
+    const getCartResult= await cartProvider.getOneCart(cartId);
+    
+    return res.send(response(baseResponse.SUCCESS, getCartResult));
+};
