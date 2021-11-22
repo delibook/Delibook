@@ -2,9 +2,9 @@
   "expoServerPort": null,
   "packagerPort": 19000,
   "packagerPid": null,
-  "expoServerNgrokUrl": "https://nw-ys8.anonymous.capstone-expo.exp.direct",
-  "packagerNgrokUrl": "https://packager.nw-ys8.anonymous.capstone-expo.exp.direct",
-  "ngrokPid": 20083,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null,
   "devToolsPort": 19002
 }
