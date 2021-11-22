@@ -20,8 +20,8 @@ const Information = ({ navigation, route }) => {
   const [phoneNumber,setPhoneNumber] = useState('');
   const [site, setSite] =useState('');
   const [roadAddress, setRoadAddress] = useState('');
-  const [latitude, setLat] = useState('');
-  const [longitude, setLong] = useState('');
+  const [latitude, setLat] = useState();
+  const [longitude, setLong] = useState();
 
   useEffect(() => {
     try {
@@ -45,7 +45,7 @@ const Information = ({ navigation, route }) => {
         setSatTime(result.satTime);
         setLat(result.latitude);
         setLong(result.longitude);
-        
+
       })
       .catch(function(error){
         console.log(error);
@@ -61,30 +61,30 @@ const Information = ({ navigation, route }) => {
       return (  
         <View style={styles.container}>
           
-          <Text style={styles.libname} > 판교어린이 도서관</Text>
+          <Text style={styles.libname} > {name}</Text>
             
           
           <View style={styles.content}>
-            <Text style={styles.content}>   도서관명:</Text>
-            <Text style={styles.content}>   시군구명: </Text>
-            <Text style={styles.content}>   도서관 유형: </Text>
-            <Text style={styles.content}>   휴관일: </Text>
-            <Text style={styles.content}>   평일운영시간:   </Text>
-            <Text style={styles.content}>   토요일운영시간: </Text>
-            <Text style={styles.content}>   공휴일운영시간: </Text>
-            <Text style={styles.content}>   도서관 전화번호: </Text>
-            <Text style={styles.content}>   홈페이지: </Text>
-            <Text style={styles.content}>   도서관 주소: </Text>
+            <Text style={styles.content}>도서관명: {name}</Text>
+            <Text style={styles.content}>시군구명: {sigunguName}</Text>
+            <Text style={styles.content}>도서관 유형: {type}</Text>
+            <Text style={styles.content}>휴관일: {closeDay}</Text>
+            <Text style={styles.content}>평일운영시간: {weekTime}   </Text>
+            <Text style={styles.content}>토요일운영시간: {satTime}</Text>
+            <Text style={styles.content}>공휴일운영시간: {holidayTime}</Text>
+            <Text style={styles.content}>도서관 전화번호: {phoneNumber}</Text>
+            <Text style={styles.content}>홈페이지: {site}</Text>
+            <Text style={styles.content}>도서관 주소: {roadAddress}</Text>
           </View>
 
           <MapView style={styles.map}
                    provider={PROVIDER_GOOGLE}
-                   region ={{latitude:37.38752486,
-                             longitude:127.1076674,
+                   region ={{latitude: `${latitude}`,
+                             longitude: `${longitude}`,
                              latitudeDelta: 0.005, //위도 확대(1에 가까워질 수록 zoom out)
                              longitudeDelta: 0.001 //경도 확대
             }}>
-              <Marker pinColor="#00c7ae" coordinate={{latitude: 37.38752486, longitude: 127.1076674}} /> 
+              <Marker pinColor="#00c7ae" coordinate={{latitude: latitude, longitude: longitude}} /> 
             </MapView>
          </View>
       );
@@ -139,7 +139,8 @@ const styles = StyleSheet.create({
   content:{
     flex:0.4,
     fontSize:15,
-    left:'1%'
+    left:'3%',
+    color: 'grey',
   },
   //하단탭
 
