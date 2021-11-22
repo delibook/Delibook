@@ -23,11 +23,7 @@ const TopLibraryContainer = styled.View`
     margin-top : 10px;
 `;
 
-const BottomLibraryContainer = styled.View`
-    background-color : white;
-    flex : 0.1;
-    flex-direction : row;
-`;
+
 
 const PriceContainer = styled.View`
    background-color : white;
@@ -50,14 +46,14 @@ const BookContainer = styled.View`
 const BookInfoContainer = styled.View`
     background-color : white;
     flex-direction: column;
-`
+`;
 
 const BookDetailInfoContainer = styled.View`
     background-color : white;
     flex-direction: row;
     padding-top : 10px;
     padding-bottom : 10px;
-`
+`;
 
 const BookTitleText = styled.Text`
     padding: 10px; 
@@ -77,27 +73,10 @@ const LibraryNameText = styled.Text`
   margin-top : 7px;
 `;
 
-const StatusText = styled.Text`
-  font-size: 12px;
-  margin-bottom: 10px;
-  margin-left : 10px;
-  color : blue;
-  padding-left : 232px;
-  margin-top : 7px;s
-`;
-
 const PeriodText = styled.Text`
   font-size: 12px;
   margin-bottom: 10px;
   margin-left : 10px;
-`;
-
-const LateDayText = styled.Text`
-  font-size: 12px;
-  margin-bottom: 10px;
-  margin-left : 10px;
-  color : red;
-  padding-left : 100px;
 `;
 
 const PriceText = styled.Text`
@@ -132,14 +111,13 @@ const ButtonTitle = styled.Text`
     color: ${({ theme}) => theme.buttonTitle};
 `;
 
-
-const LoanHistory = () => {
+const Bookcase = () => {
     return (
         <Container>
             <ItemContainer>
             <TopLibraryContainer>
                 <LibraryNameText>판교어린이도서관</LibraryNameText>
-                <StatusText>대여중</StatusText>
+                
             </TopLibraryContainer>
             <BookContainer>
                 <ItemImageContainer
@@ -161,7 +139,7 @@ const LoanHistory = () => {
                             uri: `http://image.yes24.com/goods/91433923/XL`,
                         }}
                     />
-                    <BookInfoContainer>
+                <BookInfoContainer>
                         <BookTitleText>이것이 코딩 테스트다</BookTitleText>
                         <BookDetailInfoContainer>
                             <BookInfoText>나동빈</BookInfoText>
@@ -169,14 +147,11 @@ const LoanHistory = () => {
                         </BookDetailInfoContainer>
                     </BookInfoContainer>
                 </BookContainer>
-            <BottomLibraryContainer>
-                <PeriodText>기간 : 2021-10-01 ~ 2021-10-22</PeriodText>
-                <LateDayText>연체일 : 22일</LateDayText>
-            </BottomLibraryContainer>
+            
                 <PriceContainer>
                 <PriceText>3500원</PriceText>
                 <ButtonContainer>
-                    <ButtonTitle>반납 신청</ButtonTitle>
+                    <ButtonTitle>책가방 담기</ButtonTitle>
                 </ButtonContainer>
                 </PriceContainer>
 
@@ -186,4 +161,4 @@ const LoanHistory = () => {
     );
 };
 
-export default LoanHistory;
+export default Bookcase;

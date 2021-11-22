@@ -16,9 +16,33 @@ import {
   Alert
 } from 'react-native';
 
-const Item = React.memo(
-  ({ item: { bookThumbnail, bookTitle, canLoan, bookQuantity } }) => {
-    
+const Item = React.memo(({ item: { bookId, bookThumbnail, bookTitle, canLoan, cartId }}) => {
+    const { user } = useContext(UserContext);
+
+    const _handleBookCancle = useCallback(async() => {
+      try {
+        axios({
+          method: 'patch',
+          url: 'https://dev.delibook.shop/delibook/cart/'+cartId+'/drop',
+          params: {
+            bookId: `${bookId}`,
+          },
+          headers: {
+            'x-access-token': `${user?.token}`
+          }
+        })
+        .then(function(response){
+          console.log(bookId, cartId);
+        })
+        .catch(function(error){
+          alert("Error",error);
+          console.log(error);
+        });
+      } catch (e) {
+        alert(cartId);
+      } finally {
+      }
+    }, [user, bookId, cartId]);
 
     return (
       <View style={styles.item}>
@@ -31,11 +55,11 @@ const Item = React.memo(
         <View style={styles.item_texts}>
           <Text style={styles.item_text}>[제목] {bookTitle}</Text>
           <Text style={styles.item_text}>[상태] {canLoan}</Text>
-          <Text style={styles.item_text}>[대여수량] {bookQuantity}</Text>
+          <Text style={styles.item_text}>[대여수량] 1</Text>
         </View>
         <View style={{ width: 50, alignItems: 'flex-end' }}>
           <EvilIcons
-            onPress={() => console.log(`hi`)}
+            onPress={_handleBookCancle}
             style={styles.eraseIcon}
             name="close"
             size={20}
@@ -47,13 +71,11 @@ const Item = React.memo(
 );
 
 const Bag = ({ navigation }) => {
-  //getFonts();
   const [libName, setLibName] = useState('');
   const [cartList, setCartList] = useState([]);
   const [mainAddress, setMainAddress] = useState('');
   const [mainDetailAddress, setMainDetailAddress] = useState('');
   const [cost, setCost] = useState('');
-  const [url, setUrl] = useState('');
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -135,17 +157,13 @@ const Bag = ({ navigation }) => {
     }
   }, [user]);
 
-  const _handleItemPress = (params) => {
-    navigation.navigate('도서', params);
-  };
-
   const _handleLoanPayment = useCallback(async() => {
     try {
       axios({
         method: 'post',
         url: 'https://dev.delibook.shop/delibook/loan',
         params: {
-          item_name: `${cartList[0].bookId} 외 ${cartList.length - 1}`,
+          item_name: `${cartList[0].bookTitle} 외 ${cartList.length - 1}개`,
           quantity: `${cartList.length}`,
           price: `${cost}`,
           cartId: `${cartList[0].cartId}`,
@@ -155,29 +173,28 @@ const Bag = ({ navigation }) => {
         }
       })
       .then(function(response){
-        const result = response.data;
-        setUrl(result);
+        const url = response.data;
+        console.log(url);
+        const supported = Linking.canOpenURL(url);
+      
+        if (supported) {
+          Linking.openURL(url);
+          navigation.navigate('주문완료');
+        } else {
+          Alert.alert(`Don't know how to open this URL: ${url}`);
+        }
       })
       .catch(function(error){
         alert("Error",error);
       });
     } catch (e) {
-      alert(libraryId);
+      alert(cartId);
     } finally {
     }
-
-    console.log(url);
-    const supported = await Linking.canOpenURL(url);
-    
-    if (supported) {
-      await Linking.openURL(url);
-    } else {
-      Alert.alert(`Don't know how to open this URL: ${url}`);
-    }
-  }, [user, cost, cartList, url, setUrl]);
+  }, [user, cost, cartList]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.libname}>
         <Text
           style={{
@@ -195,7 +212,7 @@ const Bag = ({ navigation }) => {
         keyExtractor={(item) => item['id'].toString()}
         data={cartList}
         renderItem={({ item }) => (
-          <Item item={item} onPress={_handleItemPress} />
+          <Item item={item} />
         )}
         windowSize={3}
       />
@@ -204,7 +221,7 @@ const Bag = ({ navigation }) => {
         <Button
           color="#30BDFF"
           title="+더 담으러 가기"
-          onPress={() => console.log(`navigate to borrow`)}
+          onPress={() => navigation.navigate('도서관')}
         />
       </View>
       <View style={styles.square}></View>
@@ -240,7 +257,7 @@ const Bag = ({ navigation }) => {
       >
         <Text style={styles.pay_text}>{cost}원 결제하기</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
