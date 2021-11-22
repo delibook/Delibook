@@ -20,14 +20,14 @@ const { query } = require("winston");
      * Path Variable: bookcaseName
      */
     const bookcaseId = req.query.bookcaseId;
-    const userId= req.query.userId;
+    const userId= req.verifiedToken.userId;
 
-    if (!userId) return res.send(errResponse(baseResponse.USER_ID_EMPTY)) ; //2012
-    if (!bookcaseId) {
+    if (!userId) return res.send(errResponse(baseResponse.TOKEN_EMPTY)) ; //2012
+    /*if (!bookcaseId) {
         const bookcaseList = await bookcaseProvider.bookcaseList(userId);
         return res.send(response(baseResponse.SUCCESS, bookcaseList));
-    } 
-    const booklistInbookcase = await bookcaseProvider.bookListInBookcase(userId, bookcaseId);
+    } */
+    const booklistInbookcase = await bookcaseProvider.bookListInBookcase(userId);
     return res.send(response(baseResponse.SUCCESS, booklistInbookcase));
 };
 
@@ -53,7 +53,7 @@ const { query } = require("winston");
     if (!type) return res.send(errResponse(baseResponse. BOOKCASE_ACTION_TYPE_EMPTY)) ; //5003
 
     // 해당 책장이 없을때, 해당 책이 없을때 (의미적벨리데이션..)
-    // 중복체크....ㅅㅂ
+    
 
     const bookToBookcase = await bookcaseService.bookLike(userId, bookcaseId,bookId,type);
     return res.send(bookToBookcase);

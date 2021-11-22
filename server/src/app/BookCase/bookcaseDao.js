@@ -1,6 +1,6 @@
 
 // 내 책장의 책 목록 조회
-async function selectBookListInBookCase(connection,userId,bookcaseId)
+async function selectBookListInBookCase(connection,userId)
 {
     const bookListQuery = `
         select myBookList.name as BookListName,l.name as libraryName, c.name as category , book.name as bookTitle,
@@ -12,9 +12,9 @@ async function selectBookListInBookCase(connection,userId,bookcaseId)
         join Library as l  on l.id= book.libraryId
         join BookCategory as c on c.id=book.categoryId
     
-        where userId= ? AND myBookList.id = ?
+        where userId= ? ;
 `;
-    const bookListRow = await connection.query(bookListQuery,[userId,bookcaseId]);
+    const bookListRow = await connection.query(bookListQuery,userId);
     return bookListRow[0];
 }
 

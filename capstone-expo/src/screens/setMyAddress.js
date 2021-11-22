@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet ,Button} from 'react-native';
+/*import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
 
 
-
-// 현재위치 받아오기, 현재위치에 대한 지도와 마커 표시, 
-
-
-const Information = ({ navigation, route }) => { 
-  
-    const [latitude, setLat] = useState('');
-    const [longitude, setLong] = useState('');
+const SetAddress = ({ navigation, route }) => {
+  const [location, setLocation] = useState< ILocation | undefined>(undefined);
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
       position => {
-        const {latitude, longitude} = position.coords;
+        const { latitude, longitude } = position.coords;
         setLocation({
           latitude,
           longitude,
@@ -105,4 +99,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Information;
+export default SetAddress;*/
