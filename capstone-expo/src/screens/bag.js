@@ -9,13 +9,42 @@ import {
   Image,
   Button,
   StyleSheet,
-  TextInput,
+  SafeAreaView,
   TouchableOpacity,
   FlatList,
+  Linking,
+  Alert,
 } from 'react-native';
 
 const Item = React.memo(
-  ({ item: { bookThumbnail, bookTitle, canLoan, bookQuantity } }) => {
+  ({ item: { bookId, bookThumbnail, bookTitle, canLoan, cartId } }) => {
+    const { user } = useContext(UserContext);
+
+    const _handleBookCancle = useCallback(async () => {
+      try {
+        axios({
+          method: 'patch',
+          url: 'https://dev.delibook.shop/delibook/cart/' + cartId + '/drop',
+          params: {
+            bookId: `${bookId}`,
+          },
+          headers: {
+            'x-access-token': `${user?.token}`,
+          },
+        })
+          .then(function (response) {
+            console.log(bookId, cartId);
+          })
+          .catch(function (error) {
+            alert('Error', error);
+            console.log(error);
+          });
+      } catch (e) {
+        alert(cartId);
+      } finally {
+      }
+    }, [user, bookId, cartId]);
+
     return (
       <View style={styles.item}>
         <Image
@@ -27,11 +56,11 @@ const Item = React.memo(
         <View style={styles.item_texts}>
           <Text style={styles.item_text}>[제목] {bookTitle}</Text>
           <Text style={styles.item_text}>[상태] {canLoan}</Text>
-          <Text style={styles.item_text}>[대여수량] {bookQuantity}</Text>
+          <Text style={styles.item_text}>[대여수량] 1</Text>
         </View>
         <View style={{ width: 50, alignItems: 'flex-end' }}>
           <EvilIcons
-            onPress={() => console.log(`hi`)}
+            onPress={_handleBookCancle}
             style={styles.eraseIcon}
             name="close"
             size={20}
@@ -43,13 +72,11 @@ const Item = React.memo(
 );
 
 const Bag = ({ navigation }) => {
-  //getFonts();
   const [libName, setLibName] = useState('');
   const [cartList, setCartList] = useState([]);
   const [mainAddress, setMainAddress] = useState('');
   const [mainDetailAddress, setMainDetailAddress] = useState('');
   const [cost, setCost] = useState('');
-  const [url, setUrl] = useState('');
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -64,9 +91,10 @@ const Bag = ({ navigation }) => {
         .then(function (response) {
           const result = response.data.result;
           const list = [];
-          for (let i = 0; i < result.length - 1; i++) {
+          for (let i = 0; i < result[0].length; i++) {
             list.push({
-              id: result[0][i].cartId,
+              id: i,
+              cartId: result[0][i].cartId,
               libraryId: result[0][i].libraryId,
               library: result[0][i].library,
               bookId: result[0][i].bookId,
@@ -131,17 +159,13 @@ const Bag = ({ navigation }) => {
     }
   }, [user]);
 
-  const _handleItemPress = (params) => {
-    navigation.navigate('도서', params);
-  };
-
   const _handleLoanPayment = useCallback(async () => {
     try {
       axios({
         method: 'post',
         url: 'https://dev.delibook.shop/delibook/loan',
         params: {
-          item_name: `${cartList[0].bookId} 외 ${cartList.length - 1}`,
+          item_name: `${cartList[0].bookTitle} 외 ${cartList.length - 1}개`,
           quantity: `${cartList.length}`,
           price: `${cost}`,
           cartId: `${cartList[0].cartId}`,
@@ -151,6 +175,18 @@ const Bag = ({ navigation }) => {
         },
       })
         .then(function (response) {
+          const url = response.data;
+          console.log(url);
+          const supported = Linking.canOpenURL(url);
+
+          if (supported) {
+            Linking.openURL(url);
+            navigation.navigate('주문완료');
+          } else {
+            Alert.alert(`Don't know how to open this URL: ${url}`);
+          }
+        })
+        .then(function (response) {
           const result = response.data;
           setUrl(result);
           return response.data;
@@ -159,97 +195,71 @@ const Bag = ({ navigation }) => {
           alert('Error', error);
         });
     } catch (e) {
-      alert(libraryId);
+      alert(cartId);
     } finally {
     }
-
-    const WebviewContainer = ({ handleSetRef, handleEndLoading }) => {
-      const handleOnMessage = ({ nativeEvent: { data } }) => {
-        console.log(data);
-      };
-    };
-
-    return (
-      <WebView
-        onLoadEnd={handleEndLoading}
-        onMessage={handleOnMessage}
-        ref={handleSetRef}
-        source={{ uri: `${url}` }}
-      />
-    );
-  }, [user, cost, cartList, url, setUrl]);
+  }, [user, cost, cartList]);
 
   return (
-    <FlatList
-      style={{ backgroundColor: 'white' }}
-      ListHeaderComponent={
-        <>
-          <View style={styles.libname}>
-            <Text
-              style={{
-                fontSize: 25,
-                fontWeight: '500',
-              }}
-            >
-              {libName}
-            </Text>
-          </View>
-          <View style={styles.square}></View>
-        </>
-      }
-      keyExtractor={(item) => item.toString()}
-      data={cartList}
-      renderItem={({ item }) => <Item item={item} onPress={_handleItemPress} />}
-      windowSize={3}
-      ListFooterComponent={
-        <>
-          <View style={styles.more}>
-            <Button
-              color="#30BDFF"
-              title="+더 담으러 가기"
-              onPress={() => console.log(`navigate to borrow`)}
-            />
-          </View>
-          <View style={styles.square}></View>
-          <View style={styles.delivery}>
-            <View style={styles.address}>
-              <Text style={styles.mainAddressText}>
-                {mainAddress}(으)로 배달
-              </Text>
-              <Text style={styles.mainDetailAddressText}>
-                {mainDetailAddress}
-              </Text>
-            </View>
-            <View style={styles.modify}>
-              <Button
-                color="#30BDFF"
-                title="수정"
-                onPress={() => console.log(`modify main address`)}
-              />
-            </View>
-          </View>
-          <View style={styles.payment}>
-            <View style={styles.payway}>
-              <Text style={{ fontSize: 20, lineHeight: 25 }}>결제수단</Text>
-              <Text style={{ fontSize: 15, lineHeight: 25 }}>카카오페이</Text>
-            </View>
-            <EvilIcons
-              onPress={() => console.log(`change way of payment`)}
-              style={styles.navigateIcon}
-              name="chevron-right"
-              color="#30BDFF"
-              size={50}
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.pay}
-            onPress={() => console.log(`navigate to pay`)}
-          >
-            <Text style={styles.pay_text}>{cost}원 결제하기</Text>
-          </TouchableOpacity>
-        </>
-      }
-    />
+    <ScrollView style={styles.container}>
+      <View style={styles.libname}>
+        <Text
+          style={{
+            fontSize: 25,
+            fontWeight: '500',
+          }}
+        >
+          {libName}
+        </Text>
+      </View>
+
+      <View style={styles.square}></View>
+
+      <FlatList
+        keyExtractor={(item) => item['id'].toString()}
+        data={cartList}
+        renderItem={({ item }) => <Item item={item} />}
+        windowSize={3}
+      />
+
+      <View style={styles.more}>
+        <Button
+          color="#30BDFF"
+          title="+더 담으러 가기"
+          onPress={() => navigation.navigate('도서관')}
+        />
+      </View>
+      <View style={styles.square}></View>
+      <View style={styles.delivery}>
+        <View style={styles.address}>
+          <Text style={styles.mainAddressText}>{mainAddress}(으)로 배달</Text>
+          <Text style={styles.mainDetailAddressText}>{mainDetailAddress}</Text>
+        </View>
+        <View style={styles.modify}>
+          <Button
+            color="#30BDFF"
+            title="수정"
+            onPress={() => console.log(`modify main address`)}
+          />
+        </View>
+      </View>
+      <View style={styles.payment}>
+        <View style={styles.payway}>
+          <Text style={{ fontSize: 20, lineHeight: 25 }}>결제수단</Text>
+          <Text style={{ fontSize: 15, lineHeight: 25 }}>카카오페이</Text>
+        </View>
+        <EvilIcons
+          onPress={() => console.log(`change way of payment`)}
+          style={styles.navigateIcon}
+          name="chevron-right"
+          color="#30BDFF"
+          size={50}
+        />
+      </View>
+      <TouchableOpacity style={styles.pay} onPress={_handleLoanPayment}>
+        <Text style={styles.pay_text}>{cost}원 결제하기</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 

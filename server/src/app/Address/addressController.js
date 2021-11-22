@@ -49,7 +49,7 @@ const {emit} = require("nodemon");
  */
 exports.postAddress = async function (req, res) {
 
-   const userId = req.query.userId;
+    const userId= req.verifiedToken.userId;
    const {address, detailAddress, latitude, longitude} = req.body;
 
    if(!address)

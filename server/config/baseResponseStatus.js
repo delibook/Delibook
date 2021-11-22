@@ -71,7 +71,7 @@ module.exports = {
     ADDRESS_EMPTY :  { "isSuccess": false, "code": 5101, "message": "주소를  입력하세요." },
     ADDRESS_DETAIL_EMPTY:  { "isSuccess": false, "code": 5102, "message": "상세주소를 입력하세요." },
     ADDRESS_LATITUDE_EMPTY :  { "isSuccess": false, "code": 5103, "message": "위도를 입력하세요." },
-    ADDRESS_LONGTITUDE_EMPTY  :  { "isSuccess": false, "code": 5104, "message": "경도를 입력하세요." },
+    ADDRESS_LONGITUDE_EMPTY  :  { "isSuccess": false, "code": 5104, "message": "경도를 입력하세요." },
     ADDRESS_MAIN_EMPTY:  { "isSuccess": false, "code": 5105, "message": "메인주소 여부를 입력하세요." },
     ADDRESS_USER_NOT_MATCH:  { "isSuccess": false, "code": 5106, "message": "주소아이디와 유저아이디가 맞지 않습니다. 확인해주세요" },
     ADDRESS_DELETE_SUCCESS:  { "isSuccess": false, "code": 5107, "message": "주소삭제 성공" },

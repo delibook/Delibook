@@ -31,14 +31,15 @@ const getFonts = () => {
 const Mypage = ({ navigation }) => {
   //getFonts();
 
-  const { user } = useContext(UserContext);
+  const { dispatch, user } = useContext(UserContext);
+
   const [name, setName] = useState('');
 
   const _handleLogoutButtonPress = async () => {
     try {
     } catch (e) {
     } finally {
-      user({});
+      dispatch({});
     }
   };
 
@@ -120,7 +121,7 @@ const Mypage = ({ navigation }) => {
           }}
         >
           <Ionicons
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('반납내역')}
             style={{
               textAlign: 'center',
               top: 20,

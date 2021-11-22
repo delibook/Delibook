@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName="홈">
       <Tab.Screen
         name="홈"
         component={Home}
@@ -27,6 +27,7 @@ const TabNavigation = () => {
         options={{
           tabBarIcon: (props) => TabIcon({ ...props, name: 'library' }),
           headerShown: false,
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -34,6 +35,7 @@ const TabNavigation = () => {
         component={Bag}
         options={{
           tabBarIcon: (props) => TabIcon({ ...props, name: 'bag-personal' }),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen

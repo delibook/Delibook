@@ -353,9 +353,9 @@ exports.loan = async function(req,res) {
         'total_amount': price,
         'vat_amount': 0,
         'tax_free_amount': 0,
-        'approval_url': 'http://localhost:3000/loan/payment/approve',
-        'fail_url': 'http://localhost:3000/payment/fail',
-        'cancel_url': 'http://localhost:3000/payment/cancel',
+        'approval_url': 'https://dev.delibook.shop/loan/payment/approve',
+        'fail_url': 'https://dev.delibook.shop/payment/fail',
+        'cancel_url': 'https://dev.delibook.shop/payment/cancel',
     };
 
     let options = {
@@ -372,6 +372,7 @@ exports.loan = async function(req,res) {
             console.log(JSON.parse(body));      //JSON.parse : JSON 문자열의 구문을 분석하고, 그 결과에서 JavaScript 값이나 객체를 생성
             next_redirect_app_url = (JSON.parse(body).next_redirect_app_url);
             tid = (JSON.parse(body).tid);
+            console.log(userId, tid, cartId, price)
             return res.send(next_redirect_app_url) // redirect 하는 코드
         }
         else console.log("대출 결제준비 실패");
@@ -400,13 +401,14 @@ exports.loan_success = async function (req, res) {
         headers: headers,
         form : params
     };
-
+    console.log(pg_token, userId, tid, cartId, price)
     request(options, function result(error, response, body) {
 
         if (!error && response.statusCode === 200) {
             const insertBuyInfoResult = userService.insertBuyInfo(userId, cartId, price);
+            return res.send("성공");
             //나중에 결제완료 창으로 redirect되도록 만들예정
-        } else console.log("결제 승인 실패")
+        } else console.log("결제 승인 실패", error, response.body)
 
     });
 };
@@ -454,7 +456,7 @@ exports.return = async function(req,res) {
     request(options, function result(error, response, body) {
         if (!error && response.statusCode === 200) {
             console.log(JSON.parse(body));      //JSON.parse : JSON 문자열의 구문을 분석하고, 그 결과에서 JavaScript 값이나 객체를 생성
-            next_redirect_app_url = (JSON.parse(body).next_redirect_app_url);
+            next_redirect_app_url = (JSON.parse(body).next_redirect_mobile_url);
             loan_tid = (JSON.parse(body).tid);
             return res.send(next_redirect_app_url) // redirect 하는 코드
         }
@@ -489,6 +491,7 @@ exports.return_success = async function (req, res) {
 
         if (!error && response.statusCode === 200) {
             const updateBuyInfoResult = userService.updateBuyInfo(loan_cartId);
+            return res.send("성공");
             //나중에 결제완료 창으로 redirect 되도록 만들예정
         } else console.log("결제 승인 실패")
 

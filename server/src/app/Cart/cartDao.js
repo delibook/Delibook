@@ -5,7 +5,7 @@ async function selectCart(connection,userId)
     const selectCartQuery = `
     select distinct c.id as cartId ,l.id as libraryId,l.name as library , b.id as bookId,b.imageURL as bookThumbnail,
                 b.name as bookTitle , b.author , (select case when b.quantity !=0 then "대여가능" else "대여불가능" end)
-              as canLoan, b.quantity as bookQuantity
+              as canLoan, b.quantity as bookQuantity, bc.quantity as putQuantity
 from Cart as c join Library as l on c.libraryId = l.id
                join BookInCart as bc on c.id = bc.cartId
                join Book as b on bc.bookId = b.id
