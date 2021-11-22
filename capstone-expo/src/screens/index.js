@@ -10,4 +10,12 @@ import Bag from './bag';
 import BookList from './bookList';
 import Information from './information';
 import Complete from './completedOrder';
-export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information, Bag, Complete };
+import LoanHistory from './loanHistory';
+import ReturnHistory from './returnHistory';
+
+import Address from './address';
+import SetAddress from './setMyAddress';
+import Bookcase from './bookcase';
+
+export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information, Bag, Complete, LoanHistory, ReturnHistory, SetAddress, BookList };
+

@@ -121,7 +121,7 @@ const Mypage = ({ navigation }) => {
           }}
         >
           <Ionicons
-            onPress={() => navigation.navigate('반납내역')}
+            onPress={() => navigation.navigate('이용내역')}
             style={{
               textAlign: 'center',
               top: 20,
@@ -135,7 +135,7 @@ const Mypage = ({ navigation }) => {
         </View>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           <MaterialCommunityIcons
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('내 책장')}
             style={{
               textAlign: 'center',
               top: 20,
