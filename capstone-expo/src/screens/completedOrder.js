@@ -38,7 +38,7 @@ const Complete = ({ navigation }) => {
 
   return (
     <Container>
-      <StyledText>주문이 완료되었습니다</StyledText>
+      <StyledText>결제가 완료되었습니다</StyledText>
       <Button
         onPress={_handleHomeButtonPress}
       >
