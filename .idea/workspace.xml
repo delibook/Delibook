@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b23dd89-b5f1-498f-a68a-daf35775def3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/capstone-expo/src/screens/myLibrary.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capstone-expo/src/navigations/mainStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/capstone-expo/src/navigations/mainStack.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capstone-expo/src/navigations/mypageStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/capstone-expo/src/navigations/mypageStack.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capstone-expo/src/screens/bookcase.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/capstone-expo/src/screens/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/capstone-expo/src/screens/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/capstone-expo/src/screens/mypage.js" beforeDir="false" afterPath="$PROJECT_DIR$/capstone-expo/src/screens/mypage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capstone-expo/.expo/packager-info.json" beforeDir="false" afterPath="$PROJECT_DIR$/capstone-expo/.expo/packager-info.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capstone-expo/.expo/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/capstone-expo/.expo/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capstone-expo/src/navigations/history-tab.js" beforeDir="false" afterPath="$PROJECT_DIR$/capstone-expo/src/navigations/history-tab.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capstone-expo/src/screens/returnHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/capstone-expo/src/screens/returnHistory.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
