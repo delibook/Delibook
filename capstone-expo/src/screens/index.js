@@ -12,7 +12,6 @@ import Information from './information';
 import Complete from './completedOrder';
 import LoanHistory from './loanHistory';
 import ReturnHistory from './returnHistory';
-
 import SetAddress from './setMyAddress';
 import MyLibrary from './myLibrary';
 
