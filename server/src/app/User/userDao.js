@@ -163,16 +163,7 @@ async function getUsagesList(connection, userId, condition,loan_condition) {
     `+condition+`
     order by loanDate DESC;
   `
-  const getBooksQuery = `
-    select b.imageURL, b.name, b.publisher, b.author, c.id cartId
-    from Book b
-           join BookInCart bic on bic.bookId = b.id
-           join Cart c on c.id = bic.cartId
-           join UsageInformation ui on ui.cartId = c.id
-    where c.userId = 3 
-    `+condition+`
-  `
-  const [getUsagesListRow] = await connection.query(getUsagesListQuery+getBooksQuery);
+  const [getUsagesListRow] = await connection.query(getUsagesListQuery);
   return getUsagesListRow;
 }
 
