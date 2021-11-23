@@ -7,8 +7,8 @@ const Tab = createMaterialTopTabNavigator();
 const HistoryTab = () => {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="대출내역" component={LoanHistory}/>
-            <Tab.Screen name="반납내역" component={ReturnHistory}/>
+            <Tab.Screen name="대출내역" component={LoanHistory} options={{unmountOnBlur: true,}} />
+            <Tab.Screen name="반납내역" component={ReturnHistory} options={{unmountOnBlur: true,}} />
         </Tab.Navigator>
     );
 }
