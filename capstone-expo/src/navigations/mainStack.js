@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Login, Mypage, Complete, Information } from '../screens';
+import {Login, Mypage, Complete, Information, MyLibrary} from '../screens';
 import TabNavigation from './bottom-tab';
 import HistoryTab from './history-tab';
 
@@ -39,6 +39,7 @@ const MainStack = () => {
       />
       <Stack.Screen name="이용내역" component={HistoryTab} />
       <Stack.Screen name="상세페이지" component={Information} />
+      <Stack.Screen name="내 도서관" component={MyLibrary} />
     </Stack.Navigator>
   );
 };

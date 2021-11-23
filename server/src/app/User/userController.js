@@ -33,15 +33,15 @@ exports.postUsers = async function (req, res) {
     // 빈 값 체크
     if (!email)
         return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-         // 빈 값 체크
+    // 빈 값 체크
     if (!name)
-    return res.send(response(baseResponse.SIGNUP_NAME_EMPTY));
-     // 빈 값 체크
-     if (!password)
-     return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));
-      // 빈 값 체크
+        return res.send(response(baseResponse.SIGNUP_NAME_EMPTY));
+    // 빈 값 체크
+    if (!password)
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));
+    // 빈 값 체크
     if (!phone)
-    return res.send(response(baseResponse.SIGNUP_PHONE_EMPTY));
+        return res.send(response(baseResponse.SIGNUP_PHONE_EMPTY));
 
     // 길이 체크
     if (email.length > 30)
@@ -49,7 +49,7 @@ exports.postUsers = async function (req, res) {
     // 길이 체크
     if (password.length > 15 || password.length < 7)
         return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH));
-    
+
 
     // 형식 체크 (by 정규표현식)
     if (!regexEmail.test(email))
@@ -101,18 +101,18 @@ exports.login = async function (req, res) {
     // 빈 값 체크
     if (!email)
         return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-     // 빈 값 체크
-     if (!password)
-         return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));
-     // 길이 체크
-     if (email.length > 30)
-     return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+    // 빈 값 체크
+    if (!password)
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));
+    // 길이 체크
+    if (email.length > 30)
+        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
     // 길이 체크
     if (password.length > 15 || password.length < 7)
-         return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH));
-     // 이메일 형식 체크 (by 정규표현식)
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH));
+    // 이메일 형식 체크 (by 정규표현식)
     if (!regexEmail.test(email))
-         return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
+        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
 
     const signInResponse = await userService.postSignIn(email, password);
 
@@ -124,13 +124,13 @@ exports.login = async function (req, res) {
  * API Name : 비밀번호 변경 API
  * [POST] /delibook/user/password-modify
  */
- exports.patchPassword = async function (req, res) {
+exports.patchPassword = async function (req, res) {
 
     const userId = req.verifiedToken.userId;
     const {password, modifyPassword, checkPassword} = req.body;
 
     //빈 값 체크
-    if(!password) 
+    if(!password)
         return res.send(response(baseResponse_j.USER_PASSWORD_EMPTY));
     else if(!modifyPassword)
         return res.send(response(baseResponse_j.MODIFY_PASSWORD_EMPTY));
@@ -151,11 +151,11 @@ exports.login = async function (req, res) {
  * API Name : 회원탈퇴 API
  * [PATCH] /delibook/user/withdraw
  */
- exports.withdraw = async function (req, res) {
+exports.withdraw = async function (req, res) {
 
     const userId = req.body.userId;
     const password=req.body.password;
-   
+
     withdrawResult = await userService.withdraw(userId,password);
 
     return res.send(withdrawResult);
@@ -252,11 +252,11 @@ exports.verifyPhoneNumber = async function (req, res) {
  * API Name : 이메일 인증 API
  * [POST] /delibook/user/email/auth
  */
- exports.verifyEmail = async function (req,res) {
+exports.verifyEmail = async function (req,res) {
     const email = req.body.email;
 
     Cache.del(email);
-    
+
     //빈값 체크
     if(!email)
         return res.send(errResponse(baseResponse.USER_USEREMAIL_EMPTY))
@@ -296,7 +296,7 @@ exports.verifyPhoneNumber = async function (req, res) {
  * API Name : 아이디 찾기 API
  * [GET] /delibook/user/findId-form
  */
- exports.findId = async function (req, res) {
+exports.findId = async function (req, res) {
 
     const name = req.query.name;
     const phoneNumber = req.query.phoneNumber;
@@ -310,13 +310,13 @@ exports.verifyPhoneNumber = async function (req, res) {
         return res.send(response(baseResponse_j.USER_PHONE_NUMBER_EMPTY));
     if(!verifyCode)
         return res.send(response(baseResponse_j.VERIFY_CODE_EMPTY));
-    
+
     const CacheData = Cache.get(phoneNumber);
 
     if (!CacheData) {
-         return res.send(errResponse(baseResponse_j.FAIL_VERIFY));
+        return res.send(errResponse(baseResponse_j.FAIL_VERIFY));
     } else if (CacheData !== verifyCode) {
-         return res.send(errResponse(baseResponse_j.VERIFY_NUMBER_NOT_MATCH));
+        return res.send(errResponse(baseResponse_j.VERIFY_NUMBER_NOT_MATCH));
     }
     else {
         Cache.del(phoneNumber);
@@ -439,9 +439,9 @@ exports.return = async function(req,res) {
         'total_amount': loan_price,
         'vat_amount': 0,
         'tax_free_amount': 0,
-        'approval_url': 'http://localhost:3000/return/payment/approve',
-        'fail_url': 'http://localhost:3000/payment/fail',
-        'cancel_url': 'http://localhost:3000/payment/cancel',
+        'approval_url': 'https://dev.delibook.shop/return/payment/approve',
+        'fail_url': 'https://dev.delibook.shop/payment/fail',
+        'cancel_url': 'https://dev.delibook.shop/payment/cancel',
     };
 
     let options = {
@@ -456,7 +456,7 @@ exports.return = async function(req,res) {
     request(options, function result(error, response, body) {
         if (!error && response.statusCode === 200) {
             console.log(JSON.parse(body));      //JSON.parse : JSON 문자열의 구문을 분석하고, 그 결과에서 JavaScript 값이나 객체를 생성
-            next_redirect_app_url = (JSON.parse(body).next_redirect_mobile_url);
+            next_redirect_app_url = (JSON.parse(body).next_redirect_app_url);
             loan_tid = (JSON.parse(body).tid);
             return res.send(next_redirect_app_url) // redirect 하는 코드
         }
