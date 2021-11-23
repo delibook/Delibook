@@ -64,13 +64,27 @@ const BookInfoContainer = styled.View`
 
 const BookTitleText = styled.Text`
   flex: 1;
-  font-size : 18px;
+  font-size : 17px;
   font-weight: 600;
 `;
 
 const BookDetailInfoContainer = styled.View`
   flex: 1;
   flex-direction: row;
+`;
+
+const AuthorText = styled.Text`
+  flex: 1;
+  font-size: 15px;
+  margin-top: 5px;
+  color: #6F6F6F;
+`;
+
+const QuantityText = styled.Text`
+  flex: 0.7;
+  font-size: 15px;
+  margin-top: 5px;
+  color: #6F6F6F;
 `;
 
 const BottomContainer = styled.View`
@@ -99,13 +113,6 @@ const LateDayText = styled.Text`
 const BottomBottomContainer = styled.View`
   margin-top: 10px;
   flex-direction: row;
-`;
-
-const BookInfoText = styled.Text`
-  flex: 1;
-  font-size: 15px;
-  margin-top: 5px;
-  color: #6F6F6F;
 `;
 
 const PriceText = styled.Text`
@@ -145,8 +152,8 @@ const Book = React.memo(
           <BookInfoContainer>
             <BookTitleText>{bookTitle}</BookTitleText>
             <BookDetailInfoContainer>
-              <BookInfoText>{author}</BookInfoText>
-              <BookInfoText>대여수량 | {putQuantity}</BookInfoText>
+              <AuthorText>{author}</AuthorText>
+              <QuantityText>대여수량 | {putQuantity}</QuantityText>
             </BookDetailInfoContainer>
           </BookInfoContainer>
         </BookContainer>
