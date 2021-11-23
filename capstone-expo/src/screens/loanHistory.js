@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components/native';
 import { UserContext } from '../contexts';
-import { FlatList, Image, Linking, Text } from 'react-native';
+import { FlatList, Linking, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import axios from'axios';
 
 const Container = styled.View`
@@ -140,7 +141,7 @@ const ButtonTitle = styled.Text`
 `;
 
 const Book = React.memo(
-  ({ item: { id, bookId, bookThumbnail, bookTitle, author, putQuantity } }) => {
+  ({ item: { id, bookThumbnail, bookTitle, author, putQuantity } }) => {
 
     return (
         <BookContainer>
@@ -164,6 +165,8 @@ const Book = React.memo(
 const Item = React.memo(
   ({ item: { id, cartId, lateDateCount, libraryName, period, price, status } }) => {
     const [cartList, setCartList] = useState([]);
+    const { user } = useContext(UserContext);
+    const navigation = useNavigation(); 
 
     useEffect(() => {
         try {
@@ -202,6 +205,43 @@ const Item = React.memo(
         }
     }, [cartId]);
 
+    const _handleReturnPayment = useCallback(async() => {
+      try {
+        axios({
+          method: 'post',
+          url: 'https://dev.delibook.shop/delibook/return',
+          params: {
+            item_name: `${cartList[0].bookTitle} 외 ${cartList.length - 1}개`,
+            quantity: `${cartList.length}`,
+            price: `${price}`,
+            cartId: `${cartId}`,
+          },
+          headers: {
+            'x-access-token': `${user?.token}`
+          }
+        })
+        .then(function(response){
+          const url = response.data;
+          const supported = Linking.canOpenURL(url);
+        
+          if (supported) {
+            Linking.openURL(url);
+            navigation.navigate('주문완료');
+          } else {
+            Alert.alert(`Don't know how to open this URL: ${url}`);
+          }
+          return ()=>this.props.navigation.navigate('주문완료');
+        })
+        .catch(function(error){
+          alert("Error",error);
+          console.log(error);
+        });
+      } catch (e) {
+        alert(cartId);
+      } finally {
+      }
+  }, [user, price, cartId, cartList, navigation]);
+
   return (
     <ItemContainer>
       <TopLibraryContainer>
@@ -223,7 +263,9 @@ const Item = React.memo(
         </BottomTopContainer>
         <BottomBottomContainer>
           <PriceText>{price}원</PriceText>
-          <ButtonContainer>
+          <ButtonContainer
+            onPress={_handleReturnPayment}
+          >
               <ButtonTitle>반납 신청</ButtonTitle>
           </ButtonContainer>
         </BottomBottomContainer>
