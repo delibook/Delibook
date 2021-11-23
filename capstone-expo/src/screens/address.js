@@ -11,9 +11,9 @@ import {
   FlatList,
 } from 'react-native';
 import styled from 'styled-components';
-import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { SearchBar } from '../components';
-import { ProgressContext, UserContext } from '../contexts';
+import { UserContext } from '../contexts';
 import axios from 'axios';
 
 const ErrorText = styled.Text`
@@ -182,7 +182,7 @@ const Address = ({ navigation }) => {
       <View style={styles.findAddress_GPS}>
         <TouchableOpacity
           style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-          onPress={() => console.log(`find address using GPS`)}
+          onPress={() => navigation.navigate('내위치확인')}
         >
           <MaterialIcons name="gps-fixed" size={20} color="#FFFFFF" />
           <Text style={styles.findAddress_text}>현재 위치로 주소 찾기</Text>

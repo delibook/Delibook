@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Login, Join, Mypage, PhoneCode, ShowId } from '../screens';
+import { Login, Join, Mypage, PhoneCode, ShowId, SetAddress } from '../screens';
 import FindId from '../screens/findId';
 
 const Stack = createStackNavigator();
@@ -32,18 +32,10 @@ const AuthStack = () => {
         component={Mypage}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="아이디찾기"
-        component={FindId}
-      />
-      <Stack.Screen
-        name="휴대폰인증"
-        component={PhoneCode}
-      />
-      <Stack.Screen
-        name="아이디"
-        component={ShowId}
-      />
+      <Stack.Screen name="아이디찾기" component={FindId} />
+      <Stack.Screen name="휴대폰인증" component={PhoneCode} />
+      <Stack.Screen name="아이디" component={ShowId} />
+      <Stack.Screen name="위치찾기" component={SetAddress} />
     </Stack.Navigator>
   );
 };

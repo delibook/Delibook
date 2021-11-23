@@ -1,88 +1,169 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { Platform, Text, View, StyleSheet, Alert } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
+import Constants from 'expo-constants';
+import * as Location from 'expo-location';
+import { Button } from '../components';
+import { UserContext } from '../contexts';
 import axios from 'axios';
+import { TextInput } from 'react-native-gesture-handler';
 
-// 현재위치 받아오기, 현재위치에 대한 지도와 마커 표시,
+export default function App({ navigation }) {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+  const [disabled, setDisabled] = useState(true);
+  const [address, setAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
 
-const SetAddress = ({ navigation, route }) => {
-  const [latitude, setLat] = useState('');
-  const [longitude, setLong] = useState('');
+  const _handleDetailAddressChange = (address) => {
+    setDetailAddress(address);
+  };
+  const { user } = useContext(UserContext);
 
+  const mApiKey = 'AIzaSyAfRg1F6PFrIfEtsRR7FiaKR90NGAMvg3s';
   useEffect(() => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({
-          latitude,
-          longitude,
-        });
-      },
-      (error) => {
-        console.log(error.code, error.message);
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-    );
+    (async () => {
+      if (Platform.OS === 'android' && !Constants.isDevice) {
+        setErrorMsg(
+          'Oops, this will not work on Snack in an Android emulator. Try it on your device!',
+        );
+        return;
+      }
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      setLatitude(Number(location.coords.latitude));
+      setLongitude(Number(location.coords.longitude));
+      console.log(latitude);
+    })();
+    try {
+      axios({
+        method: 'fetch',
+        url:
+          'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+          latitude +
+          ',' +
+          longitude +
+          '&key=' +
+          mApiKey +
+          '&language=ko',
+        params: {},
+        headers: {},
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.log(
+            'udonPeople ' + responseJson.results[0].formatted_address,
+          );
+        })
+        .catch((err) => console.log('udonPeople error : ' + err));
+    } finally {
+    }
   }, []);
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+  const _handleSetAddressButtonPress = useCallback(async () => {
+    try {
+      axios({
+        method: 'post',
+        url: 'https://dev.delibook.shop/delibook/address/',
+        params: {
+          address: address,
+          detailAddress: detailAddress,
+          latitude: `${latitude}`,
+          longitude: `${longitude}`,
+        },
+        headers: {
+          'x-access-token': `${user?.token}`,
+        },
+      })
+        .then(function (response) {
+          if (response.isSuccess == false) {
+            Alert.alert('Error', `${response.message}`);
+          } else {
+            Alert.alert('주소추가 완료');
+            navigation.navigate('주소설정');
+          }
+          return response;
+        })
+        .catch(function (error) {
+          alert('Error', error);
+          console.log(error);
+        });
+    } catch (e) {
+      alert(e);
+    } finally {
+    }
+  }, [user, address, detailAddress, latitude, longitude]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.libname}> 지도에서 위치확인 </Text>
-
       <MapView
-        style={{ flex: 1 }}
-        initialRegion={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.0922, //위도 확대(1에 가까워질 수록 zoom out)
-          longitudeDelta: 0.0421,
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+        region={{
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.005, //위도 확대(1에 가까워질 수록 zoom out)
+          longitudeDelta: 0.001, //경도 확대
         }}
       >
         <Marker
-          coordinate={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-          }}
+          pinColor="#1E90FF"
+          coordinate={{ latitude: latitude, longitude: longitude }}
         />
       </MapView>
-
-      <Button style={styles.button} title="이 위치로 주소 설정" />
+      <TextInput
+        style={styles.input}
+        value={detailAddress}
+        onChangeText={_handleDetailAddressChange}
+        placeholder="상세 주소 입력"
+      />
+      <Button
+        title="이 위치를 주소로 설정"
+        onPress={_handleSetAddressButtonPress}
+      />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  //이런식으로써
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
-  libname: {
-    flex: 0.07,
-    padding: 25,
-    fontSize: 25,
+  paragraph: {
+    fontSize: 18,
     textAlign: 'center',
   },
-  topTap: {
-    flex: 0.1,
-  },
   map: {
-    flex: 0.4,
-    width: '90%',
+    flex: 0.6,
+    top: 20,
+    width: '100%',
     height: '100%',
-    alignItems: 'center',
-    top: '5%',
-    left: '5%',
   },
-  button: {
-    flex: 0.2,
-    fontSize: 25,
-    width: '90%',
-    left: '5%',
-    height: '10%',
+  input: {
+    flex: 0.1,
+    marginTop: 30,
+    marginBottom: 20,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#b6b6b6',
+    borderRadius: 4,
+    color: 'black',
+    paddingLeft: 10,
+    fontSize: 16,
   },
-  //하단탭
 });
-
-export default SetAddress;
