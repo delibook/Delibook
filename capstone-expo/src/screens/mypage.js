@@ -135,7 +135,7 @@ const Mypage = ({ navigation }) => {
         </View>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           <MaterialCommunityIcons
-            onPress={() => navigation.navigate('상세페이지')}
+            onPress={() => navigation.navigate('내 도서관')}
             style={{
               textAlign: 'center',
               top: 20,
@@ -145,7 +145,7 @@ const Mypage = ({ navigation }) => {
             size={48}
             color="#75CBF3"
           />
-          <Text style={{ top: 30, textAlign: 'center' }}>내 책장</Text>
+          <Text style={{ top: 30, textAlign: 'center' }}>내 도서관</Text>
         </View>
       </View>
       <View style={{ flex: 1 }}>

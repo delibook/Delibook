@@ -139,8 +139,10 @@ export default function App({ navigation }) {
   );
 }
 
+
+
 const styles = StyleSheet.create({
-  container: {
+container: {
     flex: 1,
     backgroundColor: 'white',
   },
@@ -167,3 +169,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+

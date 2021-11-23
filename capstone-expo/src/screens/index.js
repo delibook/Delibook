@@ -14,6 +14,8 @@ import LoanHistory from './loanHistory';
 import ReturnHistory from './returnHistory';
 import Address from './address';
 import SetAddress from './setMyAddress';
+import MyLibrary from './myLibrary';
+
 export {
   Login,
   Join,
@@ -31,4 +33,5 @@ export {
   LoanHistory,
   ReturnHistory,
   SetAddress,
+  MyLibrary
 };
