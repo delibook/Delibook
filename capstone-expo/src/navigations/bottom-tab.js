@@ -1,7 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home, Mypage, Bag } from '../screens';
 import LibraryStack from './libraryStack';
+import MypageStack from './mypageStack';
+import { Home, Mypage, Bag } from '../screens';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TabIcon = ({ name, size, color }) => {
@@ -12,9 +13,7 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
   return (
-    <Tab.Navigator
-      initialRouteName="홈"
-    >
+    <Tab.Navigator initialRouteName="홈">
       <Tab.Screen
         name="홈"
         component={Home}
@@ -40,10 +39,11 @@ const TabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="마이페이지"
-        component={Mypage}
+        name="MyPage"
+        component={MypageStack}
         options={{
           tabBarIcon: (props) => TabIcon({ ...props, name: 'account' }),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

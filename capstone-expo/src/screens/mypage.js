@@ -151,7 +151,7 @@ const Mypage = ({ navigation }) => {
       <View style={{ flex: 1 }}>
         <TouchableOpacity
           style={styles.touchable}
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('주소설정')}
         >
           <MaterialIcons
             style={{

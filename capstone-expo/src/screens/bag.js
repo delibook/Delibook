@@ -12,32 +12,33 @@ import {
   SafeAreaView,
   TouchableOpacity,
   FlatList,
-  Linking, 
-  Alert
+  Linking,
+  Alert,
 } from 'react-native';
 
-const Item = React.memo(({ item: { bookId, bookThumbnail, bookTitle, canLoan, cartId }}) => {
+const Item = React.memo(
+  ({ item: { bookId, bookThumbnail, bookTitle, canLoan, cartId } }) => {
     const { user } = useContext(UserContext);
 
-    const _handleBookCancle = useCallback(async() => {
+    const _handleBookCancle = useCallback(async () => {
       try {
         axios({
           method: 'patch',
-          url: 'https://dev.delibook.shop/delibook/cart/'+cartId+'/drop',
+          url: 'https://dev.delibook.shop/delibook/cart/' + cartId + '/drop',
           params: {
             bookId: `${bookId}`,
           },
           headers: {
-            'x-access-token': `${user?.token}`
-          }
+            'x-access-token': `${user?.token}`,
+          },
         })
-        .then(function(response){
-          console.log(bookId, cartId);
-        })
-        .catch(function(error){
-          alert("Error",error);
-          console.log(error);
-        });
+          .then(function (response) {
+            console.log(bookId, cartId);
+          })
+          .catch(function (error) {
+            alert('Error', error);
+            console.log(error);
+          });
       } catch (e) {
         alert(cartId);
       } finally {
@@ -105,6 +106,7 @@ const Bag = ({ navigation }) => {
           }
           setCost(result[result.length - 1][0].cost);
           setCartList(list);
+          console.log(list);
           setLibName(list[0].library);
           return () => {};
         })
@@ -157,7 +159,7 @@ const Bag = ({ navigation }) => {
     }
   }, [user]);
 
-  const _handleLoanPayment = useCallback(async() => {
+  const _handleLoanPayment = useCallback(async () => {
     try {
       axios({
         method: 'post',
@@ -169,24 +171,29 @@ const Bag = ({ navigation }) => {
           cartId: `${cartList[0].cartId}`,
         },
         headers: {
-          'x-access-token': `${user?.token}`
-        }
+          'x-access-token': `${user?.token}`,
+        },
       })
-      .then(function(response){
-        const url = response.data;
-        console.log(url);
-        const supported = Linking.canOpenURL(url);
-      
-        if (supported) {
-          Linking.openURL(url);
-          navigation.navigate('주문완료');
-        } else {
-          Alert.alert(`Don't know how to open this URL: ${url}`);
-        }
-      })
-      .catch(function(error){
-        alert("Error",error);
-      });
+        .then(function (response) {
+          const url = response.data;
+          console.log(url);
+          const supported = Linking.canOpenURL(url);
+
+          if (supported) {
+            Linking.openURL(url);
+            navigation.navigate('주문완료');
+          } else {
+            Alert.alert(`Don't know how to open this URL: ${url}`);
+          }
+        })
+        .then(function (response) {
+          const result = response.data;
+          setUrl(result);
+          return response.data;
+        })
+        .catch(function (error) {
+          alert('Error', error);
+        });
     } catch (e) {
       alert(cartId);
     } finally {
@@ -211,9 +218,7 @@ const Bag = ({ navigation }) => {
       <FlatList
         keyExtractor={(item) => item['id'].toString()}
         data={cartList}
-        renderItem={({ item }) => (
-          <Item item={item} />
-        )}
+        renderItem={({ item }) => <Item item={item} />}
         windowSize={3}
       />
 
@@ -251,10 +256,7 @@ const Bag = ({ navigation }) => {
           size={50}
         />
       </View>
-      <TouchableOpacity
-        style={styles.pay}
-        onPress={_handleLoanPayment}
-      >
+      <TouchableOpacity style={styles.pay} onPress={_handleLoanPayment}>
         <Text style={styles.pay_text}>{cost}원 결제하기</Text>
       </TouchableOpacity>
     </ScrollView>
