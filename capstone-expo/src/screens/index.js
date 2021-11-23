@@ -13,9 +13,8 @@ import Complete from './completedOrder';
 import LoanHistory from './loanHistory';
 import ReturnHistory from './returnHistory';
 
-import Address from './address';
 import SetAddress from './setMyAddress';
-import Bookcase from './bookcase';
+import MyLibrary from './myLibrary';
 
-export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information, Bag, Complete, LoanHistory, ReturnHistory, SetAddress, BookList };
+export { Login, Join, Mypage, FindId, PhoneCode, ShowId, Home, LibraryList, BookList, Information, Bag, Complete, LoanHistory, ReturnHistory, SetAddress, MyLibrary };
 
