@@ -173,7 +173,7 @@ const BookList = ({ navigation, route }) => {
   const [books, setBooks] = useState([]);
   const [category, setCategory] = useState('');
   const [search, setSearch] = useState('');
-  const [like, setLike] = useState(1);
+  const [like, setLike] = useState(0);
   const { user } = useContext(UserContext);
 
   const _handleLikePress = useCallback(async() => {

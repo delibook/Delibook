@@ -30,13 +30,13 @@ const Home = ({ navigation }) => {
       <View style={styles.banner}>
         <Swiper autoplay={true} style={styles.wrapper} autoplayTimeout={3}>
           <View style={styles.slide1}>
-            <Image></Image>
+            <Image style={styles.image} source = {require('../../assets/event_image1.jpg')} />
           </View>
           <View style={styles.slide2}>
-            <Image></Image>
+          <Image style={styles.image} source = {require('../../assets/event_image2.jpg')} />
           </View>
           <View style={styles.slide3}>
-            <Image></Image>
+          <Image style={styles.image} source = {require('../../assets/event_image3.jpg')} />
           </View>
         </Swiper>
       </View>
@@ -59,7 +59,7 @@ const Home = ({ navigation }) => {
           }}
         >
           <Ionicons
-            onPress={() => navigation.navigate('대출')}
+            onPress={() => navigation.navigate('도서관')}
             style={{
               textAlign: 'center',
               top: 20,
@@ -75,7 +75,7 @@ const Home = ({ navigation }) => {
         </View>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           <MaterialCommunityIcons
-            onPress={() => navigation.navigate('반납')}
+            onPress={() => navigation.navigate('이용내역')}
             style={{
               textAlign: 'center',
               top: 20,
@@ -103,9 +103,9 @@ const Home = ({ navigation }) => {
             공지사항
           </Text>
         </View>
-        <HomePost text={testtext} />
-        <HomePost text={testtext} />
-        <HomePost text={testtext} />
+        <HomePost text='딜리북 앱 지연현상 안내' />
+        <HomePost text='개인정보처리방침 개정안내' />
+        <HomePost text='딜리북 서비스 런칭 이벤트' />
       </View>
     </Container>
   );
@@ -118,21 +118,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#75CBF3',
   },
   slide2: {
     flex: 1,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#97CAE5',
   },
   slide3: {
     flex: 1,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#92BBD9',
   },
   text: {
     color: '#fff',
@@ -146,6 +143,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     marginTop: 20,
+  },
+  image: {
+    width: 350,
+    height: 200,
+    resizeMode: 'contain',
   },
 });
 

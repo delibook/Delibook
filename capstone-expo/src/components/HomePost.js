@@ -5,8 +5,8 @@ import propTypes from 'prop-types';
 
 const Contents = styled.Text`
   flex: 1;
-  margin: 10px;
-  font-size: 20px;
+  margin-top: 10px;
+  font-size: 18px;
   color: ${({ theme }) => theme.text};
 `;
 

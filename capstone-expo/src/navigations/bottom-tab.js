@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LibraryStack from './libraryStack';
 import MypageStack from './mypageStack';
 import { Home, Mypage, Bag } from '../screens';
+import { Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TabIcon = ({ name, size, color }) => {
@@ -39,7 +40,7 @@ const TabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="MyPage"
+        name="마이페이지"
         component={MypageStack}
         options={{
           tabBarIcon: (props) => TabIcon({ ...props, name: 'account' }),

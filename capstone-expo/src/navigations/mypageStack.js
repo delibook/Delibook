@@ -22,9 +22,9 @@ const MypageStack = () => {
         },
       }}
     >
-      <Stack.Screen name="마이페이지" component={Mypage} />
-      <Stack.Screen name="주소설정" component={Address} />
-      <Stack.Screen name="내위치확인" component={SetAddress} />
+      <Stack.Screen name="마이페이지" component={Mypage} options={{unmountOnBlur: true,}}/>
+      <Stack.Screen name="주소설정" component={Address} options={{unmountOnBlur: true,}}/>
+      <Stack.Screen name="내위치확인" component={SetAddress} options={{unmountOnBlur: true,}}/>
     </Stack.Navigator>
   );
 };
