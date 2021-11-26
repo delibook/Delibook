@@ -68,7 +68,7 @@ const Join = ({ navigation }) => {
   const _handleJoinButtonPress = useCallback(async() => {
     let data;
     try {
-      data = await axios.post('https://dev.delibook.shop/delibook/user/sign-in', {
+      data = await axios.post('https://dev.delibook.shop/delibook/user/sign-up', {
         name: `${name}`,
         phone: `${phone}`,
         email: `${email}`,
