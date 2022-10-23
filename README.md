@@ -65,6 +65,9 @@
 
 ## 시스템 아키텍처
 
+![image](https://user-images.githubusercontent.com/70941121/197406299-b4f99333-ffc4-4cd8-bb50-213d44223cc8.png)
+
+
 ## 시스템 순서도
 
 ![image](https://user-images.githubusercontent.com/70626308/197403438-d51ba0ac-7853-4438-868e-c39b854ae908.png)
