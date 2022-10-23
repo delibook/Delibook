@@ -17,11 +17,11 @@
 
 ![image](https://user-images.githubusercontent.com/70626308/197403411-e7ddccdb-305f-425d-9f7f-ff5d3e9e5f21.png)
 
-                                                                    <출처:e-나리지표>
+ <출처:e-나리지표>
 
 ![image](https://user-images.githubusercontent.com/70626308/197403424-90598fbe-688d-47ed-a45c-9ec1cb3703b2.png)
 ![image](https://user-images.githubusercontent.com/70626308/197403431-2459f343-e07c-4f93-b68c-69127b9127a7.png)
-                                                               <출처:국가도서관통계시스템>
+ <출처:국가도서관통계시스템>
 
 ### 개발 제한조건
 
