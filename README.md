@@ -15,10 +15,10 @@
 
 코로나 19로 인해 공공도서관 사용에 제한이 생겼고, 기존 거동이 불편한 사람들에게는 도서관에 직접 가서 책을 대여하는 일이 힘들다고 판단했다. 또한, 정보화시대가 시작되고 스마트폰이 상용화된 요즘 예전과 비교했을 때, 책을 읽는 사람의 비율이 점점 감소하는 중이다. 이에 따라 독서 문화를 조성하고 촉진시키기 위해서도 도서관의 책들을 배달을 통해 대여해주는 플랫폼이 있을 필요가 있다고 생각했다.
 
-<h1 align="center">![image](https://user-images.githubusercontent.com/70626308/197403411-e7ddccdb-305f-425d-9f7f-ff5d3e9e5f21.png)
+<center>![image](https://user-images.githubusercontent.com/70626308/197403411-e7ddccdb-305f-425d-9f7f-ff5d3e9e5f21.png)</center>
 
 
-                                                                     <출처:e-나리지표>
+                                                                    <출처:e-나리지표>
 
 ![image](https://user-images.githubusercontent.com/70626308/197403424-90598fbe-688d-47ed-a45c-9ec1cb3703b2.png)
 ![image](https://user-images.githubusercontent.com/70626308/197403431-2459f343-e07c-4f93-b68c-69127b9127a7.png)
