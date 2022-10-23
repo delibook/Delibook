@@ -70,6 +70,4 @@
 ![image](https://user-images.githubusercontent.com/70626308/197403438-d51ba0ac-7853-4438-868e-c39b854ae908.png)
 ## 프로젝트 일정
 
-초기 마일스톤
-
 ![image](https://user-images.githubusercontent.com/70626308/197403447-65fb4513-1a35-4258-aa6d-5609caf2497c.png)
