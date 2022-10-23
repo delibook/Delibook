@@ -15,14 +15,13 @@
 
 코로나 19로 인해 공공도서관 사용에 제한이 생겼고, 기존 거동이 불편한 사람들에게는 도서관에 직접 가서 책을 대여하는 일이 힘들다고 판단했다. 또한, 정보화시대가 시작되고 스마트폰이 상용화된 요즘 예전과 비교했을 때, 책을 읽는 사람의 비율이 점점 감소하는 중이다. 이에 따라 독서 문화를 조성하고 촉진시키기 위해서도 도서관의 책들을 배달을 통해 대여해주는 플랫폼이 있을 필요가 있다고 생각했다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/87ced41e-9703-4c6b-b825-fb5dcfaf4be1/Untitled.png)
+![image](https://user-images.githubusercontent.com/70626308/197403411-e7ddccdb-305f-425d-9f7f-ff5d3e9e5f21.png)
+
 
                                                                      <출처:e-나리지표>
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/73513237-36f9-4650-bd4f-58757afe8450/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/471570ad-a50b-4fa6-ba8a-d2e3760aa084/Untitled.png)
-
+![image](https://user-images.githubusercontent.com/70626308/197403424-90598fbe-688d-47ed-a45c-9ec1cb3703b2.png)
+![image](https://user-images.githubusercontent.com/70626308/197403431-2459f343-e07c-4f93-b68c-69127b9127a7.png)
                                                                <출처:국가도서관통계시스템>
 
 ### 개발 제한조건
@@ -66,10 +65,9 @@
 
 ### 시스템 순서도
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/50872d83-6d9b-45cb-901c-067435eb07f8/Untitled.png)
-
+![image](https://user-images.githubusercontent.com/70626308/197403438-d51ba0ac-7853-4438-868e-c39b854ae908.png)
 ### 프로젝트 일정
 
 초기 마일스톤
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ac0739cf-c2fc-4cf1-ba5d-51230e0164b4/Untitled.png)
+![image](https://user-images.githubusercontent.com/70626308/197403447-65fb4513-1a35-4258-aa6d-5609caf2497c.png)
